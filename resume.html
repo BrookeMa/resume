@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ye Ma - Resume</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap');
+
+  :root {
+    --color-bg: #ffffff;
+    --color-text: #1a1a1a;
+    --color-muted: #555;
+    --color-accent: #2563eb;
+    --color-accent-light: #dbeafe;
+    --color-border: #e5e7eb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    color: var(--color-text);
+    background: #f1f5f9;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 40px auto;
+    background: var(--color-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 30px rgba(0,0,0,0.06);
+    border-radius: 2px;
+  }
+
+  header {
+    padding: 48px 56px 40px;
+    border-bottom: 2px solid var(--color-text);
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  header .title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-bottom: 16px;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 13.5px;
+    color: var(--color-muted);
+  }
+
+  .contact-row a {
+    color: var(--color-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .contact-row a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .content { padding: 0 56px 48px; }
+
+  section { padding-top: 32px; }
+
+  section h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+
+  .entry { margin-bottom: 22px; }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+
+  .entry-title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .entry-date {
+    font-size: 13px;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .entry-subtitle {
+    font-size: 13.5px;
+    color: var(--color-muted);
+    margin-bottom: 6px;
+  }
+
+  .entry-subtitle a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  ul {
+    padding-left: 18px;
+    margin-top: 4px;
+  }
+
+  ul li {
+    font-size: 13.5px;
+    color: #333;
+    margin-bottom: 4px;
+    line-height: 1.55;
+  }
+
+  ul li::marker { color: var(--color-accent); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 16px;
+    font-size: 13.5px;
+  }
+
+  .skills-grid dt {
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: right;
+    padding-top: 1px;
+  }
+
+  .skills-grid dd {
+    color: #333;
+  }
+
+  .about-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .about-list li {
+    font-size: 13.5px;
+    color: #333;
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .about-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; max-width: 100%; }
+    header, .content { padding-left: 40px; padding-right: 40px; }
+  }
+
+  @media (max-width: 640px) {
+    header, .content { padding-left: 24px; padding-right: 24px; }
+    header { padding-top: 32px; padding-bottom: 28px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skills-grid dt { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Ye Ma</h1>
+    <div class="title">iOS &amp; Frontend Engineer</div>
+    <div class="contact-row">
+      <span>+86 189-0170-3713</span>
+      <a href="mailto:maye634028187@gmail.com">maye634028187@gmail.com</a>
+      <a href="https://github.com/BrookeMa">github.com/BrookeMa</a>
+      <a href="https://textgame.ai">textgame.ai</a>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Summary -->
+    <section>
+      <h2>Summary</h2>
+      <p style="font-size:13.5px;color:#333;line-height:1.65;">
+        Frontend &amp; iOS engineer with 7+ years of shipping experience across native mobile, desktop, and modern web. Shipped a production AI game platform (Next.js 16 / React 19) with real-time multiplayer, streaming chat, voice I/O, and Stripe payments. Deep background in Objective-C/Swift iOS development, Electron desktop apps, and React Native cross-platform work. MSc in AI from the University of Aberdeen.
+      </p>
+    </section>
+
+    <!-- Experience -->
+    <section>
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">AI Software Engineer &mdash; Wus Printed Circuit (Kunshan) Co., Ltd</span>
+          <span class="entry-date">Jul 2024 &ndash; Present</span>
+        </div>
+        <ul>
+          <li>Designed, implemented, and managed the corporate carbon neutrality management system, supporting global clients including NVIDIA, Siemens, Google, and leading automotive chip manufacturers in achieving supply chain sustainability goals.</li>
+          <li>Built the carbon emission data management platform (React): data collection, verification, reporting dashboards, and carbon footprint assessment across operations and supply chain with traceable emission factor databases.</li>
+          <li>Delivered comprehensive carbon emissions reports and sustainability performance analyses to clients, ensuring compliance with ISO 14064, GHG Protocol, and industry-specific standards.</li>
+          <li>Collaborated with manufacturing teams to identify and implement energy-saving measures; coordinated with third-party organizations on carbon neutrality certifications.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">Software Engineer &mdash; Ivy (Transpile AI), UK</span>
+          <span class="entry-date">Aug 2022 &ndash; Apr 2024</span>
+        </div>
+        <ul>
+          <li>Contributed to an open-source AI framework; performed code reviews focused on performance and API consistency; mentored contributors on Discord.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">Big Data Engineer &mdash; Ctrip (Trip.com Group), Shanghai</span>
+          <span class="entry-date">Nov 2018 &ndash; Apr 2020</span>
+        </div>
+        <ul>
+          <li>Developed recommendation services and optimized the video module frontend/backend for China's largest OTA platform (tens of millions DAU).</li>
+          <li>Built real-time data pipelines with Hadoop, Spark, and Flink for analytics and personalized ad targeting.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">iOS &amp; Web Frontend Engineer &mdash; Shanghai Wahai Network Technology</span>
+          <span class="entry-date">Mar 2017 &ndash; Oct 2018</span>
+        </div>
+        <ul>
+          <li>Led iOS (Objective-C) and Electron desktop development for an education IM app: messaging, WebRTC, Bluetooth, WebSocket whiteboard, file transfer, QR-code login, and IPC architecture.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">iOS Software Engineer &mdash; Shanghai Qishi Network Technology</span>
+          <span class="entry-date">Apr 2015 &ndash; Feb 2017</span>
+        </div>
+        <ul>
+          <li>Solely owned the iOS app lifecycle (architecture &rarr; App Store release) for an e-invitation platform; built H5 invitation templates.</li>
+          <li>Runtime swizzling, RunLoop performance monitoring, GCD/NSOperation multithreading, Instruments memory leak detection.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section>
+      <h2>Projects</h2>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">TextGame.ai &mdash; AI Multiplayer Game Platform</span>
+          <span class="entry-date">Jan 2026 &ndash; Mar 2026</span>
+        </div>
+        <div class="entry-subtitle">
+          <a href="https://textgame.ai" target="_blank">Live Site</a> ·
+          <a href="https://github.com/BrookeMa/TextGame.ai" target="_blank">GitHub</a>
+        </div>
+        <ul>
+          <li>Solo-built a full-stack production platform (Next.js 16 / React 19 / TypeScript) where an AI Game Master autonomously hosts 20+ social deduction &amp; party games for human + AI players.</li>
+          <li>47+ shadcn/ui components on Radix; Supabase Realtime multiplayer sync; Web Audio API voice pipeline (Whisper STT + Cartesia/Inworld TTS); Stripe subscriptions; Vitest + Playwright + Storybook test suite.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">Ivy &mdash; Cross-Framework AI Transpiler</span>
+          <span class="entry-date">Sep 2022 &ndash; Apr 2024</span>
+        </div>
+        <div class="entry-subtitle">
+          <a href="https://github.com/Transpile-AI/ivy" target="_blank">GitHub</a>
+        </div>
+        <ul>
+          <li>Open-source framework enabling seamless conversion between TensorFlow, PyTorch, JAX, and NumPy. Contributed code reviews, integration testing, and community support.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">AI Mathematical Olympiad</span>
+          <span class="entry-date">Jan 2024 &ndash; Apr 2024</span>
+        </div>
+        <div class="entry-subtitle">
+          <a href="https://www.kaggle.com/competitions/ai-mathematical-olympiad-prize" target="_blank">Kaggle</a>
+        </div>
+        <ul>
+          <li>AI models for solving LaTeX-formatted math competition problems; data parsing pipelines and model tuning benchmarked against Gemma 7B.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">Hoho &mdash; Education IM Platform</span>
+          <span class="entry-date">Mar 2017 &ndash; Oct 2018</span>
+        </div>
+        <div class="entry-subtitle">
+          <a href="https://github.com/BrookeMa/CV_Hoho" target="_blank">GitHub</a>
+        </div>
+        <ul>
+          <li>Cross-platform IM app for education: iOS native (Objective-C) + Electron desktop. Messaging, WebRTC, Bluetooth, WebSocket whiteboard, QR-code login.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <h2>Technical Skills</h2>
+      <dl class="skills-grid">
+        <dt>Languages</dt>
+        <dd>TypeScript, JavaScript, Objective-C, Swift, Python, HTML/CSS, C++</dd>
+
+        <dt>Frontend</dt>
+        <dd>React 19, Next.js (App Router / SSR / RSC), Tailwind CSS, shadcn/ui, Radix UI, Framer Motion, Tiptap, Recharts</dd>
+
+        <dt>iOS / Mobile</dt>
+        <dd>UIKit, SwiftUI, CoreML, Runtime, RunLoop, GCD, WebRTC, CocoaPods, Instruments, Fastlane, XCTest, React Native</dd>
+
+        <dt>Desktop</dt>
+        <dd>Electron (IPC, main/renderer), CRN</dd>
+
+        <dt>Real-time</dt>
+        <dd>WebSocket, Supabase Realtime, Web Audio API, MediaRecorder, Server-Sent Events</dd>
+
+        <dt>Backend</dt>
+        <dd>Node.js, Supabase (Auth / RLS / Storage), PostgreSQL, Stripe API, OpenAI API, REST</dd>
+
+        <dt>Testing</dt>
+        <dd>Vitest, Playwright, Storybook, XCTest</dd>
+
+        <dt>DevOps</dt>
+        <dd>Git, Vercel, Sentry, AWS, Google Cloud, Azure, CI/CD</dd>
+      </dl>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h2>Education</h2>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">University of Aberdeen, UK</span>
+          <span class="entry-date">Sep 2021 &ndash; Sep 2022</span>
+        </div>
+        <div class="entry-subtitle">MSc in Artificial Intelligence</div>
+        <ul>
+          <li>NLP, Computer Vision, Machine Learning, Distributed AI. Thesis: <em>OCR-based Mobile AR Simulating the World as Seen by People with Dyslexia</em>.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-title">Northeast Electric Power University, China</span>
+          <span class="entry-date">Sep 2011 &ndash; Jul 2015</span>
+        </div>
+        <div class="entry-subtitle">BEng in Software Engineering</div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section>
+      <h2>About Me</h2>
+      <ul class="about-list">
+        <li>Fluent in English &mdash; studied and worked in the UK for 3+ years.</li>
+        <li>Full product ownership experience &mdash; solo-built TextGame.ai from idea to production (design, frontend, backend, deployment, payments).</li>
+        <li>Cross-platform versatility &mdash; shipped native iOS, Electron desktop, React web, and React Native apps.</li>
+        <li>Strong debugging instinct &mdash; proficient with Instruments, Chrome DevTools, Sentry, and Vitest/Playwright for systematic issue resolution.</li>
+      </ul>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>
