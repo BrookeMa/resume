@@ -3,517 +3,446 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TextGame.ai — Technical Deep Dive</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<title>TextGame.ai — Technical Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080c12;
-  --bg-card: #0f1419;
-  --bg-card-alt: #131a22;
-  --text: #e2e8f0;
-  --text-muted: #7b8ba3;
-  --accent: #3b82f6;
-  --accent-glow: rgba(59,130,246,0.12);
-  --green: #22c55e;
-  --green-glow: rgba(34,197,94,0.12);
-  --orange: #f59e0b;
-  --orange-glow: rgba(245,158,11,0.12);
-  --purple: #a855f7;
-  --purple-glow: rgba(168,85,247,0.12);
-  --red: #ef4444;
-  --border: #1a2332;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'DM Sans', -apple-system, sans-serif;
-  --display: 'Playfair Display', Georgia, serif;
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --bg: #ffffff;
+  --bg-gray: #f8f9fa;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'Google Sans Mono', 'SF Mono', monospace;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--sans);
-  background: var(--bg);
+  font-family: var(--font);
   color: var(--text);
-  line-height: 1.65;
+  background: var(--bg);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--accent); color: #fff; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { color: #60a5fa; }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* --- HERO --- */
-.hero {
-  min-height: 80vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 80px 32px;
-  position: relative; overflow: hidden;
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 700px 500px at 30% 20%, rgba(59,130,246,0.07), transparent),
-    radial-gradient(ellipse 500px 400px at 75% 80%, rgba(168,85,247,0.05), transparent);
-  pointer-events: none;
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
 }
-.hero-inner { max-width: 800px; position: relative; text-align: center; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 12px; font-weight: 500;
-  color: var(--green); background: var(--green-glow);
-  padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
-  letter-spacing: 0.5px;
+.nav-title {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
 }
-.hero-badge .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--green);
-  animation: pulse 2s ease-in-out infinite;
+.nav-title .dot { color: var(--blue); }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
+.nav-links a:hover { background: var(--bg-gray); text-decoration: none; }
+
+/* CONTAINER */
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* HERO */
+.hero { padding: 64px 0 48px; }
 .hero h1 {
-  font-family: var(--display);
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 700; line-height: 1.15;
-  letter-spacing: -1px; margin-bottom: 20px;
+  font-size: 36px; font-weight: 600; letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.2;
 }
-.hero h1 span { color: var(--accent); }
-.hero p {
-  font-size: 17px; color: var(--text-muted);
-  max-width: 600px; margin: 0 auto 36px; line-height: 1.7;
-}
-.hero-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.hero-links a {
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 640px; margin-bottom: 24px; }
+.hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 10px 22px; border-radius: 8px;
-  font-size: 14px; font-weight: 600;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background .15s, border-color .15s;
 }
-.link-primary { background: var(--accent); color: #fff; }
-.link-primary:hover { color: #fff; background: #2563eb; }
-.link-outline { border: 1.5px solid var(--border); color: var(--text-muted); }
-.link-outline:hover { border-color: var(--accent); color: var(--accent); }
+.chip:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.chip-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip-blue:hover { background: #1765cc; border-color: #1765cc; }
 
-/* --- STATS --- */
-.stats-bar {
+/* STATS */
+.stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  border-bottom: 1px solid var(--border);
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin: 48px 0;
 }
-.stat {
-  padding: 32px 24px; text-align: center;
-  border-right: 1px solid var(--border);
+.stat-item {
+  background: var(--bg);
+  padding: 24px 16px; text-align: center;
 }
-.stat:last-child { border-right: none; }
 .stat-num {
-  font-family: var(--mono); font-size: 32px; font-weight: 600;
-  color: var(--text); margin-bottom: 4px;
+  font-size: 28px; font-weight: 600; color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 .stat-label {
-  font-size: 12px; font-weight: 500; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--text-muted);
+  font-size: 11px; font-weight: 500; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
 }
 
-/* --- SECTIONS --- */
-section { padding: 80px 32px; }
-.section-inner { max-width: 1000px; margin: 0 auto; }
-.section-label {
-  font-family: var(--mono); font-size: 12px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 2px;
-  color: var(--accent); margin-bottom: 10px;
+/* SECTION */
+section { padding: 48px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
 }
-.section-title {
-  font-family: var(--display);
-  font-size: clamp(26px, 3.5vw, 36px);
-  font-weight: 600; letter-spacing: -0.5px; margin-bottom: 40px;
-}
-.alt-bg { background: var(--bg-card); }
-
-/* --- ARCH GRID --- */
-.arch-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-.arch-card {
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border);
-  border-radius: 10px; padding: 28px;
-  transition: border-color .2s, transform .2s;
-}
-.arch-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.arch-card .icon {
-  width: 36px; height: 36px; border-radius: 8px;
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; margin-bottom: 16px;
+  font-size: 16px;
 }
-.icon-blue { background: var(--accent-glow); color: var(--accent); }
-.icon-green { background: var(--green-glow); color: var(--green); }
-.icon-orange { background: var(--orange-glow); color: var(--orange); }
-.icon-purple { background: var(--purple-glow); color: var(--purple); }
-.arch-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-.arch-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
-.arch-card code {
-  font-family: var(--mono); font-size: 12px;
-  background: rgba(59,130,246,0.08); color: var(--accent);
-  padding: 1px 6px; border-radius: 3px;
+.section-header h2 { font-size: 22px; font-weight: 600; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* CARDS */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.1); }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+.card code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--blue-light); color: var(--blue);
+  padding: 1px 5px; border-radius: 3px;
 }
 
-/* --- TECH TABLE --- */
-.tech-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-.tech-table th {
-  font-family: var(--mono); font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
-  text-align: left; padding: 12px 16px;
+/* TABLE */
+.clean-table { width: 100%; border-collapse: collapse; }
+.clean-table th {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-secondary);
+  text-align: left; padding: 10px 16px;
   border-bottom: 2px solid var(--border);
 }
-.tech-table td {
+.clean-table td {
   font-size: 14px; padding: 14px 16px;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
-.tech-table tr:hover td { background: rgba(59,130,246,0.03); }
-.tech-table .layer { font-weight: 600; color: var(--text); white-space: nowrap; }
-.tech-table .techs { color: var(--text-muted); }
-.tech-table .techs strong { color: var(--text); font-weight: 500; }
+.clean-table .label { font-weight: 500; white-space: nowrap; width: 110px; }
+.clean-table .value { color: var(--text-secondary); }
+.clean-table .value strong { color: var(--text); font-weight: 500; }
 
-/* --- FLOW --- */
-.flow-diagram {
-  background: var(--bg-card-alt);
+/* FLOW */
+.flow-box {
+  background: var(--bg-gray);
   border: 1px solid var(--border);
-  border-radius: 10px; padding: 36px;
-  font-family: var(--mono); font-size: 13px;
-  color: var(--text-muted); line-height: 1.8;
-  overflow-x: auto; white-space: pre;
+  border-radius: 12px; padding: 32px;
+  font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.9; overflow-x: auto; white-space: pre;
+  color: var(--text-secondary);
 }
-.flow-diagram .hl { color: var(--accent); font-weight: 600; }
-.flow-diagram .gr { color: var(--green); }
-.flow-diagram .or { color: var(--orange); }
-.flow-diagram .pr { color: var(--purple); }
+.flow-box .b { color: var(--blue); font-weight: 500; }
+.flow-box .g { color: var(--green); font-weight: 500; }
+.flow-box .r { color: var(--red); font-weight: 500; }
+.flow-box .y { color: #b06000; font-weight: 500; }
 
-/* --- DETAIL LIST --- */
+/* DETAIL LIST */
 .detail-list { list-style: none; }
 .detail-list li {
-  font-size: 14px; color: var(--text-muted);
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-  line-height: 1.6;
+  font-size: 14px; color: var(--text-secondary);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  line-height: 1.55;
 }
 .detail-list li:last-child { border-bottom: none; }
-.detail-list strong { color: var(--text); }
+.detail-list strong { color: var(--text); font-weight: 500; }
 .detail-list code {
   font-family: var(--mono); font-size: 12px;
-  background: rgba(59,130,246,0.08); color: var(--accent);
-  padding: 1px 6px; border-radius: 3px;
+  background: var(--bg-gray); padding: 1px 6px; border-radius: 3px;
 }
 
-/* --- TEST BADGE ROW --- */
-.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.t-badge {
-  font-family: var(--mono); font-size: 11px; font-weight: 500;
-  padding: 4px 10px; border-radius: 4px;
-  border: 1px solid var(--border); color: var(--text-muted);
+/* API MONO LIST */
+.api-list {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text-secondary); line-height: 2;
 }
 
-/* --- FOOTER --- */
+/* TAG */
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px;
+}
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-yellow { background: var(--yellow-light); color: #b06000; }
+
+/* FOOTER */
 footer {
-  text-align: center; padding: 40px 32px;
+  text-align: center; padding: 40px 24px;
   border-top: 1px solid var(--border);
-  font-size: 13px; color: var(--text-muted);
-}
-footer a { color: var(--text-muted); border-bottom: 1px solid var(--border); }
-footer a:hover { color: var(--accent); border-color: var(--accent); }
-
-@media (max-width: 640px) {
-  section { padding: 56px 20px; }
-  .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .stat { border-bottom: 1px solid var(--border); }
-  .hero { padding: 60px 20px; }
-  .arch-grid { grid-template-columns: 1fr; }
+  font-size: 13px; color: var(--text-secondary);
 }
 
-/* --- ANIMATIONS --- */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .hero h1 { font-size: 28px; }
 }
-.anim { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
-.anim.show { opacity: 1; transform: translateY(0); }
+@media (max-width: 480px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .card-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge"><span class="dot"></span> Live at textgame.ai</div>
-    <h1>TextGame.<span>ai</span></h1>
-    <p>
-      A full-stack AI game platform solo-built in 2 months. An AI Game Master autonomously hosts social deduction, RPG, and party games for human &amp; AI players — no human moderator needed.
-    </p>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">TextGame<span class="dot">.</span>ai</div>
+    <div class="nav-links">
+      <a href="resume.html">Resume</a>
+      <a href="index.html">Portfolio</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Technical Overview</h1>
+    <p>A full-stack AI game platform solo-built in 2 months. An AI Game Master autonomously hosts social deduction, RPG, and party games for human and AI players.</p>
     <div class="hero-links">
-      <a href="https://textgame.ai" target="_blank" class="link-primary">Visit Live Site &rarr;</a>
-      <a href="https://github.com/BrookeMa/TextGame.ai" target="_blank" class="link-outline">View Source</a>
-      <a href="resume.html" class="link-outline">&larr; Back to Resume</a>
+      <a href="https://textgame.ai" target="_blank" class="chip chip-blue">Visit Live Site</a>
+      <a href="https://github.com/BrookeMa/TextGame.ai" target="_blank" class="chip">GitHub Repository</a>
     </div>
   </div>
-</div>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stat">
-    <div class="stat-num">95K+</div>
-    <div class="stat-label">Lines of Code</div>
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">95K+</div>
+      <div class="stat-label">Lines of Code</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">472</div>
+      <div class="stat-label">TS / TSX Files</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">47</div>
+      <div class="stat-label">API Routes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">131</div>
+      <div class="stat-label">Test Files</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">49</div>
+      <div class="stat-label">UI Components</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2 mo</div>
+      <div class="stat-label">Build Time</div>
+    </div>
   </div>
-  <div class="stat">
-    <div class="stat-num">472</div>
-    <div class="stat-label">TS/TSX Files</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">47</div>
-    <div class="stat-label">API Routes</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">131</div>
-    <div class="stat-label">Test Files</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">49</div>
-    <div class="stat-label">UI Components</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">2 mo</div>
-    <div class="stat-label">Build Time</div>
-  </div>
-</div>
 
-<!-- ARCHITECTURE -->
-<section>
-  <div class="section-inner">
-    <div class="section-label">// Architecture</div>
-    <h2 class="section-title">How It's Built</h2>
-    <div class="arch-grid">
+  <hr class="divider">
 
-      <div class="arch-card anim">
-        <div class="icon icon-blue">&#9881;</div>
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>Architecture</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
         <h3>AI Game Engine</h3>
-        <p>
-          The AI Game Master's output is parsed for structured directives — <code>ASSIGN_ROLE</code>, <code>NEXT_SPEAKER</code>, <code>ELIMINATE</code>, <code>GAME_OVER</code>, <code>[BOARD:Player]</code> — that drive the entire game state machine. 15 built-in templates with custom game creation.
-        </p>
+        <p>Host output parsed for structured directives — <code>ASSIGN_ROLE</code>, <code>NEXT_SPEAKER</code>, <code>ELIMINATE</code>, <code>GAME_OVER</code>, <code>[BOARD:Player]</code> — driving the entire game state machine. 15 templates + custom games.</p>
       </div>
-
-      <div class="arch-card anim">
-        <div class="icon icon-green">&#9733;</div>
-        <h3>React Architecture</h3>
-        <p>
-          3 React Contexts (<code>AuthContext</code>, <code>GameContext</code>, <code>GameRoomContext</code>) with 25 <code>useState</code> calls in the room provider. 11 custom hooks including <code>useHostRound</code> (699 lines) orchestrating the entire turn cycle.
-        </p>
+      <div class="card">
+        <h3>React State</h3>
+        <p>3 Contexts (<code>Auth</code>, <code>Game</code>, <code>GameRoom</code>) with 25 <code>useState</code> calls in the room provider. 11 custom hooks including <code>useHostRound</code> (699 lines) for turn orchestration.</p>
       </div>
-
-      <div class="arch-card anim">
-        <div class="icon icon-orange">&#9889;</div>
+      <div class="card">
         <h3>Real-time Multiplayer</h3>
-        <p>
-          Supabase Realtime <code>postgres_changes</code> for state sync. Broadcast channel for TTS audio sharing (owner &rarr; guests). Invite-code room joining with <code>clientId</code> deduplication and guest session fallback with 3s polling.
-        </p>
+        <p>Supabase Realtime <code>postgres_changes</code> for state sync. Broadcast channel for TTS audio sharing. Invite-code rooms with <code>clientId</code> dedup and guest fallback polling.</p>
       </div>
-
-      <div class="arch-card anim">
-        <div class="icon icon-purple">&#9836;</div>
+      <div class="card">
         <h3>Voice Pipeline</h3>
-        <p>
-          <code>MediaRecorder</code> + Web Audio API (<code>AnalyserNode</code>, <code>getByteFrequencyData</code>, <code>requestAnimationFrame</code> waveform canvas) for STT via Whisper. Cartesia &amp; Inworld TTS with sentence-level queue and typewriter reveal synced to audio.
-        </p>
+        <p><code>MediaRecorder</code> + Web Audio API (<code>AnalyserNode</code>, 60-bar waveform at 60fps) for STT via Whisper. Cartesia &amp; Inworld TTS with sentence-level queue and typewriter reveal.</p>
       </div>
-
-      <div class="arch-card anim">
-        <div class="icon icon-blue">&#128230;</div>
-        <h3>49 UI Components</h3>
-        <p>
-          shadcn/ui on Radix primitives. <code>class-variance-authority</code> for variants + <code>tailwind-merge</code>. Motion (Framer) entrance animations. Tiptap rich-text editor. Mobile Sheet drawers with iOS safe-area and <code>100dvh</code>.
-        </p>
+      <div class="card">
+        <h3>UI System</h3>
+        <p>49 components built on shadcn/ui + Radix primitives. <code>CVA</code> variants, <code>tailwind-merge</code>, Motion animations. Mobile drawers with iOS safe-area and <code>100dvh</code>.</p>
       </div>
-
-      <div class="arch-card anim">
-        <div class="icon icon-green">&#128176;</div>
+      <div class="card">
         <h3>Payments &amp; Auth</h3>
-        <p>
-          Stripe checkout, webhooks, subscription management, and token-based pay-as-you-go with model-aware cost estimation. Supabase Auth with OAuth (Google/Facebook), JWT, and Row-Level Security.
-        </p>
+        <p>Stripe checkout, webhooks, subscriptions, token pay-as-you-go with model-aware cost estimation. Supabase Auth: OAuth, JWT, Row-Level Security.</p>
       </div>
-
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- TECH STACK -->
-<section class="alt-bg">
-  <div class="section-inner">
-    <div class="section-label">// Stack</div>
-    <h2 class="section-title">Technology Stack</h2>
-    <table class="tech-table">
+  <hr class="divider">
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Tech Stack</h2>
+    </div>
+    <table class="clean-table">
       <thead><tr><th>Layer</th><th>Technologies</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="layer">Framework</td>
-          <td class="techs"><strong>Next.js 16</strong> (App Router, Route Groups, RSC), <strong>React 19</strong>, <strong>TypeScript</strong>, Turbopack</td>
-        </tr>
-        <tr>
-          <td class="layer">UI</td>
-          <td class="techs"><strong>shadcn/ui</strong>, <strong>Radix UI</strong> (20+ primitives), <strong>Tailwind CSS</strong> 3.4, CVA, tailwind-merge, <strong>Motion</strong> (Framer), Tiptap, Recharts, Embla Carousel, Masonry</td>
-        </tr>
-        <tr>
-          <td class="layer">AI</td>
-          <td class="techs"><strong>OpenAI</strong> GPT-4o / GPT-5.3 (chat), Whisper (STT), DALL-E (avatars), <strong>Replicate</strong> Flux / Stable Diffusion</td>
-        </tr>
-        <tr>
-          <td class="layer">Voice</td>
-          <td class="techs"><strong>Cartesia TTS</strong>, <strong>Inworld.ai TTS</strong>, Web Audio API, MediaRecorder, SpeechSynthesis</td>
-        </tr>
-        <tr>
-          <td class="layer">Database</td>
-          <td class="techs"><strong>Supabase</strong> (Auth, Realtime, Storage, RLS), <strong>PostgreSQL</strong> (pg driver, migrations)</td>
-        </tr>
-        <tr>
-          <td class="layer">Payments</td>
-          <td class="techs"><strong>Stripe</strong> (Checkout, Webhooks, Customer Portal, Subscriptions, Promotions)</td>
-        </tr>
-        <tr>
-          <td class="layer">Monitoring</td>
-          <td class="techs"><strong>Sentry</strong> (sourcemaps, release tracking, tree-shake debug), <strong>Vercel Analytics</strong>, Google Analytics</td>
-        </tr>
-        <tr>
-          <td class="layer">Testing</td>
-          <td class="techs"><strong>Vitest</strong> (131 test files), <strong>Playwright</strong> E2E, <strong>Storybook</strong>, Testing Library</td>
-        </tr>
-        <tr>
-          <td class="layer">Infra</td>
-          <td class="techs"><strong>Vercel</strong> (serverless), CSP headers, rate limiting, bundle analyzer</td>
-        </tr>
+        <tr><td class="label">Framework</td><td class="value"><strong>Next.js 16</strong> (App Router, RSC), <strong>React 19</strong>, <strong>TypeScript</strong>, Turbopack</td></tr>
+        <tr><td class="label">UI</td><td class="value"><strong>shadcn/ui</strong>, <strong>Radix UI</strong> (20+ primitives), <strong>Tailwind CSS</strong>, CVA, Motion, Tiptap, Recharts, Embla Carousel</td></tr>
+        <tr><td class="label">AI</td><td class="value"><strong>OpenAI</strong> GPT-4o / GPT-5.3, Whisper STT, DALL-E, <strong>Replicate</strong> Flux / Stable Diffusion</td></tr>
+        <tr><td class="label">Voice</td><td class="value"><strong>Cartesia TTS</strong>, <strong>Inworld.ai TTS</strong>, Web Audio API, MediaRecorder</td></tr>
+        <tr><td class="label">Database</td><td class="value"><strong>Supabase</strong> (Auth, Realtime, Storage, RLS), <strong>PostgreSQL</strong></td></tr>
+        <tr><td class="label">Payments</td><td class="value"><strong>Stripe</strong> Checkout, Webhooks, Customer Portal, Subscriptions</td></tr>
+        <tr><td class="label">Monitoring</td><td class="value"><strong>Sentry</strong>, <strong>Vercel Analytics</strong>, Google Analytics</td></tr>
+        <tr><td class="label">Testing</td><td class="value"><strong>Vitest</strong> (131 files), <strong>Playwright</strong> E2E, <strong>Storybook</strong>, Testing Library</td></tr>
+        <tr><td class="label">Infra</td><td class="value"><strong>Vercel</strong> serverless, CSP headers, rate limiting, bundle analyzer</td></tr>
       </tbody>
     </table>
-  </div>
-</section>
+  </section>
 
-<!-- GAME LOOP -->
-<section>
-  <div class="section-inner">
-    <div class="section-label">// Core Loop</div>
-    <h2 class="section-title">Game Engine Flow</h2>
-    <div class="flow-diagram"><span class="hl">Lobby</span> ──▶ <span class="hl">Host Intro</span> ──▶ ┌─────── <span class="hl">Turn Cycle</span> ───────┐ ──▶ <span class="hl">Game Over</span>
-                              │                          │
-                    <span class="gr">Host Turn</span>    <span class="or">AI Turn</span>     <span class="pr">Human Turn</span>
-                   /api/chat/    /api/chat/    user input
-                    stream      player-speak
-                              │                          │
-                              └──────── Parse ───────────┘
-                                         │
-                          ┌──────────────┼──────────────┐
-                          ▼              ▼              ▼
-                    <span class="gr">ASSIGN_ROLE</span>   <span class="or">NEXT_SPEAKER</span>  <span class="pr">ELIMINATE</span>
-                    <span class="gr">[BOARD:…]</span>     <span class="or">RECORD_EVENT</span>  <span class="pr">GAME_OVER</span>
-                    <span class="gr">[ACCESS:…]</span>    <span class="or">SET_PHASE</span>     <span class="pr">[MY_NOTES]</span>
-                          │              │              │
-                          └──────────────┼──────────────┘
-                                         ▼
-                              <span class="hl">Update Game State</span>
-                       (roles, boards, phase, votes, timer)</div>
-  </div>
-</section>
+  <hr class="divider">
 
-<!-- PERFORMANCE & ENGINEERING -->
-<section class="alt-bg">
-  <div class="section-inner">
-    <div class="section-label">// Engineering</div>
-    <h2 class="section-title">Performance &amp; Code Quality</h2>
+  <!-- GAME LOOP -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9654;</div>
+      <h2>Game Engine Flow</h2>
+    </div>
+    <div class="flow-box"><span class="b">Lobby</span> ──▶ <span class="b">Host Intro</span> ──▶ ┌──── <span class="b">Turn Cycle</span> ────┐ ──▶ <span class="b">Game Over</span>
+                              │                    │
+                     <span class="g">Host Turn</span>   <span class="y">AI Turn</span>    <span class="r">Human Turn</span>
+                    /api/chat/  /api/chat/   user input
+                     stream    player-speak
+                              │                    │
+                              └───── Parse ────────┘
+                                       │
+                       ┌───────────────┼───────────────┐
+                       ▼               ▼               ▼
+                 <span class="g">ASSIGN_ROLE</span>    <span class="y">NEXT_SPEAKER</span>   <span class="r">ELIMINATE</span>
+                 <span class="g">[BOARD:…]</span>      <span class="y">RECORD_EVENT</span>   <span class="r">GAME_OVER</span>
+                 <span class="g">[ACCESS:…]</span>     <span class="y">SET_PHASE</span>      <span class="r">[MY_NOTES]</span>
+                       │               │               │
+                       └───────────────┼───────────────┘
+                                       ▼
+                           <span class="b">Update Game State</span>
+                    (roles, boards, phase, votes, timer)</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ENGINEERING -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--red-light);color:var(--red);">&#9873;</div>
+      <h2>Performance &amp; Quality</h2>
+    </div>
     <ul class="detail-list">
-      <li><strong>Dynamic Imports</strong> — <code>next/dynamic</code> with <code>ssr: false</code> for heavy components (LobbyView, CharacterBrowser, PlayerPanelWithBoard) to reduce initial bundle and avoid hydration mismatches.</li>
-      <li><strong>Tree Shaking</strong> — <code>optimizePackageImports</code> configured for Radix UI (20+ packages), Lucide React, Recharts, date-fns, Sonner to minimize bundle size.</li>
-      <li><strong>Re-render Prevention</strong> — <code>useMemo</code>/<code>useCallback</code>/ref chains throughout context providers; <code>contextValue</code> in GameRoomContext is a single memoized object gating 25+ state values.</li>
-      <li><strong>Image Optimization</strong> — AVIF + WebP formats, 5 device sizes, quality 75/90, 30-day cache TTL via Next.js Image.</li>
-      <li><strong>Production Hardening</strong> — <code>compiler.removeConsole</code> strips logs (keeps error/warn); Sentry <code>treeshake.removeDebugLogging</code>; CSP headers (X-Frame-Options DENY, strict Referrer-Policy).</li>
-      <li><strong>Rate Limiting</strong> — Custom middleware: 30 requests / 60 seconds per chat stream endpoint; token balance pre-checks with <code>AbortController</code> timeouts (30–120s).</li>
-      <li><strong>Testing</strong> — 131 test files covering game engine (host output parsing, template drivers, game pace), Stripe flows, avatar logic, auth, multiplayer state merge, TTS broadcast, and UI components. Playwright E2E with Chromium + trace-on-retry.</li>
-      <li><strong>Auth Security</strong> — Supabase JWT + Row-Level Security on <code>game_room_state</code>; <code>getAuthUserFromRequest</code> middleware validates Bearer tokens and cookies on every API route.</li>
+      <li><strong>Code Splitting</strong> — <code>next/dynamic</code> with <code>ssr: false</code> for heavy components (LobbyView, CharacterBrowser, PlayerPanel) to reduce initial bundle.</li>
+      <li><strong>Tree Shaking</strong> — <code>optimizePackageImports</code> for Radix UI (20+ packages), Lucide, Recharts, date-fns, Sonner.</li>
+      <li><strong>Re-render Prevention</strong> — <code>useMemo</code> / <code>useCallback</code> / ref chains; GameRoomContext value is a single memoized object gating 25+ state values.</li>
+      <li><strong>Image Optimization</strong> — AVIF + WebP, 5 device sizes, quality 75/90, 30-day cache TTL.</li>
+      <li><strong>Production Hardening</strong> — Console stripping (keeps error/warn), Sentry debug tree-shake, CSP headers (X-Frame-Options DENY, strict Referrer-Policy).</li>
+      <li><strong>Rate Limiting</strong> — 30 req / 60s per chat endpoint; token balance pre-checks; <code>AbortController</code> timeouts (30–120s).</li>
+      <li><strong>131 Test Files</strong> — Game engine, host parsing, template drivers, Stripe flows, avatar logic, auth, multiplayer merge, TTS broadcast. Playwright E2E with trace-on-retry.</li>
+      <li><strong>Auth</strong> — Supabase JWT + Row-Level Security; <code>getAuthUserFromRequest</code> middleware on every API route.</li>
     </ul>
-  </div>
-</section>
+  </section>
 
-<!-- API ROUTES -->
-<section>
-  <div class="section-inner">
-    <div class="section-label">// API Surface</div>
-    <h2 class="section-title">47 Serverless API Routes</h2>
-    <div class="arch-grid">
-      <div class="arch-card anim">
-        <h3>Chat &amp; AI</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/chat<br>/api/chat/stream<br>/api/chat/intro<br>/api/chat/player-speak<br>/api/suggest-gm-replies<br>/api/suggest-prompts<br>/api/suggest-quick-replies<br>/api/suggest-sections
-        </p>
+  <hr class="divider">
+
+  <!-- KEY FILES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#128196;</div>
+      <h2>Key Modules</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>useHostRound.ts</strong> <span class="tag tag-blue">699 lines</span> — Round orchestrator: system prompt → streaming API → directive parsing → speaker queue → retries → pacing → analytics.</li>
+      <li><strong>GameRoomContext.tsx</strong> <span class="tag tag-green">25 useState</span> — Messages, players, phases, channels, boards, sections, votes, timer, mood, game-over. Local-first with debounced Supabase sync.</li>
+      <li><strong>gm-system-prompt.ts</strong> <span class="tag tag-yellow">Core</span> — Builds Game Master prompt with directives: ASSIGN_ROLE, NEXT_SPEAKER, ELIMINATE, GAME_OVER, [BOARD], [ACCESS], [SECTION], [MY_NOTES].</li>
+      <li><strong>game-template-driver.ts</strong> <span class="tag tag-yellow">Core</span> — Per-template mechanics, pacing, speaker order, phase transitions, progression policies.</li>
+      <li><strong>tts-broadcast.ts</strong> <span class="tag tag-red">Real-time</span> — Supabase Broadcast for multiplayer TTS. Owner fetches → broadcasts base64 → guests subscribe. djb2 hash + LRU cache (100 entries).</li>
+      <li><strong>voice.ts</strong> <span class="tag tag-red">Audio</span> — MediaRecorder + AudioContext + AnalyserNode. 60-bar frequency canvas at 60fps via requestAnimationFrame.</li>
+      <li><strong>use-chat-tts.ts</strong> <span class="tag tag-red">Audio</span> — Sentence extraction, per-speaker voice selection, typewriter text reveal synced to playback. 8s timeout fallback.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- API ROUTES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9678;</div>
+      <h2>47 API Routes</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Chat &amp; AI <span class="tag tag-blue">8</span></h3>
+        <div class="api-list">/api/chat<br>/api/chat/stream<br>/api/chat/intro<br>/api/chat/player-speak<br>/api/suggest-gm-replies<br>/api/suggest-prompts<br>/api/suggest-quick-replies<br>/api/suggest-sections</div>
       </div>
-      <div class="arch-card anim">
-        <h3>Characters</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/characters<br>/api/characters/[id]<br>/api/characters/generate<br>/api/characters/greet<br>/api/characters/pool<br>/api/characters/style-preview<br>/api/generate-players<br>/api/generate-player-traits<br>/api/generate-host
-        </p>
+      <div class="card">
+        <h3>Characters <span class="tag tag-green">9</span></h3>
+        <div class="api-list">/api/characters<br>/api/characters/[id]<br>/api/characters/generate<br>/api/characters/greet<br>/api/characters/pool<br>/api/characters/style-preview<br>/api/generate-players<br>/api/generate-player-traits<br>/api/generate-host</div>
       </div>
-      <div class="arch-card anim">
-        <h3>Games &amp; Multiplayer</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/games<br>/api/games/[gameId]<br>/api/games/[gameId]/message<br>/api/games/[gameId]/members<br>/api/games/[gameId]/invite<br>/api/games/[gameId]/join<br>/api/games/[gameId]/share<br>/api/games/[gameId]/public<br>/api/games/[gameId]/guest-view<br>/api/join/[inviteCode]<br>/api/share/[token]
-        </p>
+      <div class="card">
+        <h3>Games &amp; Multiplayer <span class="tag tag-yellow">11</span></h3>
+        <div class="api-list">/api/games<br>/api/games/[gameId]<br>/api/games/[gameId]/message<br>/api/games/[gameId]/members<br>/api/games/[gameId]/invite<br>/api/games/[gameId]/join<br>/api/games/[gameId]/share<br>/api/games/[gameId]/public<br>/api/games/[gameId]/guest-view<br>/api/join/[inviteCode]<br>/api/share/[token]</div>
       </div>
-      <div class="arch-card anim">
-        <h3>Payments &amp; User</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/stripe/create-checkout<br>/api/stripe/webhook<br>/api/stripe/fulfill-session<br>/api/stripe/subscription-details<br>/api/stripe/create-portal-session<br>/api/stripe/change-plan<br>/api/stripe/sync-subscription<br>/api/token-packages<br>/api/user/balance<br>/api/user/settings<br>/api/user/transactions
-        </p>
+      <div class="card">
+        <h3>Payments &amp; User <span class="tag tag-red">11</span></h3>
+        <div class="api-list">/api/stripe/create-checkout<br>/api/stripe/webhook<br>/api/stripe/fulfill-session<br>/api/stripe/subscription-details<br>/api/stripe/create-portal-session<br>/api/stripe/change-plan<br>/api/stripe/sync-subscription<br>/api/token-packages<br>/api/user/balance<br>/api/user/settings<br>/api/user/transactions</div>
       </div>
-      <div class="arch-card anim">
-        <h3>Voice &amp; Media</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/transcribe<br>/api/inworld-tts<br>/api/inworld-voices<br>/api/cartesia-voices<br>/api/avatar<br>/api/avatar-preview<br>/api/generate-hero-image
-        </p>
+      <div class="card">
+        <h3>Voice &amp; Media <span class="tag tag-blue">7</span></h3>
+        <div class="api-list">/api/transcribe<br>/api/inworld-tts<br>/api/inworld-voices<br>/api/cartesia-voices<br>/api/avatar<br>/api/avatar-preview<br>/api/generate-hero-image</div>
       </div>
-      <div class="arch-card anim">
-        <h3>Other</h3>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text-muted);line-height:2;">
-          /api/contact<br>/api/generate-human-game-identity
-        </p>
+      <div class="card">
+        <h3>Other <span class="tag tag-green">1</span></h3>
+        <div class="api-list">/api/contact</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- KEY FILES -->
-<section class="alt-bg">
-  <div class="section-inner">
-    <div class="section-label">// Key Modules</div>
-    <h2 class="section-title">Notable Source Files</h2>
-    <ul class="detail-list">
-      <li><strong>useHostRound.ts</strong> <code>699 lines</code> — Central round orchestrator: builds host system prompt, calls streaming API, parses directives, runs speaker queue, handles retries, pacing, and analytics.</li>
-      <li><strong>GameRoomContext.tsx</strong> <code>25 useState calls</code> — Manages messages, players, phases, channels, boards, sections, votes, timer, mood, game-over state. Local-first persistence with debounced Supabase sync and <code>beforeunload</code> save.</li>
-      <li><strong>gm-system-prompt.ts</strong> — Builds the Game Master system prompt with structured directives: <code>ASSIGN_ROLE</code>, <code>NEXT_SPEAKER</code>, <code>ELIMINATE</code>, <code>GAME_OVER</code>, <code>[BOARD:Player]</code>, <code>[ACCESS:Channel]</code>, <code>[SECTION:Title]</code>, <code>[MY_NOTES]</code>.</li>
-      <li><strong>game-template-driver.ts</strong> — Template-specific game mechanics and progression policies. Adapts pacing, speaker order, and phase transitions per template type.</li>
-      <li><strong>tts-broadcast.ts</strong> — Supabase Broadcast for multiplayer TTS audio sharing. Owner fetches TTS → broadcasts base64 → guests subscribe. djb2 hash cache keys with LRU (max 100 entries).</li>
-      <li><strong>voice.ts</strong> — <code>useVoiceInput</code>: MediaRecorder + AudioContext + AnalyserNode waveform visualization. 60-bar frequency canvas at 60fps via <code>requestAnimationFrame</code>.</li>
-      <li><strong>use-chat-tts.ts</strong> — Sentence extraction, per-speaker voice selection, typewriter-style text reveal synced to audio playback. 8s fallback if TTS stalls.</li>
-    </ul>
-  </div>
-</section>
+</div>
 
 <footer>
-  <p><a href="resume.html">Resume</a> &nbsp;·&nbsp; <a href="index.html">Portfolio</a> &nbsp;·&nbsp; <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp; <a href="https://textgame.ai" target="_blank">textgame.ai</a></p>
-  <p style="margin-top:12px;">&copy; 2026 Ye Ma</p>
+  <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+  <a href="index.html">Portfolio</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp;
+  <a href="https://textgame.ai" target="_blank">textgame.ai</a>
+  <p style="margin-top:8px;">&copy; 2026 Ye Ma</p>
 </footer>
 
-<script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.anim').forEach(el => observer.observe(el));
-</script>
 </body>
 </html>
