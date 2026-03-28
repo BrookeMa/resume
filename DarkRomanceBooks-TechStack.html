@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarkRomanceBooks.ai — Technical Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --purple: #7b1fa2;
+  --purple-light: #f3e8fd;
+  --teal: #00897b;
+  --teal-light: #e0f2f1;
+  --grey-50: #f8f9fa;
+  --grey-100: #f1f3f4;
+  --grey-200: #e8eaed;
+  --grey-300: #dadce0;
+  --grey-500: #80868b;
+  --grey-700: #5f6368;
+  --grey-900: #202124;
+  --surface: #ffffff;
+  --shadow-1: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  --shadow-2: 0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Roboto', -apple-system, sans-serif;
+  background: var(--grey-50);
+  color: var(--grey-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1a73e8 0%, #6c4ce8 50%, #d93025 100%);
+  color: white;
+  padding: 80px 24px 60px;
+  text-align: center;
+}
+.hero h1 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+.hero .subtitle {
+  font-size: 22px;
+  opacity: 1;
+  font-weight: 400;
+  max-width: 640px;
+  margin: 0 auto 32px;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+}
+.hero-stat .label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 1;
+  text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--grey-200);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,.04);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4px;
+  padding: 0 24px;
+  overflow-x: auto;
+}
+.nav a {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--grey-700);
+  text-decoration: none;
+  padding: 14px 16px;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav a:hover {
+  color: var(--blue);
+  background: var(--blue-light);
+  border-radius: 8px 8px 0 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+section { padding: 48px 0; }
+section + section { border-top: 1px solid var(--grey-200); }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.section-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+h2 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--grey-900);
+}
+h3 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--grey-900);
+  margin-bottom: 8px;
+}
+p, li { color: var(--grey-700); font-size: 15px; line-height: 1.7; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: var(--shadow-2); }
+.card h3 { margin-bottom: 12px; }
+.card ul { padding-left: 20px; }
+.card li { margin-bottom: 6px; }
+.card li::marker { color: var(--grey-300); }
+
+.tag {
+  display: inline-block;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin: 3px 4px 3px 0;
+}
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-yellow { background: var(--yellow-light); color: #e37400; }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+
+code {
+  font-family: 'Google Sans Mono', monospace;
+  font-size: 14px;
+  background: var(--grey-100);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--grey-900);
+}
+
+.arch-flow {
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 32px;
+  overflow-x: auto;
+}
+.flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.flow-box {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 22px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 130px;
+}
+.flow-arrow {
+  color: var(--grey-500);
+  font-size: 20px;
+}
+.flow-label {
+  font-size: 11px;
+  color: var(--grey-500);
+  text-align: center;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.fb-blue { background: #d2e3fc; color: #174ea6; }
+.fb-green { background: #ceead6; color: #137333; }
+.fb-yellow { background: #feefc3; color: #b05a00; }
+.fb-red { background: #fad2cf; color: #a50e0e; }
+.fb-purple { background: #e8daef; color: #5b2c6f; }
+.fb-teal { background: #b2dfdb; color: #00695c; }
+.fb-grey { background: var(--grey-200); color: var(--grey-700); }
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.info-table th {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--grey-700);
+  background: var(--grey-50);
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--grey-200);
+}
+.info-table td {
+  font-size: 15px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--grey-100);
+  color: var(--grey-700);
+}
+.info-table tr:last-child td { border-bottom: none; }
+.info-table td:first-child { font-weight: 500; color: var(--grey-900); }
+
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--grey-500);
+  font-size: 13px;
+  border-top: 1px solid var(--grey-200);
+}
+footer a { color: var(--blue); text-decoration: none; }
+
+/* Overview / Metrics */
+.overview-hero {
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.overview-hero p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--grey-700);
+  max-width: 800px;
+}
+.overview-hero p strong { color: var(--grey-900); }
+.metric-bar {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.metric-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 16px 20px;
+  flex: 1;
+  min-width: 180px;
+}
+.metric-pill-score {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.metric-pill-info {
+  display: flex;
+  flex-direction: column;
+}
+.metric-pill-label {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey-900);
+}
+.metric-pill-sub {
+  font-size: 12px;
+  color: var(--grey-500);
+  margin-top: 2px;
+}
+.mp-green .metric-pill-score { background: #ceead6; color: #137333; }
+.mp-orange .metric-pill-score { background: #feefc3; color: #b05a00; }
+.mp-blue .metric-pill-score { background: #d2e3fc; color: #174ea6; }
+
+.challenge-card {
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+.challenge-card:hover { box-shadow: var(--shadow-2); }
+.challenge-label {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.cl-problem { background: var(--red-light); color: var(--red); }
+.cl-solution { background: var(--green-light); color: var(--green); }
+.cl-result { background: var(--blue-light); color: var(--blue); }
+.challenge-card h3 { margin-bottom: 10px; }
+.challenge-card p { margin-bottom: 8px; }
+.challenge-card p:last-child { margin-bottom: 0; }
+
+.keyword-insight {
+  background: var(--surface);
+  border: 1px solid var(--grey-200);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.keyword-insight-text { flex: 1; min-width: 260px; }
+.keyword-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.keyword-table th {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--grey-500);
+  text-align: left;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+.keyword-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--grey-100);
+  color: var(--grey-700);
+}
+.keyword-table td:first-child { font-weight: 500; color: var(--grey-900); }
+.kw-vol { color: var(--green); font-weight: 500; }
+.kw-growth { color: var(--red); font-weight: 600; font-size: 13px; }
+
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .hero-stats { gap: 24px; }
+  .hero-stat .num { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .flow-row { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+  .metric-bar { flex-direction: column; }
+  .metric-pill { min-width: unset; }
+  .keyword-insight { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>DarkRomanceBooks.ai</h1>
+  <p class="subtitle">AI-powered book discovery platform — full-stack architecture overview</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">610+</div><div class="label">Indexed Pages</div></div>
+    <div class="hero-stat"><div class="num">550+</div><div class="label">Books in Library</div></div>
+    <div class="hero-stat"><div class="num">100</div><div class="label">Lighthouse Desktop</div></div>
+    <div class="hero-stat"><div class="num">+900%</div><div class="label">Keyword YoY Growth</div></div>
+    <div class="hero-stat"><div class="num">Solo</div><div class="label">Full-Stack Build</div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a href="#overview">Why I Built This</a>
+    <a href="#stack">Tech Stack</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#ai">AI Integration</a>
+    <a href="#data">Data Enrichment</a>
+    <a href="#caching">Caching</a>
+    <a href="#seo">SEO</a>
+    <a href="#database">Database</a>
+    <a href="#performance">Performance</a>
+    <a href="#testing">Testing</a>
+    <a href="#devops">DevOps</a>
+    <a href="#challenges">Challenges</a>
+    <a href="#security">Security</a>
+    <a href="#flywheel">Growth Flywheel</a>
+  </div>
+</div>
+
+<div class="container">
+
+<section id="overview">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+    <h2>Why I Built This</h2>
+  </div>
+
+  <div class="overview-hero">
+    <p>
+      While researching niche content markets with Google Keyword Planner, I discovered that
+      <strong>"dark romance books"</strong> and related keywords have <strong>100K–1M monthly searches</strong>
+      with <strong>+900% year-over-year growth</strong> and consistently <strong>low competition</strong>.
+      This was a clear signal: massive demand, underserved by existing tools.
+    </p>
+    <p style="margin-top:12px">
+      I decided to build <strong>DarkRomanceBooks.ai</strong> — an AI-powered book discovery engine
+      that solves a real problem for readers: finding the right dark romance book by trope, mood, and taste.
+      The project is designed as a <strong>solo full-stack system</strong> that runs autonomously —
+      every search creates new content, every new page attracts more organic traffic, creating a self-sustaining growth flywheel.
+    </p>
+
+    <!-- Keyword data from Google Keyword Planner -->
+    <div style="margin-top:24px">
+      <table class="keyword-table">
+        <tr>
+          <th>Keyword</th>
+          <th>Monthly Volume</th>
+          <th>YoY Growth</th>
+          <th>Competition</th>
+        </tr>
+        <tr>
+          <td>dark romance books</td>
+          <td class="kw-vol">100K – 1M</td>
+          <td class="kw-growth">+900%</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td>dark romance novels</td>
+          <td class="kw-vol">100K – 1M</td>
+          <td class="kw-growth">+900%</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td>books about dark romance</td>
+          <td class="kw-vol">100K – 1M</td>
+          <td class="kw-growth">+900%</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td>dark romance fiction</td>
+          <td class="kw-vol">100K – 1M</td>
+          <td class="kw-growth">+900%</td>
+          <td>Low</td>
+        </tr>
+      </table>
+      <p style="margin-top:8px;font-size:12px;color:var(--grey-500)">Source: Google Keyword Planner, Mar 2025 – Feb 2026, US + UK</p>
+    </div>
+  </div>
+
+  <!-- Lighthouse Metrics -->
+  <h3 style="margin-bottom:12px;margin-top:28px">
+    Lighthouse Scores
+    <a href="https://pagespeed.web.dev/analysis/https-darkromancebooks-ai/mrj79lmtaf?form_factor=desktop" target="_blank" rel="noopener" style="font-size:13px;font-weight:400;color:var(--blue);text-decoration:none;margin-left:8px">
+      View live report on PageSpeed Insights
+      <svg style="vertical-align:middle;margin-left:2px" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </h3>
+  <div class="metric-bar">
+    <div class="metric-pill mp-green">
+      <div class="metric-pill-score">100</div>
+      <div class="metric-pill-info">
+        <span class="metric-pill-label">Performance</span>
+        <span class="metric-pill-sub">Desktop</span>
+      </div>
+    </div>
+    <div class="metric-pill mp-green">
+      <div class="metric-pill-score">97</div>
+      <div class="metric-pill-info">
+        <span class="metric-pill-label">Performance</span>
+        <span class="metric-pill-sub">Mobile</span>
+      </div>
+    </div>
+    <div class="metric-pill mp-green">
+      <div class="metric-pill-score">100</div>
+      <div class="metric-pill-info">
+        <span class="metric-pill-label">Accessibility</span>
+        <span class="metric-pill-sub">All devices</span>
+      </div>
+    </div>
+    <div class="metric-pill mp-green">
+      <div class="metric-pill-score">100</div>
+      <div class="metric-pill-info">
+        <span class="metric-pill-label">Best Practices</span>
+        <span class="metric-pill-sub">All devices</span>
+      </div>
+    </div>
+    <div class="metric-pill mp-green">
+      <div class="metric-pill-score">100</div>
+      <div class="metric-pill-info">
+        <span class="metric-pill-label">SEO</span>
+        <span class="metric-pill-sub">All devices</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key facts -->
+  <div class="card-grid" style="margin-top:24px">
+    <div class="card">
+      <h3>Project Scope</h3>
+      <ul>
+        <li><strong>Solo developer</strong> — designed, built, and deployed end-to-end</li>
+        <li><strong>Full-stack</strong> — frontend, backend, database, AI, DevOps, SEO</li>
+        <li><strong>Production</strong> — live at <a href="https://darkromancebooks.ai" style="color:var(--blue);text-decoration:none">darkromancebooks.ai</a></li>
+        <li><strong>Autonomous</strong> — self-sustaining content pipeline, zero manual ops</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Key Metrics</h3>
+      <ul>
+        <li><strong>610+ indexed pages</strong> — 550+ books, 30+ authors, 20 collections</li>
+        <li><strong>20 curated collections</strong> — keyword-targeted for SEO</li>
+        <li><strong>5 daily cron jobs</strong> — automated content enrichment</li>
+        <li><strong>7 types of JSON-LD</strong> — structured data for rich snippets (incl. aggregateRating)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Technical Highlights</h3>
+      <ul>
+        <li>3-layer caching reduces OpenAI API costs by ~95%</li>
+        <li>Multi-source data enrichment (Open Library + Google Books + Kaggle)</li>
+        <li>Star ratings, rating distributions, reader activity on every book page</li>
+        <li>Self-healing 404 pages recover from race conditions</li>
+        <li>Geo-aware affiliate links across 14 Amazon locales</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+    <h2>Core Tech Stack</h2>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <span class="tag tag-blue">Next.js 16</span>
+    <span class="tag tag-blue">React 19</span>
+    <span class="tag tag-blue">TypeScript 5</span>
+    <span class="tag tag-blue">Tailwind CSS 4</span>
+    <span class="tag tag-green">PostgreSQL</span>
+    <span class="tag tag-green">Prisma 7</span>
+    <span class="tag tag-green">Supabase</span>
+    <span class="tag tag-purple">OpenAI API</span>
+    <span class="tag tag-purple">GPT-5 Search</span>
+    <span class="tag tag-purple">GPT-4o + Web Search</span>
+    <span class="tag tag-teal">Open Library API</span>
+    <span class="tag tag-teal">Google Books API</span>
+    <span class="tag tag-teal">Kaggle Datasets</span>
+    <span class="tag tag-yellow">Vercel</span>
+    <span class="tag tag-yellow">Vercel Cron</span>
+    <span class="tag tag-red">Playwright</span>
+    <span class="tag tag-red">Vitest</span>
+    <span class="tag tag-teal">GitHub Actions</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Frontend</h3>
+      <ul>
+        <li><strong>Next.js 16.2.1</strong> — App Router with React Server Components</li>
+        <li><strong>React 19.2.4</strong> — Async params, Suspense boundaries, streaming SSR</li>
+        <li><strong>TypeScript 5</strong> — Strict mode, path aliases</li>
+        <li><strong>Tailwind CSS 4</strong> — CSS variables for theming, custom animations</li>
+        <li><strong>next/font</strong> — Self-hosted Geist font family (zero layout shift)</li>
+        <li><strong>next/image</strong> — AVIF/WebP auto-format, responsive sizes</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Backend</h3>
+      <ul>
+        <li><strong>Next.js Route Handlers</strong> — RESTful API endpoints</li>
+        <li><strong>Prisma 7</strong> + <code>@prisma/adapter-pg</code> — PostgreSQL ORM with connection pooling</li>
+        <li><strong>Supabase</strong> — Managed PostgreSQL with SSL</li>
+        <li><strong>OpenAI SDK 6.32</strong> — Chat Completions + Responses API</li>
+        <li><strong>Open Library API</strong> — Ratings, bookshelves, series info enrichment</li>
+        <li><strong>Google Books API</strong> — Descriptions, ISBNs, page counts, categories</li>
+        <li><strong>Vercel Cron Jobs</strong> — 5 scheduled tasks for content automation</li>
+        <li><strong>Edge Proxy</strong> — Geo-detection via <code>x-vercel-ip-country</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Infrastructure</h3>
+      <ul>
+        <li><strong>Vercel</strong> — Serverless deployment, CDN, ISR</li>
+        <li><strong>GitHub Actions</strong> — CI pipeline (lint → typecheck → test → E2E)</li>
+        <li><strong>IndexNow</strong> — Real-time search engine notification (Bing, Yandex, Naver)</li>
+        <li><strong>Google Analytics 4</strong> — GDPR-compliant with cookie consent</li>
+        <li><strong>Amazon Associates</strong> — Geo-aware affiliate links (14 locales)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--green-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e8e3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><path d="M9 20v-4h6v4"/></svg></div>
+    <h2>System Architecture</h2>
+  </div>
+
+  <div class="arch-flow">
+    <div class="flow-label">Request Flow — Search Query</div>
+    <div class="flow-row">
+      <div class="flow-box fb-blue">Browser</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-teal">Edge Proxy<br><small>Geo cookies</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-green">SSR Page<br><small>Server Component</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-yellow">Cache Layer<br><small>unstable_cache</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-yellow">DB Cache<br><small>SearchResultCache</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-purple">OpenAI<br><small>gpt-5-search-api</small></div>
+    </div>
+
+    <div class="flow-label" style="margin-top:24px">Synchronous — Before Response</div>
+    <div class="flow-row">
+      <div class="flow-box fb-green">saveSearchBooksToDb</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-yellow">PostgreSQL<br><small>Book table</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-teal">revalidatePath</div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box fb-red">IndexNow<br><small>Bing / Yandex</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box fb-blue">Google<br><small>Sitemap Ping</small></div>
+    </div>
+
+    <div class="flow-label" style="margin-top:24px">Data Enrichment — Per Book</div>
+    <div class="flow-row">
+      <div class="flow-box fb-teal">Open Library<br><small>ratings + shelves + series</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box fb-teal">Google Books<br><small>desc + ISBN + pages</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box fb-teal">Kaggle Reviews<br><small>Kindle + Goodreads</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-green">Book Record<br><small>14 enrichment fields</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box fb-green">BookReview Table<br><small>review excerpts</small></div>
+    </div>
+
+    <div class="flow-label" style="margin-top:24px">Daily Automation — Vercel Cron</div>
+    <div class="flow-row">
+      <div class="flow-box fb-grey">02:00 aggregate</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-grey">02:30 featured</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-grey">03:00 collections</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-grey">03:30 books + enrich</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-grey">04:00 authors</div>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--purple-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7b1fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V6a4 4 0 0 1 4-4z"/><rect x="9" y="8" width="6" height="8" rx="1"/><path d="M9 12H5"/><path d="M19 12h-4"/><path d="M10 16l-1 4"/><path d="M14 16l1 4"/></svg></div>
+    <h2>AI / LLM Integration</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Search Recommendations</h3>
+      <ul>
+        <li>Model: <code>gpt-5-search-api</code> via Chat Completions API</li>
+        <li>Built-in <strong>web search</strong> tool for real-time book data</li>
+        <li>Structured JSON output: title, author, description, tropes, rating, URL</li>
+        <li>Language detection: ASCII-only queries → English response</li>
+        <li>Auto-retry with exponential backoff (3 attempts, 5s/10s/15s)</li>
+        <li>Citation stripping: removes markdown links, <code>【】</code> brackets</li>
+        <li>Deduplication by title+author key</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Editorial Content Generation</h3>
+      <ul>
+        <li>Model: <code>gpt-4o-mini</code> with <code>web_search</code> tool</li>
+        <li>Searches real reader reviews before writing</li>
+        <li>200-250 word reviews, exactly 3 paragraphs</li>
+        <li>Graceful fallback: responds "SKIP" if book info unreliable</li>
+        <li>Batch processing with 1s delay between requests</li>
+        <li>Post-processing: <code>stripCitations()</code> preserves paragraph breaks</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Author Profile Generation</h3>
+      <ul>
+        <li>Model: <code>gpt-4o-mini</code> — optimized for structured JSON output</li>
+        <li>Generates bio, style tags, notable works, reader sentiment, related authors</li>
+        <li>Author photos fetched from <strong>Open Library API</strong> by author name search</li>
+        <li>Slug-based matching groups books by author despite name variations</li>
+        <li>Name normalization: "H. D. Carlton" → "H.D. Carlton"</li>
+        <li>Daily cron discovers new authors from book table and generates profiles</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Book Description Backfill</h3>
+      <ul>
+        <li>Model: <code>gpt-4o</code> with explicit <code>web_search</code> tool</li>
+        <li>Searches the web for each book, generates 50–80 word blurbs</li>
+        <li>Post-processing: strips preambles, citations, markdown, truncates to 3 sentences</li>
+        <li>Responds "SKIP" if reliable info unavailable — avoids hallucinated descriptions</li>
+        <li>One-time batch script + ongoing cron enrichment for new books</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Two API Call Paths</h3>
+      <ul>
+        <li><strong>Chat Completions API</strong> — for <code>*-search-api</code> and <code>*-search-preview</code> models</li>
+        <li><strong>Responses API</strong> — for <code>gpt-4o-mini</code> / <code>gpt-4o</code> with explicit <code>web_search</code> tool</li>
+        <li>Unified <code>RawSearchResponse</code> interface normalizes both formats</li>
+        <li>Runtime model detection: <code>isChatSearchModel()</code> switches path</li>
+        <li>Configurable via <code>OPENAI_MODEL</code> env variable</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00897b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+    <h2>Multi-Source Data Enrichment</h2>
+  </div>
+
+  <p style="margin-bottom:24px;color:var(--grey-700);font-size:15px;max-width:720px">
+    Books are enriched with structured data from three external sources — Open Library, Google Books, and Kaggle datasets — giving each book page rich metadata, real reader ratings, and review excerpts without relying on any single API.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Open Library API</h3>
+      <ul>
+        <li><strong>Ratings</strong> — Average score, total count, 1–5 star distribution</li>
+        <li><strong>Bookshelves</strong> — Want-to-read, currently-reading, already-read counts</li>
+        <li><strong>Series info</strong> — Series name and position (e.g. "#2 in The Mindf*ck Series")</li>
+        <li><strong>Work keys</strong> — Stable identifiers for cross-referencing editions</li>
+        <li><strong>ISBN resolution</strong> — ISBN-13 for structured data and affiliate links</li>
+        <li>Title cleaning pipeline strips parenthetical series info for better API matching</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Google Books API</h3>
+      <ul>
+        <li><strong>Descriptions</strong> — Publisher blurbs as fallback for AI-generated content</li>
+        <li><strong>Ratings</strong> — Average rating and ratings count (cross-validated with OL)</li>
+        <li><strong>Page counts</strong> — For reader activity display</li>
+        <li><strong>Categories</strong> — Genre tags for filtering and SEO</li>
+        <li><strong>Published dates</strong> — Original publication year</li>
+        <li><strong>ISBNs</strong> — ISBN-10 and ISBN-13 extraction from industry identifiers</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Kaggle Datasets</h3>
+      <ul>
+        <li><strong>Kindle metadata</strong> — <code>kindle_data-v2.csv</code> (36MB): ASIN, Kindle price, star distribution, review counts</li>
+        <li><strong>Goodreads reviews</strong> — <code>scraped.csv</code>: Romance-specific review text and scores</li>
+        <li>Title + author fuzzy matching against existing book database</li>
+        <li>Batch import with duplicate detection via composite keys</li>
+        <li>Stored in dedicated <code>BookReview</code> table with source tracking</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Enrichment Pipeline</h3>
+      <ul>
+        <li><strong>Batch script</strong> — <code>enrich-books.ts</code> processes all books with OL + Google Books APIs</li>
+        <li><strong>Import script</strong> — <code>import-kaggle-reviews.ts</code> loads CSV review data</li>
+        <li><strong>Auto-enrichment</strong> — Cron job enriches new books on each daily sync</li>
+        <li><strong>Rate limiting</strong> — 1s delays between API calls to respect external limits</li>
+        <li><strong>Incremental</strong> — Tracks <code>enrichedAt</code> timestamp, skips already-enriched books</li>
+        <li><strong>14 new fields</strong> on Book model + full BookReview table</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <span class="tag tag-teal">Open Library API</span>
+    <span class="tag tag-teal">Google Books API</span>
+    <span class="tag tag-teal">Kaggle Datasets</span>
+    <span class="tag tag-blue">Batch Processing</span>
+    <span class="tag tag-green">Auto-Enrichment via Cron</span>
+  </div>
+</section>
+
+<section id="caching">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--yellow-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e37400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <h2>Multi-Layer Caching Strategy</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Search Results — 3 Layers</h3>
+      <table class="info-table">
+        <tr><th>Layer</th><th>TTL</th><th>Technology</th></tr>
+        <tr><td>L1 — In-Process</td><td>1 hour</td><td>Next.js <code>unstable_cache</code></td></tr>
+        <tr><td>L2 — Database</td><td>7 days</td><td>PostgreSQL <code>SearchResultCache</code> (JSON)</td></tr>
+        <tr><td>L3 — Origin</td><td>—</td><td>OpenAI API (cache miss)</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px">Cache versioning via <code>SEARCH_CACHE_VERSION</code> for instant invalidation on model/prompt changes.</p>
+    </div>
+    <div class="card">
+      <h3>Book Covers — 3 Layers</h3>
+      <table class="info-table">
+        <tr><th>Layer</th><th>TTL</th><th>Technology</th></tr>
+        <tr><td>L1 — Memory</td><td>1 hour</td><td>In-memory Map (500 entries max)</td></tr>
+        <tr><td>L2 — Database</td><td>30 days</td><td>PostgreSQL <code>BookCoverCache</code></td></tr>
+        <tr><td>L3 — External</td><td>—</td><td>Open Library → Google Books API</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px">Batch endpoint with concurrency limit of 3. CDN cache: 1 day + 7 day stale-while-revalidate.</p>
+    </div>
+    <div class="card">
+      <h3>Page-Level Caching</h3>
+      <ul>
+        <li><strong>ISR</strong> — Book pages: <code>revalidate = 60s</code>, Author pages: <code>revalidate = 300s</code></li>
+        <li><strong>generateStaticParams</strong> — Collection pages pre-rendered at build</li>
+        <li><strong>On-demand revalidation</strong> — <code>revalidatePath()</code> on new book creation (triggers both book and author pages)</li>
+        <li><strong>Self-healing 404s</strong> — Book page checks <code>SearchResultCache</code> and auto-creates missing DB entries</li>
+        <li><strong>Manual purge API</strong> — <code>/api/revalidate?secret=...&path=...</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="seo">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--teal-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00897b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    <h2>SEO Strategy</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Technical SEO</h3>
+      <ul>
+        <li>Dynamic <code>sitemap.ts</code> — 610+ URLs (books, authors, collections, trending searches)</li>
+        <li><code>robots.ts</code> — Allow all, block <code>/api/</code></li>
+        <li>Canonical URLs on every page</li>
+        <li><strong>IndexNow</strong> — Instant search engine notification on content changes</li>
+        <li><code>dns-prefetch</code> for external image hosts</li>
+        <li><code>browserslist</code> — Targets modern browsers, eliminates polyfills</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Structured Data (JSON-LD)</h3>
+      <ul>
+        <li><strong>WebSite</strong> + <strong>SearchAction</strong> — Sitelinks search box in Google</li>
+        <li><strong>Book</strong> schema — Title, author, ISBN, page count, aggregateRating, cover image, Goodreads sameAs</li>
+        <li><strong>BreadcrumbList</strong> — On book and collection pages</li>
+        <li><strong>ItemList</strong> — On collection and search results pages</li>
+        <li><strong>CollectionPage</strong> — With aggregate book count metadata</li>
+        <li><strong>Person</strong> — Author profiles with name, bio, image, sameAs links</li>
+        <li><strong>FAQPage</strong> — Auto-generated Q&As on each collection (eligible for rich snippets)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Content & On-Page SEO</h3>
+      <ul>
+        <li><strong>20 keyword-targeted collections</strong> — "enemies to lovers", "mafia romance", etc.</li>
+        <li><strong>30+ author profile pages</strong> — AI bios, style tags, reader sentiment, notable works</li>
+        <li><strong>AI-generated editorial reviews</strong> — Unique 250-word content per book</li>
+        <li><strong>Dynamic meta tags</strong> — Title, description, OG, Twitter per page</li>
+        <li><strong>Internal linking</strong> — Similar books, related collections, author pages, trope search links</li>
+        <li><strong>Collection content depth</strong> — Top picks, common tropes, FAQ section per collection</li>
+        <li><strong>Pre-rendered trending search pages</strong> from user query analytics</li>
+        <li><strong>Auto-growing collections</strong> — Trend detection from search logs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Search Engine Submission</h3>
+      <ul>
+        <li><strong>Google Search Console</strong> — Sitemap submitted, manual URL indexing</li>
+        <li><strong>Bing Webmaster Tools</strong> — Site verified, sitemap submitted</li>
+        <li><strong>IndexNow Protocol</strong> — Auto-pushes new URLs to Bing, Yandex, Naver simultaneously</li>
+        <li><strong>Google Sitemap Ping</strong> — Notifies Google to re-crawl sitemap on content changes</li>
+        <li>Sitemap includes top 50 search queries from last 7 days (from analytics)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="database">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--green-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e8e3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+    <h2>Database Design</h2>
+  </div>
+
+  <table class="info-table">
+    <tr><th>Model</th><th>Purpose</th><th>Key Features</th></tr>
+    <tr><td>Book</td><td>Core book entity</td><td>Unique slug + title/author composite key, editorial, tropes (JSON), similar books, cover URL, source queries, enrichment fields (averageRating, ratingsCount, ratingDistribution, series info, page count, categories, ISBN, reader activity counts)</td></tr>
+    <tr><td>Author</td><td>Author profiles</td><td>Unique slug + name, AI-generated bio/style tags/reader sentiment, photo URL (Open Library), notable works, related authors, SEO meta</td></tr>
+    <tr><td>Collection</td><td>Curated book lists</td><td>SEO meta fields, JSON books array, related collections, AI-generated introduction</td></tr>
+    <tr><td>FeaturedBook</td><td>Homepage highlights</td><td>Categorized (classic, trending, new, spicy), cover URL, Amazon ASIN</td></tr>
+    <tr><td>SearchResultCache</td><td>AI response cache</td><td>JSON payload with version key, hit counter, 7-day TTL</td></tr>
+    <tr><td>BookCoverCache</td><td>Image URL cache</td><td>Lookup key → cover URL, 30-day TTL, reduces Google Books API calls</td></tr>
+    <tr><td>SearchLog</td><td>User analytics</td><td>IP, user agent, country, result count (pruned after 30 days)</td></tr>
+    <tr><td>BookReview</td><td>Imported reader reviews</td><td>Title/author match, review score (1–5), review text, source tracking (kaggle-amazon, kaggle-goodreads), reviewer name, helpfulness</td></tr>
+    <tr><td>DailySearchStat</td><td>Aggregated metrics</td><td>Query frequency, unique IPs, trending detection for auto-collections</td></tr>
+  </table>
+
+  <div style="margin-top:16px">
+    <span class="tag tag-green">Prisma 7 ORM</span>
+    <span class="tag tag-green">pg adapter</span>
+    <span class="tag tag-green">Connection pooling (max 3)</span>
+    <span class="tag tag-green">SSL/TLS</span>
+    <span class="tag tag-green">Lazy singleton via globalThis + Proxy</span>
+  </div>
+</section>
+
+<section id="performance">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--red-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d93025" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+    <h2>Performance Optimizations</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Image Optimization</h3>
+      <ul>
+        <li>Auto AVIF/WebP format negotiation</li>
+        <li><code>quality={80}</code> — optimized for display size (saves ~66 KiB vs 90, no visible difference at thumbnail size)</li>
+        <li>Tightened <code>sizes</code> attribute to match actual CSS grid widths per breakpoint</li>
+        <li><code>priority</code> flag on LCP images (hero book covers)</li>
+        <li>Gradient placeholders while covers load</li>
+        <li>Unified cover source: Book DB → BookCoverCache → Open Library → Google Books</li>
+        <li>Open Library + Google Books also serve enrichment data (ratings, page count, series)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Network & Loading</h3>
+      <ul>
+        <li><code>dns-prefetch</code> for external image hosts (removed unused <code>preconnect</code> — images go through <code>/_next/image</code> proxy)</li>
+        <li>Font self-hosting via <code>next/font</code> (zero external requests)</li>
+        <li>Google Analytics deferred until first user interaction (scroll/click/touch) — zero impact on initial page load</li>
+        <li>Suspense boundaries with skeleton UI for search results</li>
+        <li>Streaming SSR for progressive page rendering</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>API Efficiency</h3>
+      <ul>
+        <li>Batch cover endpoint: single POST for up to 20 books</li>
+        <li>Concurrency limit (3) prevents Google Books API throttling</li>
+        <li>CDN cache headers: <code>s-maxage=86400, stale-while-revalidate=604800</code></li>
+        <li>In-memory rate limiting: 20 req/min per IP</li>
+        <li>Connection timeout: 5s prevents hanging DB connections</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="testing">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v5.586a1 1 0 0 1-.293.707L12 12l-2.707-2.707A1 1 0 0 1 9 8.586V3z"/><path d="M6 21h12"/><path d="M12 12v5"/><path d="M8 21l4-4 4 4"/></svg></div>
+    <h2>Testing Strategy</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Unit & Integration Tests — Vitest</h3>
+      <ul>
+        <li><strong>Vitest 3.2</strong> with <code>@vitejs/plugin-react</code></li>
+        <li>v8 coverage provider with thresholds</li>
+        <li>Tests: OpenAI parsing, Amazon links, book slug generation, cache logic, rate limiting, URL sanitization, collection seeds, Google Books, cron job logic</li>
+        <li>Mocked external APIs (OpenAI, Google Books, Prisma)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>End-to-End Tests — Playwright</h3>
+      <ul>
+        <li><strong>Playwright 1.58</strong> with Chromium</li>
+        <li>SEO tests: meta tags, canonical URLs, OG tags, JSON-LD, robots.txt</li>
+        <li>Functional: homepage, search flow, book detail, collections, mobile layout</li>
+        <li>API mocking via <code>page.route()</code> for deterministic results</li>
+        <li>Full build + start server for production-like testing</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>CI Pipeline — GitHub Actions</h3>
+      <ul>
+        <li><strong>PR checks</strong>: lint → typecheck → vitest (parallel)</li>
+        <li><strong>Push to main</strong>: + Playwright E2E with artifact upload on failure</li>
+        <li>Node 20, <code>npm ci --ignore-scripts</code> + explicit <code>prisma generate</code></li>
+        <li>Placeholder env vars for CI (DB timeout prevents hangs)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="devops">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--yellow-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e37400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    <h2>DevOps & Deployment</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Vercel Platform</h3>
+      <ul>
+        <li>Automatic deployments from <code>main</code> branch</li>
+        <li>Serverless Functions for API routes</li>
+        <li>Edge Network for static assets + ISR pages</li>
+        <li>Environment variables for secrets management</li>
+        <li>Geo-detection via <code>x-vercel-ip-country</code> header</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Scheduled Tasks</h3>
+      <table class="info-table">
+        <tr><th>Time (UTC)</th><th>Job</th><th>Purpose</th></tr>
+        <tr><td>02:00</td><td>aggregate</td><td>Compile search stats, prune old logs, detect trends</td></tr>
+        <tr><td>02:30</td><td>featured</td><td>Refresh homepage featured books by category</td></tr>
+        <tr><td>03:00</td><td>collections</td><td>Update all collections with fresh book recommendations</td></tr>
+        <tr><td>03:30</td><td>books</td><td>Populate book DB, resolve covers, compute similar books, generate editorials, enrich with Open Library + Google Books data</td></tr>
+        <tr><td>04:00</td><td>authors</td><td>Discover authors from book data, generate AI bios/tags/sentiment, fetch photos from Open Library</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="challenges">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--yellow-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e37400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+    <h2>Challenges & Technical Decisions</h2>
+  </div>
+
+  <p style="margin-bottom:24px;color:var(--grey-700);font-size:15px;max-width:720px">
+    Real engineering problems I encountered during development, and how I solved them.
+  </p>
+
+  <div class="card-grid">
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Persistent 404s on New Book Pages</h3>
+      <p>Users searched for a book, clicked the result, and got a 404. The book hadn't been saved to the DB yet because <code>saveSearchBooksToDb</code> ran in an <code>after()</code> callback — asynchronous and non-blocking.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Moved book saving to be <strong>synchronous before the response</strong>. Added a self-healing fallback: if a book isn't in the DB, the page checks <code>SearchResultCache</code> and creates the entry on-the-fly. Reduced ISR revalidation from 24h to 60s to prevent stale 404 caching.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>404 rate dropped to effectively zero. Book pages available instantly after search.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Google Books API Quota Exhaustion</h3>
+      <p>Each search triggered ~100 Google Books API calls for cover images, burning through the 1,000/day free quota in minutes during testing.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Built a <strong>3-layer cover cache</strong>: in-memory Map (500 entries, 1h TTL) → PostgreSQL <code>BookCoverCache</code> (30d TTL) → API fallback. Added Open Library as the primary source before Google Books. Batch endpoint with concurrency limit of 3.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>API calls reduced from ~100/search to ~3/search (97% reduction). Quota no longer an issue.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>AI-Hallucinated Book URLs</h3>
+      <p>GPT-5 returned Goodreads and Amazon URLs that looked real but were fabricated. Users clicked them and got "page not found" errors on external sites.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Never trust AI-generated URLs. All Goodreads links are now <strong>constructed as search queries</strong> (<code>goodreads.com/search?q=...</code>). Amazon links use a <strong>deterministic URL builder</strong> with the affiliate tag.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>100% link reliability. Every external link reaches a valid page.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>SSR Search Path Missing Book Saves</h3>
+      <p>The server-rendered search page (<code>/search?q=...</code>) used a direct function call that bypassed the API route. Books were only saved via the <code>/api/search</code> route, so SSR searches created no DB entries.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Extracted <code>saveSearchBooksToDb</code> into a <strong>shared module</strong> (<code>lib/save-search-books.ts</code>) and integrated it into both the API route and the SSR fetch path. Both now save books synchronously before returning results.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>Unified data pipeline. Books are saved regardless of how the user reaches the search results.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Choosing Between Sync vs Async Saves</h3>
+      <p><strong>Trade-off</strong>: Saving books inside <code>after()</code> is faster (response returns immediately) but causes 404s. Synchronous saving adds ~200ms latency but guarantees pages exist when clicked.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Decision</span>
+      <p>Chose <strong>synchronous saves</strong> for book data (critical path — user will click these links) and <strong>async <code>after()</code></strong> for search logging (non-critical — analytics can be delayed). This balances UX reliability with response speed.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>+200ms search latency, but zero 404s and zero race conditions on book pages.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Dual OpenAI API Path Complexity</h3>
+      <p>Different OpenAI models use different APIs: <code>*-search-api</code> uses Chat Completions, while <code>gpt-4o-mini</code> uses Responses API with explicit <code>web_search</code> tool. Switching models broke the parsing logic.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Built a <strong>model detection function</strong> (<code>isChatSearchModel()</code>) that switches API path at runtime. Both paths normalize to a unified <code>RawSearchResponse</code> interface. Model is configurable via a single env variable.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>Hot-swappable AI models with zero code changes. Just update <code>OPENAI_MODEL</code> env var.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Author Name Collisions & Dirty Data</h3>
+      <p>The same author appeared with multiple name formats — "H.D. Carlton" vs "H. D. Carlton", "CJ Roberts" vs "C.J. Roberts". Scraped data included artifacts like "Black Rose, da Knight". Book-author associations broke across name variants.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Built a <strong>name normalization pipeline</strong>: <code>normalizeAuthorName()</code> standardizes initials and whitespace on write. Switched all book-author queries to <strong>slug-based matching</strong> (<code>generateAuthorSlug()</code>) so "H.D. Carlton" and "H. D. Carlton" resolve to the same <code>hd-carlton</code> slug. Ran a one-time cleanup to merge ~19 duplicate book pairs and normalize 300+ author names in-place.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>Consistent author profiles. All name variants correctly associated with the right books and author pages.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Open Library Title Matching Failures</h3>
+      <p>Open Library search returned "not found" for ~60% of books. Titles in our database included parenthetical series information like "Legendborn (The Legendborn Cycle, #1)" which caused API queries to fail.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Built a <strong>title cleaning pipeline</strong> (<code>cleanBookTitle()</code>) that strips parenthetical series info, edition markers, and subtitle noise before API calls. Applied the same normalization in both the batch enrichment script and the Open Library client library.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>Match rate improved from ~40% to ~85%. Books with clean titles now reliably return ratings, bookshelves, and series data from Open Library.</p>
+    </div>
+
+    <div class="challenge-card">
+      <span class="challenge-label cl-problem">Problem</span>
+      <h3>Database Connection Pool Exhaustion</h3>
+      <p>Batch operations (author cron processing 30+ authors, description backfill script) exceeded the Supabase connection pool limit (<code>MaxClientsInSessionMode</code>), causing 500 errors across the live site.</p>
+      <span class="challenge-label cl-solution" style="margin-top:12px">Solution</span>
+      <p>Switched batch processing to <strong>sequential single-slug execution</strong> with explicit connection cleanup. Added rate limiting between API calls (1–4s delays). Set <code>connection_limit=3</code> in the Prisma pg adapter to stay within PgBouncer limits.</p>
+      <span class="challenge-label cl-result" style="margin-top:12px">Result</span>
+      <p>Stable connection usage during batch operations. No more pool exhaustion affecting production traffic.</p>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--red-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d93025" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <h2>Security & Compliance</h2>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>API Security</h3>
+      <ul>
+        <li>Bearer token authentication for all cron endpoints</li>
+        <li>Secret-based auth for on-demand revalidation API</li>
+        <li>In-memory IP rate limiting (20/min per IP, 60/min unknown)</li>
+        <li>Input validation: query length limits (500 chars), batch size limits (20)</li>
+        <li>URL sanitization: only http/https protocols accepted</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Privacy & Compliance</h3>
+      <ul>
+        <li><strong>GDPR cookie banner</strong> for EEA/UK users</li>
+        <li>GA4 deferred until explicit user consent</li>
+        <li>Geo-detection via edge proxy sets <code>geo-eea</code> cookie</li>
+        <li><code>localStorage</code> consent flag: <code>cookieConsent</code></li>
+        <li>Search logs pruned after 30 days</li>
+        <li>External links: <code>rel="noopener noreferrer"</code></li>
+        <li>Affiliate links: <code>rel="nofollow"</code> on Amazon</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="flywheel">
+  <div class="section-header">
+    <div class="section-icon" style="background:var(--blue-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"/><polyline points="21 3 21 9 15 9"/></svg></div>
+    <h2>Content Growth Flywheel</h2>
+  </div>
+
+  <p style="margin-bottom:24px;color:var(--grey-700);font-size:15px;max-width:720px">
+    The platform is designed as a self-reinforcing growth loop. Every user search generates new indexable pages, which attract more organic traffic, which drives more searches — creating a compounding content flywheel with zero manual intervention.
+  </p>
+
+  <!-- Horizontal flow: the loop visualized as a pipeline -->
+  <div class="arch-flow" style="margin-bottom:28px">
+    <div class="flow-label">Self-Reinforcing Growth Loop</div>
+    <div class="flow-row">
+      <div class="flow-box fb-blue">User Search<br><small>GPT-5 query</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-green">~10 Book Pages<br><small>saved to DB</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-yellow">Sitemap + IndexNow<br><small>notify engines</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-red">Google Indexes<br><small>long-tail keywords</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box fb-purple">Organic Traffic<br><small>new searches</small></div>
+      <div class="flow-arrow">↩</div>
+    </div>
+    <div class="flow-label" style="margin-top:20px">Daily Enrichment (Parallel)</div>
+    <div class="flow-row">
+      <div class="flow-box fb-grey">AI Editorial Reviews</div>
+      <div class="flow-box fb-grey">Book Covers</div>
+      <div class="flow-box fb-grey">Similar Books</div>
+      <div class="flow-box fb-grey">Collection Updates</div>
+      <div class="flow-box fb-grey">Author Profiles</div>
+      <div class="flow-box fb-grey">Trending Detection</div>
+    </div>
+  </div>
+
+  <!-- Compound growth metrics -->
+  <div class="card-grid" style="margin-top:32px">
+    <div class="card">
+      <h3>Real-Time Pipeline</h3>
+      <ul>
+        <li>Each search creates ~10 new book pages</li>
+        <li>Sitemap updates instantly (<code>force-dynamic</code>)</li>
+        <li>IndexNow + Google Ping within seconds</li>
+        <li><code>revalidatePath()</code> ensures CDN serves fresh pages</li>
+        <li>Self-healing 404s recover from race conditions</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Daily Enrichment (Cron)</h3>
+      <ul>
+        <li>AI editorial reviews for un-reviewed books</li>
+        <li>Book covers resolved from Open Library / Google Books</li>
+        <li><strong>Data enrichment</strong> — ratings, bookshelves, series info from Open Library + Google Books</li>
+        <li>Similar books computed by trope overlap</li>
+        <li>Author profiles generated with AI bios, style tags, sentiment</li>
+        <li>Collections refreshed with 30% new recommendations</li>
+        <li>Trending queries detected and added to sitemap</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Compounding SEO Effects</h3>
+      <ul>
+        <li><strong>Internal link density</strong> grows with every book added</li>
+        <li><strong>Domain authority</strong> increases with more indexed pages</li>
+        <li><strong>Long-tail coverage</strong> expands across tropes, authors, titles</li>
+        <li><strong>Content freshness</strong> signals from daily cron updates</li>
+        <li><strong>Zero manual intervention</strong> — fully autonomous growth</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Built with Next.js 16 · React 19 · OpenAI · Vercel — <a href="https://darkromancebooks.ai" target="_blank">darkromancebooks.ai</a></p>
+  <p style="margin-top:8px">Technical architecture document for reference</p>
+</footer>
+
+</body>
+</html>
