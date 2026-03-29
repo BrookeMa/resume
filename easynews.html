@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyNews — iOS News Reader with TDD</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --purple: #7b1fa2;
+  --purple-light: #f3e8fd;
+  --teal: #00897b;
+  --teal-light: #e0f2f1;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --bg: #ffffff;
+  --bg-gray: #f8f9fa;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'Google Sans Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.nav-title {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-title .dot { color: var(--blue); }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
+}
+.nav-links a:hover { background: var(--bg-gray); text-decoration: none; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+.hero { padding: 64px 0 48px; }
+.hero h1 {
+  font-size: 36px; font-weight: 600; letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.2;
+}
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 640px; margin-bottom: 24px; }
+.hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.chip:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.chip-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip-blue:hover { background: #1765cc; border-color: #1765cc; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin: 48px 0;
+}
+.stat-item {
+  background: var(--bg);
+  padding: 24px 16px; text-align: center;
+}
+.stat-num {
+  font-size: 28px; font-weight: 600; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px; font-weight: 500; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
+}
+
+section { padding: 48px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
+}
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.section-header h2 { font-size: 22px; font-weight: 600; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.1); }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+.card code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--blue-light); color: var(--blue);
+  padding: 1px 5px; border-radius: 3px;
+}
+
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px;
+}
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-yellow { background: var(--yellow-light); color: #b06000; }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+
+.detail-list { list-style: none; }
+.detail-list li {
+  font-size: 14px; color: var(--text-secondary);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+}
+.detail-list li:last-child { border-bottom: none; }
+.detail-list strong { color: var(--text); font-weight: 500; }
+.detail-list code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg-gray); padding: 1px 6px; border-radius: 3px;
+}
+
+.flow-box {
+  background: var(--bg-gray);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px;
+  font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.9; overflow-x: auto; white-space: pre;
+  color: var(--text-secondary);
+}
+.flow-box .b { color: var(--blue); font-weight: 500; }
+.flow-box .g { color: var(--green); font-weight: 500; }
+.flow-box .r { color: var(--red); font-weight: 500; }
+.flow-box .y { color: #b06000; font-weight: 500; }
+.flow-box .p { color: var(--purple); font-weight: 500; }
+
+.clean-table { width: 100%; border-collapse: collapse; }
+.clean-table th {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-secondary);
+  text-align: left; padding: 10px 16px;
+  border-bottom: 2px solid var(--border);
+}
+.clean-table td {
+  font-size: 14px; padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.clean-table .label { font-weight: 500; white-space: nowrap; width: 140px; }
+.clean-table .value { color: var(--text-secondary); }
+.clean-table .value strong { color: var(--text); font-weight: 500; }
+
+.test-matrix { width: 100%; border-collapse: collapse; font-size: 13px; }
+.test-matrix th {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-secondary);
+  text-align: center; padding: 10px 12px;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg-gray);
+}
+.test-matrix td {
+  text-align: center; padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text-secondary);
+}
+.test-matrix tr:hover { background: var(--bg-gray); }
+
+footer {
+  text-align: center; padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 28px; }
+}
+@media (max-width: 480px) {
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">Easy<span class="dot">.</span>News</div>
+    <div class="nav-links">
+      <a href="resume.html">Resume</a>
+      <a href="index.html">Portfolio</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>iOS News Reader with TDD</h1>
+    <p>A modular iOS news reader built with Test-Driven Development principles, following clean architecture patterns. Features a local Swift framework for the feature layer, MVVM presentation, protocol-oriented design, and comprehensive test coverage.</p>
+    <div class="hero-links">
+      <a href="https://github.com/BrookeMa/EasyNews" target="_blank" class="chip chip-blue">GitHub Repository</a>
+      <a href="index.html#projects" class="chip">All Projects</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">TDD</div>
+      <div class="stat-label">Methodology</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">MVVM</div>
+      <div class="stat-label">Architecture</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Network Tests</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Localizations</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>Module Architecture</h2>
+    </div>
+    <div class="flow-box"><span class="b">EasyNews</span> (App Layer)
+│
+├── <span class="g">Top Headline UI/</span>
+│   ├── Controllers/     → <span class="g">UICollectionView</span> + prefetching
+│   ├── Composers/       → Dependency injection (Composition Root)
+│   ├── Presentation/    → ViewModels + localized strings (en / zh-Hans)
+│   └── Views/           → Custom cells (XIB) + header
+│
+├── <span class="y">WebView UI/</span>          → <span class="y">WKWebView</span> article reader
+│
+└── <span class="r">Shared Helpers/</span>      → Date formatting, collection view extensions
+
+<span class="p">EasyNewsFeature</span> (Framework — zero UIKit imports)
+│
+├── Article Feature/     → Domain model (<span class="p">Article</span>, <span class="p">ArticleLoader</span> protocol)
+├── Article API/         → <span class="b">RemoteArticleLoader</span>, <span class="b">RemoteImageDataLoader</span>
+├── Article Cache/       → <span class="r">Core Data</span> store, <span class="r">LocalArticlesLoader</span>
+└── Shared API/          → <span class="g">HTTPClient</span> protocol, <span class="g">URLSessionHTTPClient</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Features</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Top Headlines <span class="tag tag-blue">UI</span></h3>
+        <p>Grid-based news feed powered by the <a href="https://mediastack.com" target="_blank">Mediastack API</a>. Uses <code>UICollectionView</code> with image prefetching and pull-to-refresh.</p>
+      </div>
+      <div class="card">
+        <h3>Article Reader <span class="tag tag-green">WebKit</span></h3>
+        <p>Full-article reader using <code>WKWebView</code> for in-app browsing. Opens article URLs without leaving the app context.</p>
+      </div>
+      <div class="card">
+        <h3>Image Loading <span class="tag tag-yellow">Async</span></h3>
+        <p>Cell-level image lifecycle management with <code>RemoteImageDataLoader</code>. Cancels in-flight requests on cell reuse for optimal memory usage.</p>
+      </div>
+      <div class="card">
+        <h3>Offline Cache <span class="tag tag-red">Core Data</span></h3>
+        <p>Framework-level article caching via <code>CoreDataArticleStore</code> and <code>LocalArticlesLoader</code> with schema migration support.</p>
+      </div>
+      <div class="card">
+        <h3>Localization <span class="tag tag-purple">i18n</span></h3>
+        <p>English and Simplified Chinese support with <code>.strings</code> files and a typed <code>Localized</code> helper for compile-time safety.</p>
+      </div>
+      <div class="card">
+        <h3>CI Scheme <span class="tag tag-teal">Quality</span></h3>
+        <p>Dedicated <code>CI.xcscheme</code> with code coverage enabled for automated testing in continuous integration pipelines.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- DESIGN DECISIONS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple-light);color:var(--purple);">&#9873;</div>
+      <h2>Key Design Decisions</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>Protocol-based Abstractions</strong> — <code>HTTPClient</code>, <code>ArticleLoader</code>, and <code>ArticleStore</code> are all protocols, enabling test doubles, decorator patterns, and flexible composition.</li>
+      <li><strong>Composition Root</strong> — All dependency wiring happens in <code>SceneDelegate</code> via <code>TopHeadlineUIComposer</code>, keeping view controllers free of infrastructure concerns.</li>
+      <li><strong>MainQueueDispatchDecorator</strong> — Wraps loaders to guarantee UI updates dispatch to the main thread, without polluting business logic with <code>DispatchQueue.main</code> calls.</li>
+      <li><strong>Framework Separation</strong> — <code>EasyNewsFeature</code> has zero UIKit imports, enforcing a platform-agnostic domain and networking layer that could be reused across iOS, macOS, or watchOS.</li>
+      <li><strong>Cell Controller Pattern</strong> — Each cell type has its own controller (<code>TopHeadlineCellController</code>, <code>TopHeadlineImageCellController</code>) managing its own lifecycle, image loading, and cancellation.</li>
+      <li><strong>URLProtocol Stubbing</strong> — Network tests use <code>URLProtocolStub</code> to intercept requests at the URL loading system level, testing real <code>URLSession</code> behavior without hitting the network.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TDD TEST MATRIX -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--red-light);color:var(--red);">&#9654;</div>
+      <h2>TDD — Network Test Matrix</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">All edge cases for the HTTP client are exhaustively tested, covering every combination of Data, URLResponse, and Error:</p>
+    <table class="test-matrix">
+      <thead>
+        <tr><th>Data</th><th>URLResponse</th><th>Error</th><th>State</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>nil</td><td>nil</td><td>nil</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>URLResponse</td><td>nil</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>HTTPURLResponse</td><td>nil</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>value</td><td>nil</td><td>nil</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>value</td><td>nil</td><td>value</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>URLResponse</td><td>value</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>HTTPURLResponse</td><td>value</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>value</td><td>URLResponse</td><td>value</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>value</td><td>HTTPURLResponse</td><td>value</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>value</td><td>URLResponse</td><td>nil</td><td>invalid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>HTTPURLResponse</td><td>nil</td><td>valid</td><td>✅</td></tr>
+        <tr><td>nil</td><td>nil</td><td>value</td><td>valid</td><td>✅</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--teal-light);color:var(--teal);">&#9678;</div>
+      <h2>Tech Stack</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>Layer</th><th>Technologies</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Language</td><td class="value"><strong>Swift 5</strong>, iOS 16.2+</td></tr>
+        <tr><td class="label">UI</td><td class="value"><strong>UIKit</strong>, Storyboard, XIB, <strong>UICollectionView</strong> with prefetching</td></tr>
+        <tr><td class="label">Networking</td><td class="value"><strong>URLSession</strong> with custom <code>HTTPClient</code> protocol abstraction</td></tr>
+        <tr><td class="label">Persistence</td><td class="value"><strong>Core Data</strong> with <code>NSPersistentContainer</code> and schema migrations</td></tr>
+        <tr><td class="label">Web Content</td><td class="value"><strong>WebKit</strong> (<code>WKWebView</code>) for article reading</td></tr>
+        <tr><td class="label">Architecture</td><td class="value"><strong>MVVM</strong> + Composition Root, protocol-oriented design</td></tr>
+        <tr><td class="label">Testing</td><td class="value"><strong>XCTest</strong>, URLProtocol stubbing, integration tests, UI tests</td></tr>
+        <tr><td class="label">API</td><td class="value"><a href="https://mediastack.com" target="_blank"><strong>Mediastack</strong></a> (live news data)</td></tr>
+        <tr><td class="label">CI</td><td class="value">Xcode scheme with <strong>code coverage</strong> enabled</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+  <a href="index.html">Portfolio</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa/EasyNews" target="_blank">EasyNews Repo</a>
+  <p style="margin-top:8px;">&copy; 2026 Ye Ma</p>
+</footer>
+
+</body>
+</html>
