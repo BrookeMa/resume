@@ -35,13 +35,13 @@
   }
 
   header {
-    padding: 48px 56px 40px;
+    padding: 36px 56px 28px;
     border-bottom: 2px solid var(--color-text);
   }
 
   header h1 {
     font-family: 'IBM Plex Serif', serif;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 600;
     letter-spacing: -0.5px;
     margin-bottom: 4px;
@@ -74,9 +74,9 @@
     border-color: var(--color-accent);
   }
 
-  .content { padding: 0 56px 48px; }
+  .content { padding: 0 56px 32px; }
 
-  section { padding-top: 32px; }
+  section { padding-top: 24px; }
 
   section h2 {
     font-family: 'IBM Plex Serif', serif;
@@ -90,7 +90,7 @@
     margin-bottom: 20px;
   }
 
-  .entry { margin-bottom: 22px; }
+  .entry { margin-bottom: 16px; }
 
   .entry-header {
     display: flex;
@@ -180,9 +180,21 @@
   }
 
   @media print {
-    body { background: #fff; }
-    .page { margin: 0; box-shadow: none; max-width: 100%; }
-    header, .content { padding-left: 40px; padding-right: 40px; }
+    body { background: #fff; margin: 0; }
+    .page { margin: 0; box-shadow: none; max-width: 100%; border-radius: 0; }
+    header { padding: 28px 40px 24px; }
+    header h1 { font-size: 30px; }
+    .content { padding: 0 40px 24px; }
+    section { padding-top: 20px; }
+    section h2 { margin-bottom: 14px; padding-bottom: 6px; }
+    .entry { margin-bottom: 14px; }
+    ul li { margin-bottom: 2px; }
+    .skills-grid { gap: 4px 16px; }
+    .about-list li { padding: 2px 0 2px 16px; }
+    .entry-subtitle a, .entry-date a { color: var(--color-accent); }
+    a[href]::after { content: none; }
+    .entry { break-inside: avoid; }
+    section { break-inside: avoid; }
   }
 
   @media (max-width: 640px) {
@@ -214,7 +226,7 @@
     <section>
       <h2>Summary</h2>
       <p style="font-size:13.5px;color:#333;line-height:1.65;">
-        A lifelong learner who thrives on building things from the ground up. Started in native iOS, moved into big data at Ctrip, earned an MSc in AI in the UK, and now work across the full stack with React, Next.js, and Node.js. I enjoy exploring new technologies, turning ideas into real products, and continuously pushing the boundaries of what I can create.
+        Lifelong learner. Began with native iOS development, moved onto full-stack web, and earned an MSc in AI in the UK. Built products spanning games, interactive fiction, and e-commerce (Amazon storefront). Embraces AI-augmented development for faster shipping and smarter problem-solving &mdash; continuously pushing creative boundaries.
       </p>
     </section>
 
@@ -394,7 +406,7 @@
     <section>
       <h2>About Me</h2>
       <ul class="about-list">
-        <li>Full product ownership &mdash; shipped 2 AI web products from idea to production, including design, development, deployment, and payments.</li>
+        <li>Full product ownership &mdash; shipped 3 AI web products from idea to production, including design, development, deployment, and payments.</li>
         <li>Cross-platform versatility &mdash; delivered native iOS, Electron desktop, React web, and React Native apps.</li>
         <li>Embraces AI-augmented development &mdash; leverages AI tools to accelerate building and problem-solving.</li>
       </ul>
