@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ctrip (Trip.com) — Advertising & Video Modules</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --bg: #ffffff;
+  --bg-gray: #f8f9fa;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'Google Sans Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.nav-title {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-title .dot { color: var(--blue); }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
+}
+.nav-links a:hover { background: var(--bg-gray); text-decoration: none; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+.hero { padding: 64px 0 48px; }
+.hero h1 {
+  font-size: 36px; font-weight: 600; letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.2;
+}
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 640px; margin-bottom: 24px; }
+.hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.chip:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.chip-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip-blue:hover { background: #1765cc; border-color: #1765cc; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin: 48px 0;
+}
+.stat-item {
+  background: var(--bg);
+  padding: 24px 16px; text-align: center;
+}
+.stat-num {
+  font-size: 28px; font-weight: 600; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px; font-weight: 500; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
+}
+
+section { padding: 48px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
+}
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.section-header h2 { font-size: 22px; font-weight: 600; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.1); }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px;
+}
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-yellow { background: var(--yellow-light); color: #b06000; }
+
+.detail-list { list-style: none; }
+.detail-list li {
+  font-size: 14px; color: var(--text-secondary);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+}
+.detail-list li:last-child { border-bottom: none; }
+.detail-list strong { color: var(--text); font-weight: 500; }
+.detail-list code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg-gray); padding: 1px 6px; border-radius: 3px;
+}
+
+.demo-section { margin-top: 20px; }
+.demo-section h3 {
+  font-size: 16px; font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.demo-grid.narrow {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.demo-item {
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  background: var(--bg-gray);
+  transition: box-shadow .2s;
+}
+.demo-item:hover { box-shadow: 0 2px 12px rgba(32,33,36,0.1); }
+.demo-item img {
+  width: 100%; height: auto; display: block;
+}
+.demo-caption {
+  padding: 10px 14px;
+  font-size: 12px; font-weight: 500; color: var(--text-secondary);
+}
+
+.clean-table { width: 100%; border-collapse: collapse; }
+.clean-table th {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-secondary);
+  text-align: left; padding: 10px 16px;
+  border-bottom: 2px solid var(--border);
+}
+.clean-table td {
+  font-size: 14px; padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.clean-table .label { font-weight: 500; white-space: nowrap; width: 130px; }
+.clean-table .value { color: var(--text-secondary); }
+.clean-table .value strong { color: var(--text); font-weight: 500; }
+
+footer {
+  text-align: center; padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 28px; }
+  .demo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .demo-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">Ctrip<span class="dot">.</span>Modules</div>
+    <div class="nav-links">
+      <a href="resume.html">Resume</a>
+      <a href="index.html">Portfolio</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Advertising & Video Modules</h1>
+    <p>iOS SDK modules built at Ctrip (Trip.com Group), serving multiple apps across the Trip.com ecosystem — including the main Ctrip app, Zhixing, and Tujia. Designed for high stability, low coupling, and cross-team reusability.</p>
+    <div class="hero-links">
+      <a href="https://github.com/BrookeMa/CV_CT" target="_blank" class="chip chip-blue">GitHub Repository</a>
+      <a href="index.html#experience" class="chip">View Full Experience</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Teams Integrated</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Ad Formats</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4 mo</div>
+      <div class="stat-label">Video Dev Time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">SDK</div>
+      <div class="stat-label">Packaged Module</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ADVERTISING MODULE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>Advertising Module</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:32px;max-width:720px;">A loosely coupled advertising SDK delivered to multiple teams across the Trip.com ecosystem, backed by a dedicated backend service. Engineered for high stability, compatibility, and cross-team reusability.</p>
+
+    <div class="card-grid" style="margin-bottom:36px;">
+      <div class="card">
+        <h3>Banner Ads <span class="tag tag-blue">Core</span></h3>
+        <p>Customizable image + text overlays, iPhone model adaptation, custom PageControl, embedded analytics tracking. Adopted by 10+ business teams: Hotels, Travel, Flights, and more.</p>
+      </div>
+      <div class="card">
+        <h3>Splash Ads <span class="tag tag-green">Launch</span></h3>
+        <p>Full-screen image and video display on app launch. Includes data monitoring, display date control, and graceful fallback handling.</p>
+      </div>
+      <div class="card">
+        <h3>Interstitial Ads <span class="tag tag-yellow">Modal</span></h3>
+        <p>Full-screen modal ads with page-context awareness and error tolerance logic for robust display across different app states.</p>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h3><span class="tag tag-blue">Demo</span> Banner Ads</h3>
+      <div class="demo-grid">
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMG_2579.PNG" alt="Banner Ad - Hotels" loading="lazy">
+          <div class="demo-caption">Hotels banner integration</div>
+        </div>
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMG_2578.PNG" alt="Banner Ad - Travel" loading="lazy">
+          <div class="demo-caption">Travel banner integration</div>
+        </div>
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMG_2581.PNG" alt="Banner Ad - Flights" loading="lazy">
+          <div class="demo-caption">Custom PageControl style</div>
+        </div>
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMG_2592.PNG" alt="Banner Ad - Custom" loading="lazy">
+          <div class="demo-caption">Image + text overlay</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section" style="margin-top:32px;">
+      <h3><span class="tag tag-green">Demo</span> Splash Ad</h3>
+      <div class="demo-grid narrow">
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_ztJJnq.GIF" alt="Splash Ad" loading="lazy">
+          <div class="demo-caption">App launch splash ad with video support</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section" style="margin-top:32px;">
+      <h3><span class="tag tag-yellow">Demo</span> Interstitial Ad</h3>
+      <div class="demo-grid">
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMG_2641.PNG" alt="Interstitial Ad" loading="lazy">
+          <div class="demo-caption">Full-screen interstitial with context logic</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- VIDEO MODULE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--red-light);color:var(--red);">&#9654;</div>
+      <h2>Video Player Module</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:32px;max-width:720px;">A 4-month development effort delivering a full-featured video player SDK. Two base styles plus a universal custom style, compatible with two gallery layouts. Supports embedded playback, cell-level playback, and CRN (Ctrip React Native) integration.</p>
+
+    <ul class="detail-list" style="margin-bottom:36px;">
+      <li><strong>Dual Gallery Support</strong> — Compatible with two distinct gallery layouts, with seamless switching and custom transition animations.</li>
+      <li><strong>Cell Playback</strong> — Inline video playback within scrolling list cells (UITableView/UICollectionView) without interrupting scroll UX.</li>
+      <li><strong>CRN Integration</strong> — Packaged as a native module callable from Ctrip React Native pages, bridging native performance with RN flexibility.</li>
+      <li><strong>Frame-based Animations</strong> — Replaced Auto Layout constraints with manual frame calculations for transition animations to eliminate CPU-bound frame drops.</li>
+      <li><strong>Gesture & Rotation</strong> — Full gesture support (swipe, pinch, tap) and device rotation handling with custom button icons using vector graphics.</li>
+      <li><strong>Cross-team Adoption</strong> — Integrated by Hotels, Activities, Car Rental, and Tickets teams with per-team customization interfaces.</li>
+    </ul>
+
+    <div class="demo-section">
+      <h3><span class="tag tag-red">Demo</span> Gallery Player</h3>
+      <div class="demo-grid narrow">
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_wDdjFp.GIF" alt="Video Gallery Style 1" loading="lazy">
+          <div class="demo-caption">Gallery video player — Style 1</div>
+        </div>
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_NvRJzn.GIF" alt="Video Gallery Style 2" loading="lazy">
+          <div class="demo-caption">Gallery video player — Style 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section" style="margin-top:32px;">
+      <h3><span class="tag tag-red">Demo</span> Embedded Player</h3>
+      <div class="demo-grid narrow">
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_lYDmf6.GIF" alt="Embedded Player 1" loading="lazy">
+          <div class="demo-caption">Embedded in-page video playback</div>
+        </div>
+        <div class="demo-item">
+          <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_6FUFSZ.GIF" alt="Embedded Player 2" loading="lazy">
+          <div class="demo-caption">Cell-level inline playback</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Tech Stack</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>Layer</th><th>Technologies</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Platform</td><td class="value"><strong>iOS</strong> (Objective-C), <strong>iPhone</strong> model adaptation</td></tr>
+        <tr><td class="label">Cross-platform</td><td class="value"><strong>CRN</strong> (Ctrip React Native) bridge for RN page integration</td></tr>
+        <tr><td class="label">Architecture</td><td class="value"><strong>SDK</strong> modular packaging, loosely coupled, independent backend service</td></tr>
+        <tr><td class="label">UI</td><td class="value">Custom <strong>PageControl</strong>, vector icon graphics, <strong>frame-based</strong> transition animations</td></tr>
+        <tr><td class="label">Media</td><td class="value">Video playback engine, dual gallery layouts, gesture & rotation support</td></tr>
+        <tr><td class="label">Analytics</td><td class="value">Embedded event tracking, data monitoring, display date control</td></tr>
+        <tr><td class="label">Delivery</td><td class="value">Adopted by <strong>10+</strong> business teams across Trip.com ecosystem</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+  <a href="index.html">Portfolio</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa/CV_CT" target="_blank">CV_CT Repo</a>
+  <p style="margin-top:8px;">&copy; 2026 Ye Ma</p>
+</footer>
+
+</body>
+</html>
