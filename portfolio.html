@@ -199,6 +199,31 @@ section { padding: 48px 0; }
   background: var(--blue); flex-shrink: 0;
 }
 
+/* SCREENSHOTS */
+.screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 20px 32px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-gray);
+}
+.screenshots img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.screenshots img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(32,33,36,0.12);
+}
+.screenshots .caption {
+  font-size: 12px; color: var(--text-secondary);
+  text-align: center; margin-top: 6px;
+}
+
 /* FOOTER */
 footer {
   text-align: center; padding: 40px 24px;
@@ -268,7 +293,7 @@ footer a:hover { text-decoration: underline; }
   <!-- STATS -->
   <div class="stats animate-in delay-3">
     <div class="stat-item">
-      <div class="stat-num">5</div>
+      <div class="stat-num">7</div>
       <div class="stat-label">Products Shipped</div>
     </div>
     <div class="stat-item">
@@ -377,6 +402,16 @@ footer a:hover { text-decoration: underline; }
           <li>Playwright E2E</li>
         </ul>
       </div>
+      <div class="screenshots">
+        <div>
+          <img src="assets/textgame-gsc.png" alt="TextGame.ai Google Search Console">
+          <div class="caption">Google Search Console — 194 clicks, 12.7K impressions</div>
+        </div>
+        <div>
+          <img src="assets/textgame-ga4.png" alt="TextGame.ai Google Analytics">
+          <div class="caption">Google Analytics — 281 users from US, India, Singapore, Brazil</div>
+        </div>
+      </div>
     </div>
 
     <!-- DarkRomanceBooks.ai -->
@@ -418,6 +453,126 @@ footer a:hover { text-decoration: underline; }
           <li>Structured data / rich snippets</li>
           <li>Google Analytics 4 + Ahrefs</li>
         </ul>
+      </div>
+      <div class="screenshots">
+        <div>
+          <img src="assets/drb-keyword-research.png" alt="Dark Romance keyword research">
+          <div class="caption">Google Ads Keyword Planner — "dark romance" 100K-1M monthly searches, +900% YoY</div>
+        </div>
+        <div>
+          <img src="assets/drb-ahrefs-audit.png" alt="Ahrefs Site Audit">
+          <div class="caption">Ahrefs Site Audit — Health Score 99, 1,352 crawled URLs</div>
+        </div>
+        <div>
+          <img src="assets/drb-ahrefs-detail.png" alt="Ahrefs detail">
+          <div class="caption">1,349 success pages, 37K+ anchor texts, 0 broken images</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- E-COMMERCE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:#fef7e0;color:#f9ab00;">&#9733;</div>
+      <h2>E-Commerce</h2>
+    </div>
+
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Amazon Storefront — Category Case</h3>
+          <div class="project-meta">
+            <span class="tag" style="background:#fef7e0;color:#e37400;">E-Commerce</span>
+            <span>2023 · UK</span>
+          </div>
+          <p>Co-founded and operated an Amazon FBA private-label brand post-graduation. Managed the full e-commerce lifecycle — product sourcing, listing optimization with A+ Content, keyword strategy, PPC campaigns, and inventory management through Amazon Seller Central.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Amazon FBA</span>
+            <span class="tech-tag">Seller Central</span>
+            <span class="tech-tag">A+ Content</span>
+            <span class="tech-tag">PPC Ads</span>
+            <span class="tech-tag">Product Listing</span>
+            <span class="tech-tag">Brand Registry</span>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">6</div><div class="label">Months</div></div>
+          <div class="project-stat"><div class="num">FBA</div><div class="label">Fulfillment</div></div>
+          <div class="project-stat"><div class="num">A+</div><div class="label">Content</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Full private-label product launch</li>
+          <li>A+ Content brand storytelling</li>
+          <li>Keyword research & PPC optimization</li>
+          <li>Seller Central operations</li>
+          <li>End-to-end supply chain</li>
+        </ul>
+      </div>
+      <div class="screenshots">
+        <div>
+          <img src="assets/amazon-product-page.png" alt="Amazon product listing">
+          <div class="caption">Amazon product listing with optimized title, images & pricing</div>
+        </div>
+        <div>
+          <img src="assets/amazon-brand-story.png" alt="Amazon A+ Content">
+          <div class="caption">A+ Content brand story page with rich media layout</div>
+        </div>
+        <div>
+          <img src="assets/amazon-product-details.png" alt="Amazon product details">
+          <div class="caption">Product detail page with feature highlights</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ENTERPRISE & SUSTAINABILITY -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:#e8f5e9;color:#2e7d32;">&#9752;</div>
+      <h2>Enterprise &amp; Sustainability</h2>
+    </div>
+
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Carbon Neutrality Management System</h3>
+          <div class="project-meta">
+            <span class="tag" style="background:#e8f5e9;color:#2e7d32;">Production</span>
+            <span>Wus Printed Circuit · 2024 – Present</span>
+            <span class="tag" style="background:#fff3e0;color:#e65100;margin-left:4px;">NDA — Limited Disclosure</span>
+          </div>
+          <p>Built a cradle-to-gate Product Carbon Footprint (PCF) platform in partnership with Siemens SiGreen. The system tracks per-product carbon emissions across the full PCB manufacturing lifecycle, generates auditable reports for third-party certification, and calculates the carbon credits needed to meet supply-chain carbon neutrality requirements from major global clients.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Data Pipelines</span>
+            <span class="tech-tag">Dashboard</span>
+            <span class="tech-tag">Siemens SiGreen</span>
+            <span class="tech-tag">ISO 14064</span>
+            <span class="tech-tag">GHG Protocol</span>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">PCF</div><div class="label">Cradle-to-Gate</div></div>
+          <div class="project-stat"><div class="num">ISO</div><div class="label">Certified</div></div>
+          <div class="project-stat"><div class="num">4+</div><div class="label">Global Clients</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Siemens SiGreen integration for supply-chain PCF data exchange</li>
+          <li>Per-product emission tracing across manufacturing stages</li>
+          <li>Third-party certified (ISO 14064 / GHG Protocol)</li>
+          <li>Carbon credit calculation &amp; procurement</li>
+          <li>Serving clients such as NVIDIA, Google, Siemens</li>
+        </ul>
+        <p style="font-size:12px;color:#e65100;margin-top:12px;">&#128274; Detailed architecture, data, and screenshots are under NDA and cannot be disclosed.</p>
       </div>
     </div>
   </section>
