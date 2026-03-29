@@ -83,7 +83,7 @@ nav {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 1px; background: var(--border);
   border: 1px solid var(--border);
   border-radius: 12px; overflow: hidden;
@@ -230,10 +230,11 @@ footer {
 <div class="container">
 
   <div class="hero">
-    <h1>Advertising & Video Modules</h1>
-    <p>iOS SDK modules built at Ctrip (Trip.com Group), serving multiple apps across the Trip.com ecosystem — including the main Ctrip app, Zhixing, and Tujia. Designed for high stability, low coupling, and cross-team reusability.</p>
+    <h1>Advertising, Video & CRN Modules</h1>
+    <p>iOS SDK modules and cross-platform framework contributions at Ctrip (Trip.com Group), serving multiple apps across the Trip.com ecosystem — including the main Ctrip app, Zhixing, and Tujia. Designed for high stability, low coupling, and cross-team reusability.</p>
     <div class="hero-links">
-      <a href="https://github.com/BrookeMa/CV_CT" target="_blank" class="chip chip-blue">GitHub Repository</a>
+      <a href="https://github.com/BrookeMa/CV_CT" target="_blank" class="chip chip-blue">Ad & Video Repo</a>
+      <a href="https://github.com/ctripcorp/CRN" target="_blank" class="chip chip-blue">CRN Open Source</a>
       <a href="index.html#experience" class="chip">View Full Experience</a>
     </div>
   </div>
@@ -254,6 +255,10 @@ footer {
     <div class="stat-item">
       <div class="stat-num">SDK</div>
       <div class="stat-label">Packaged Module</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1.5k</div>
+      <div class="stat-label">CRN GitHub Stars</div>
     </div>
   </div>
 
@@ -369,6 +374,44 @@ footer {
           <img src="https://raw.githubusercontent.com/BrookeMa/CV_CT/main/GIF/IMB_6FUFSZ.GIF" alt="Embedded Player 2" loading="lazy">
           <div class="demo-caption">Cell-level inline playback</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CRN -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9873;</div>
+      <h2>CRN — Ctrip React Native</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;max-width:720px;">Contributed to the development of <a href="https://github.com/ctripcorp/CRN" target="_blank">CRN</a>, Ctrip's open-source cross-platform framework based on React Native — optimized for stability and performance at scale. <strong>1.5k GitHub Stars, 203 Forks.</strong></p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Bundle Splitting <span class="tag tag-blue">Core</span></h3>
+        <p>Framework and business code are split into separate bundles, enabling independent deployment and shared framework preloading across all business modules.</p>
+      </div>
+      <div class="card">
+        <h3>Background Preloading <span class="tag tag-green">Performance</span></h3>
+        <p>Framework bundle is preloaded in the background before users navigate to RN pages, reducing first-screen load time by ~50% on iOS and ~60% on Android.</p>
+      </div>
+      <div class="card">
+        <h3>Incremental Compilation <span class="tag tag-yellow">Build</span></h3>
+        <p>Module IDs remain stable across builds for the same module, enabling incremental packaging and faster CI/CD turnaround.</p>
+      </div>
+      <div class="card">
+        <h3>Unified Build Artifacts <span class="tag tag-red">Cross-platform</span></h3>
+        <p>A single set of build artifacts shared between iOS and Android, reducing maintenance overhead and ensuring cross-platform consistency.</p>
+      </div>
+      <div class="card">
+        <h3>LazyRequire <span class="tag tag-blue">Optimization</span></h3>
+        <p>Deferred module loading to minimize initial bundle execution time, only loading modules when they are actually needed.</p>
+      </div>
+      <div class="card">
+        <h3>CRN-CLI <span class="tag tag-green">Tooling</span></h3>
+        <p>Custom CLI toolchain (<code>crn-cli</code>) published to npm for project scaffolding, development, debugging, and packaging workflows.</p>
       </div>
     </div>
   </section>
