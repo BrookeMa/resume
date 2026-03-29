@@ -92,11 +92,11 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,.04);
 }
 .nav-inner {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   gap: 4px;
-  padding: 0 24px;
+  padding: 0 48px;
   overflow-x: auto;
 }
 .nav a {
@@ -117,9 +117,9 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 48px;
 }
 section { padding: 48px 0; }
 section + section { border-top: 1px solid var(--grey-200); }
@@ -156,8 +156,8 @@ p, li { color: var(--grey-700); font-size: 15px; line-height: 1.7; }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
 }
 .card {
   background: var(--surface);
@@ -413,6 +413,8 @@ footer a { color: var(--blue); text-decoration: none; }
   .metric-bar { flex-direction: column; }
   .metric-pill { min-width: unset; }
   .keyword-insight { flex-direction: column; }
+  .container { padding: 0 20px; }
+  .nav-inner { padding: 0 20px; }
 }
 </style>
 </head>
@@ -422,8 +424,8 @@ footer a { color: var(--blue); text-decoration: none; }
   <h1>DarkRomanceBooks.ai</h1>
   <p class="subtitle">AI-powered book discovery platform — full-stack architecture overview</p>
   <div style="display:flex;gap:12px;justify-content:center;margin-bottom:24px;flex-wrap:wrap">
-    <a href="https://darkromancebooks.ai" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:var(--blue);color:#fff;text-decoration:none">Visit Live Site</a>
-    <a href="https://wok-manual-43937392.figma.site" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;border:1px solid var(--grey-300);color:var(--grey-700);text-decoration:none">Figma Prototype</a>
+    <a href="https://darkromancebooks.ai" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;background:rgba(255,255,255,0.95);color:#1a73e8;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15)">Visit Live Site</a>
+    <a href="https://wok-manual-43937392.figma.site" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;border:2px solid rgba(255,255,255,0.8);color:#fff;text-decoration:none;backdrop-filter:blur(4px)">Figma Prototype</a>
   </div>
   <div class="hero-stats">
     <div class="hero-stat"><div class="num">610+</div><div class="label">Indexed Pages</div></div>
