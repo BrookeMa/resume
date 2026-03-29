@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZhanMeng — iOS Modular Component Libraries</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --purple: #7b1fa2;
+  --purple-light: #f3e8fd;
+  --teal: #00897b;
+  --teal-light: #e0f2f1;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --bg: #ffffff;
+  --bg-gray: #f8f9fa;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'Google Sans Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.nav-title {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-title .dot { color: var(--blue); }
+.nav-links { display: flex; gap: 8px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
+}
+.nav-links a:hover { background: var(--bg-gray); text-decoration: none; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+.hero { padding: 64px 0 48px; }
+.hero h1 {
+  font-size: 36px; font-weight: 600; letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.2;
+}
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 640px; margin-bottom: 24px; }
+.hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.chip:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.chip-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip-blue:hover { background: #1765cc; border-color: #1765cc; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin: 48px 0;
+}
+.stat-item {
+  background: var(--bg);
+  padding: 24px 16px; text-align: center;
+}
+.stat-num {
+  font-size: 28px; font-weight: 600; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px; font-weight: 500; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
+}
+
+section { padding: 48px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
+}
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.section-header h2 { font-size: 22px; font-weight: 600; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: box-shadow .2s;
+}
+.card:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.1); }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+.card code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--blue-light); color: var(--blue);
+  padding: 1px 5px; border-radius: 3px;
+}
+
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px;
+}
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-yellow { background: var(--yellow-light); color: #b06000; }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+
+.detail-list { list-style: none; }
+.detail-list li {
+  font-size: 14px; color: var(--text-secondary);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+}
+.detail-list li:last-child { border-bottom: none; }
+.detail-list strong { color: var(--text); font-weight: 500; }
+.detail-list code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg-gray); padding: 1px 6px; border-radius: 3px;
+}
+
+.flow-box {
+  background: var(--bg-gray);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px;
+  font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.9; overflow-x: auto; white-space: pre;
+  color: var(--text-secondary);
+}
+.flow-box .b { color: var(--blue); font-weight: 500; }
+.flow-box .g { color: var(--green); font-weight: 500; }
+.flow-box .r { color: var(--red); font-weight: 500; }
+.flow-box .y { color: #b06000; font-weight: 500; }
+.flow-box .p { color: var(--purple); font-weight: 500; }
+
+.clean-table { width: 100%; border-collapse: collapse; }
+.clean-table th {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-secondary);
+  text-align: left; padding: 10px 16px;
+  border-bottom: 2px solid var(--border);
+}
+.clean-table td {
+  font-size: 14px; padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.clean-table .label { font-weight: 500; white-space: nowrap; width: 150px; }
+.clean-table .value { color: var(--text-secondary); }
+.clean-table .value strong { color: var(--text); font-weight: 500; }
+
+footer {
+  text-align: center; padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .hero h1 { font-size: 28px; }
+}
+@media (max-width: 480px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">ZM<span class="dot">.</span>Libs</div>
+    <div class="nav-links">
+      <a href="resume.html">Resume</a>
+      <a href="index.html">Portfolio</a>
+      <a href="ctrip.html">Ctrip</a>
+      <a href="hoho.html">Hoho</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>iOS Modular Component Libraries</h1>
+    <p>A set of 5 CocoaPods private libraries built at ZhanMeng, providing foundational infrastructure for the company's iOS applications — covering networking, database, routing, UI utilities, and the "XiaoHei" notepad product base layer.</p>
+    <div class="hero-links">
+      <a href="https://github.com/BrookeMa/CV_ZM" target="_blank" class="chip chip-blue">GitHub Repository</a>
+      <a href="index.html#experience" class="chip">View Full Experience</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Pod Libraries</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Obj-C</div>
+      <div class="stat-label">Language</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Dependencies</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">iOS 8+</div>
+      <div class="stat-label">Min Target</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">CocoaPods</div>
+      <div class="stat-label">Package Manager</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MODULE ARCHITECTURE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>Module Architecture</h2>
+    </div>
+    <div class="flow-box"><span class="p">ZM_Notepad_BaseLib</span>  (Product Layer — "XiaoHei" Notepad)
+        │
+        ├── depends on ──▶  <span class="b">ZM_BaseLib</span>                     (Foundation)
+        ├── depends on ──▶  <span class="g">ZM_Networking</span>                  (Network)
+        ├── depends on ──▶  <span class="r">ZM_DataBase</span>                    (Persistence)
+        └── depends on ──▶  <span class="y">ZM_ThirdPartyLibraryExpand</span>     (Router & Extensions)
+                                    │
+                                    ├── JLRoutes
+                                    ├── YYKit
+                                    └── UMeng SDK (Analytics, Share)</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LIBRARIES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Library Details</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>ZM_BaseLib <span class="tag tag-blue">Foundation</span></h3>
+        <p>Core utility library with 30+ categories on Foundation & UIKit classes, plus reusable tools: <code>ZMFileManager</code>, <code>ZMDateManager</code>, <code>ZMLocationManager</code>, <code>ZMRegexManager</code>, <code>ZMNavigationBar</code>, <code>ZMActionSheet</code>, <code>ZMNetTools</code>, <code>ZMBaseButton</code>.</p>
+      </div>
+      <div class="card">
+        <h3>ZM_Networking <span class="tag tag-green">Network</span></h3>
+        <p>Network abstraction layer built on <code>AFNetworking</code>. Custom <code>XESNetwork</code> request engine with unified API, response model mapping via <code>MJExtension</code>, and centralized error handling.</p>
+      </div>
+      <div class="card">
+        <h3>ZM_DataBase <span class="tag tag-red">Persistence</span></h3>
+        <p>Database component wrapping <code>FMDB</code> with schema migration support via <code>FMDBMigrationManager</code>. Provides <code>ZMDataBase</code> singleton, <code>ZMDataBaseTool</code> helpers, and <code>ZMMigration</code> version control.</p>
+      </div>
+      <div class="card">
+        <h3>ZM_ThirdPartyLibraryExpand <span class="tag tag-yellow">Router</span></h3>
+        <p>URL-based routing system using <code>JLRoutes</code> with custom <code>ZMRouterTools</code>, <code>ZMRouterPath</code>, and <code>ZMRouterModel</code>. Integrates <code>YYKit</code> utilities and <code>UMeng</code> analytics & social sharing (WeChat, QQ, Weibo).</p>
+      </div>
+      <div class="card">
+        <h3>ZM_Notepad_BaseLib <span class="tag tag-purple">Product</span></h3>
+        <p>"XiaoHei" notepad product base library. Aggregates all ZM modules plus <code>MMDrawerController</code> (side menu), <code>MBProgressHUD</code>, <code>Toast</code>, <code>UICKeyChainStore</code> for secure credential storage.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- KEY COMPONENTS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--red-light);color:var(--red);">&#9873;</div>
+      <h2>Key Components</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>ZMFileManager</strong> — File system abstraction for sandboxed document management, caching, and temporary file operations.</li>
+      <li><strong>ZMLocationManager</strong> — CoreLocation wrapper for location-based features with permission handling and geocoding.</li>
+      <li><strong>ZMNavigationBar</strong> — Custom navigation bar component with flexible styling, overriding default UINavigationBar behavior.</li>
+      <li><strong>XESNetwork</strong> — Centralized HTTP client with request queuing, response serialization, and unified error callbacks built on AFNetworking.</li>
+      <li><strong>ZMRouterTools</strong> — App-wide URL routing for decoupled page navigation. Uses <code>ZMRouter.plist</code> for route registration and <code>ZMRouterModel</code> for parameter passing.</li>
+      <li><strong>ZMMigration</strong> — Database version management ensuring safe schema upgrades across app updates without data loss.</li>
+      <li><strong>WebViewJavascriptBridge</strong> — Native-to-H5 bridge for hybrid pages, enabling seamless communication between Objective-C and embedded web views.</li>
+      <li><strong>30+ Categories</strong> — Extensions on NSString, NSDate, UILabel, UIColor, UIView, NSDictionary, etc. for consistent utility methods across the codebase.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--teal-light);color:var(--teal);">&#9678;</div>
+      <h2>Tech Stack & Dependencies</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>Category</th><th>Technologies</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Language</td><td class="value"><strong>Objective-C</strong>, iOS 8.0+ deployment target</td></tr>
+        <tr><td class="label">Package Manager</td><td class="value"><strong>CocoaPods</strong> with private podspec repository</td></tr>
+        <tr><td class="label">Networking</td><td class="value"><strong>AFNetworking</strong>, <strong>MJExtension</strong> (model mapping)</td></tr>
+        <tr><td class="label">Database</td><td class="value"><strong>FMDB</strong> (SQLite), <strong>FMDBMigrationManager</strong></td></tr>
+        <tr><td class="label">UI & Layout</td><td class="value"><strong>Masonry</strong> (Auto Layout), <strong>Lottie</strong> (animations), <strong>IQKeyboardManager</strong></td></tr>
+        <tr><td class="label">Navigation</td><td class="value"><strong>RTRootNavigationController</strong>, <strong>MMDrawerController</strong> (side menu)</td></tr>
+        <tr><td class="label">Routing</td><td class="value"><strong>JLRoutes</strong> (URL-based decoupled navigation)</td></tr>
+        <tr><td class="label">Reactive</td><td class="value"><strong>ReactiveCocoa 2.x</strong> (FRP for Objective-C)</td></tr>
+        <tr><td class="label">Hybrid</td><td class="value"><strong>WebViewJavascriptBridge</strong> (native ↔ H5 communication)</td></tr>
+        <tr><td class="label">Utilities</td><td class="value"><strong>YYKit</strong>, <strong>UICKeyChainStore</strong>, <strong>MBProgressHUD</strong>, <strong>Toast</strong></td></tr>
+        <tr><td class="label">Analytics & Share</td><td class="value"><strong>UMeng</strong> (Analytics, WeChat/QQ/Weibo sharing)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+  <a href="index.html">Portfolio</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa/CV_ZM" target="_blank">CV_ZM Repo</a>
+  <p style="margin-top:8px;">&copy; 2026 Ye Ma</p>
+</footer>
+
+</body>
+</html>
