@@ -92,11 +92,11 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,.04);
 }
 .nav-inner {
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   gap: 4px;
-  padding: 0 48px;
+  padding: 0 24px;
   overflow-x: auto;
 }
 .nav a {
@@ -117,9 +117,9 @@ body {
 }
 
 .container {
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 48px;
+  padding: 0 24px;
 }
 section { padding: 48px 0; }
 section + section { border-top: 1px solid var(--grey-200); }
@@ -156,8 +156,8 @@ p, li { color: var(--grey-700); font-size: 15px; line-height: 1.7; }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
 }
 .card {
   background: var(--surface);
@@ -413,8 +413,6 @@ footer a { color: var(--blue); text-decoration: none; }
   .metric-bar { flex-direction: column; }
   .metric-pill { min-width: unset; }
   .keyword-insight { flex-direction: column; }
-  .container { padding: 0 20px; }
-  .nav-inner { padding: 0 20px; }
 }
 </style>
 </head>
