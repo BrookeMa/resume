@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ye Ma — Portfolio</title>
+<meta name="description" content="Ye Ma's project portfolio — AI products, iOS apps, and full-stack web development.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #1e8e3e;
+  --green-light: #e6f4ea;
+  --red: #d93025;
+  --red-light: #fce8e6;
+  --yellow: #f9ab00;
+  --yellow-light: #fef7e0;
+  --purple: #a142f4;
+  --purple-light: #f3e8fd;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --border: #dadce0;
+  --bg: #ffffff;
+  --bg-gray: #f8f9fa;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'Google Sans Mono', 'SF Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+::selection { background: var(--blue); color: #fff; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.nav-title {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  text-decoration: none;
+}
+.nav-title:hover { text-decoration: none; }
+.nav-title .dot { color: var(--blue); }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
+}
+.nav-links a:hover { background: var(--bg-gray); text-decoration: none; }
+
+/* CONTAINER */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* HERO */
+.hero { padding: 64px 0 48px; text-align: center; }
+.hero h1 {
+  font-size: 36px; font-weight: 600; letter-spacing: -0.5px;
+  margin-bottom: 12px; line-height: 1.2;
+}
+.hero h1 .accent { color: var(--blue); }
+.hero p {
+  font-size: 16px; color: var(--text-secondary);
+  max-width: 600px; margin: 0 auto 24px; line-height: 1.7;
+}
+.hero-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+  color: var(--text-secondary); text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.chip:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.chip-blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip-blue:hover { background: #1765cc; border-color: #1765cc; }
+
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin-bottom: 48px;
+}
+.stat-item {
+  background: var(--bg);
+  padding: 24px 16px; text-align: center;
+}
+.stat-num {
+  font-size: 28px; font-weight: 600; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px; font-weight: 500; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
+}
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* SECTION */
+section { padding: 48px 0; }
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 32px;
+}
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.section-header h2 { font-size: 22px; font-weight: 600; }
+
+/* PROJECT SHOWCASE */
+.project-showcase {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: box-shadow .2s;
+}
+.project-showcase:hover { box-shadow: 0 2px 12px rgba(32,33,36,0.08); }
+.project-header {
+  padding: 32px;
+  display: flex; gap: 24px; align-items: flex-start;
+  flex-wrap: wrap;
+}
+.project-info { flex: 1; min-width: 280px; }
+.project-info h3 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.project-meta {
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.project-info p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px;
+}
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-yellow { background: var(--yellow-light); color: #b06000; }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.tech-tag {
+  font-size: 11px; font-weight: 500; color: var(--blue);
+  background: var(--blue-light); padding: 2px 8px; border-radius: 4px;
+}
+.project-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.project-links a {
+  font-size: 13px; font-weight: 500; padding: 6px 14px;
+  border-radius: 6px; border: 1px solid var(--border);
+  display: inline-flex; align-items: center; gap: 4px;
+  text-decoration: none; color: var(--text-secondary);
+  transition: background .15s, border-color .15s;
+}
+.project-links a:hover { background: var(--bg-gray); border-color: #bdc1c6; text-decoration: none; }
+.project-links a.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.project-links a.primary:hover { background: #1765cc; }
+.project-stats {
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.project-stat { text-align: center; min-width: 80px; }
+.project-stat .num { font-size: 22px; font-weight: 600; color: var(--text); }
+.project-stat .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
+.project-highlights {
+  background: var(--bg-gray);
+  padding: 20px 32px;
+  border-top: 1px solid var(--border);
+}
+.project-highlights ul {
+  list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px;
+}
+.project-highlights li {
+  font-size: 13px; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 6px;
+}
+.project-highlights li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue); flex-shrink: 0;
+}
+
+/* FOOTER */
+footer {
+  text-align: center; padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-secondary);
+}
+footer a { font-weight: 500; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .nav-inner { padding: 0 16px; }
+  .nav-links { gap: 0; }
+  .nav-links a { font-size: 12px; padding: 6px 8px; }
+  .hero { padding: 48px 0 32px; }
+  .hero h1 { font-size: 28px; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .project-header { padding: 24px; }
+  .project-highlights { padding: 16px 24px; }
+  .project-stats { gap: 16px; }
+  .container { padding: 0 16px; }
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-title">Ye Ma<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resume.html">Resume</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/brook-ma-45354722b/" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1 class="animate-in">Project <span class="accent">Portfolio</span></h1>
+    <p class="animate-in delay-1">
+      A collection of products I've built — from AI game platforms and interactive fiction to SEO-optimized e-commerce and native iOS apps.
+    </p>
+    <div class="hero-links animate-in delay-2">
+      <a href="resume.html" class="chip chip-blue">View Resume</a>
+      <a href="mailto:maye634028187@gmail.com" class="chip">Contact Me</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats animate-in delay-3">
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Products Shipped</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Live Sites</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1000+</div>
+      <div class="stat-label">Indexed Pages</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100</div>
+      <div class="stat-label">Lighthouse Score</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- AI WEB PRODUCTS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9733;</div>
+      <h2>AI Web Products</h2>
+    </div>
+
+    <!-- Noctveil.ai -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Noctveil.ai</h3>
+          <div class="project-meta">
+            <span class="tag tag-green">Live</span>
+            <span>Built in 4 days</span>
+          </div>
+          <p>AI-powered gothic dark romance interactive fiction platform. Players type free-text to drive branching narratives as an AI narrator generates the story in real time — with voice synthesis, streaming generation, trial play, and Stripe-powered round packs.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Next.js 16</span>
+            <span class="tech-tag">React 19</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">OpenAI</span>
+            <span class="tech-tag">Supabase</span>
+            <span class="tech-tag">Stripe</span>
+            <span class="tech-tag">Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a href="https://noctveil.ai" target="_blank" class="primary">Visit Live Site</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">4</div><div class="label">Days to Ship</div></div>
+          <div class="project-stat"><div class="num">AI</div><div class="label">Narrator</div></div>
+          <div class="project-stat"><div class="num">TTS</div><div class="label">Voice</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Free-text branching narrative</li>
+          <li>AI narrator with voice synthesis</li>
+          <li>Streaming story generation</li>
+          <li>Stripe round packs</li>
+          <li>Trial play without account</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TextGame.ai -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>TextGame.ai</h3>
+          <div class="project-meta">
+            <span class="tag tag-green">Live</span>
+            <span>Co-built in 2 months with a Dubai-based partner</span>
+          </div>
+          <p>Gamified multiplayer platform where an AI Game Master autonomously hosts 20+ social deduction &amp; party games — assigning roles, managing phases, and driving AI characters that strategize alongside human players.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Next.js 16</span>
+            <span class="tech-tag">React 19</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">OpenAI</span>
+            <span class="tech-tag">Supabase</span>
+            <span class="tech-tag">Stripe</span>
+            <span class="tech-tag">Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a href="https://textgame.ai" target="_blank" class="primary">Visit Live Site</a>
+            <a href="https://github.com/BrookeMa/TextGame.ai" target="_blank">GitHub</a>
+            <a href="https://twine-rally-11096846.figma.site" target="_blank">Figma Prototype</a>
+            <a href="textgame.html">Technical Deep Dive</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">95K+</div><div class="label">Lines</div></div>
+          <div class="project-stat"><div class="num">47</div><div class="label">API Routes</div></div>
+          <div class="project-stat"><div class="num">131</div><div class="label">Tests</div></div>
+          <div class="project-stat"><div class="num">20+</div><div class="label">Games</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>AI Game Master</li>
+          <li>Real-time multiplayer</li>
+          <li>Voice pipeline (Whisper STT + TTS)</li>
+          <li>Stripe subscriptions</li>
+          <li>49 shadcn/ui components</li>
+          <li>Playwright E2E</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DarkRomanceBooks.ai -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>DarkRomanceBooks.ai</h3>
+          <div class="project-meta">
+            <span class="tag tag-green">Live</span>
+            <span>SEO-optimized book discovery</span>
+          </div>
+          <p>AI-powered book discovery platform for the dark romance genre. Features rich book metadata, AI-generated recommendations, and comprehensive SEO with 1000+ indexed pages achieving a perfect Lighthouse score.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Next.js</span>
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">OpenAI</span>
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">Vercel</span>
+            <span class="tech-tag">SEO</span>
+          </div>
+          <div class="project-links">
+            <a href="https://darkromancebooks.ai" target="_blank" class="primary">Visit Live Site</a>
+            <a href="https://wok-manual-43937392.figma.site" target="_blank">Figma Prototype</a>
+            <a href="DarkRomanceBooks-TechStack.html">Technical Deep Dive</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">1000+</div><div class="label">Pages</div></div>
+          <div class="project-stat"><div class="num">550+</div><div class="label">Books</div></div>
+          <div class="project-stat"><div class="num">100</div><div class="label">Lighthouse</div></div>
+          <div class="project-stat"><div class="num">+900%</div><div class="label">Keyword YoY</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>AI-powered recommendations</li>
+          <li>1000+ server-rendered pages</li>
+          <li>Perfect Lighthouse score</li>
+          <li>Structured data / rich snippets</li>
+          <li>Google Analytics 4 + Ahrefs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- NATIVE & CROSS-PLATFORM -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9670;</div>
+      <h2>Native &amp; Cross-Platform Apps</h2>
+    </div>
+
+    <!-- Hoho -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Hoho — Education IM Platform</h3>
+          <div class="project-meta">
+            <span class="tag tag-purple">Shipped</span>
+            <span>iOS + Electron desktop</span>
+          </div>
+          <p>Cross-platform instant messaging app for educational institutions. Full-featured iOS app with messaging, Bluetooth, WebRTC, file transfer, and WebSocket. Electron desktop client with QR-code login and IPC architecture.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Objective-C</span>
+            <span class="tech-tag">Electron</span>
+            <span class="tech-tag">WebRTC</span>
+            <span class="tech-tag">WebSocket</span>
+            <span class="tech-tag">Bluetooth</span>
+          </div>
+          <div class="project-links">
+            <a href="hoho.html" class="primary">View Details</a>
+            <a href="https://github.com/BrookeMa/CV_Hoho" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Real-time messaging</li>
+          <li>WebRTC video/audio</li>
+          <li>Bluetooth file sharing</li>
+          <li>Interactive whiteboard</li>
+          <li>Desktop QR-code login</li>
+          <li>IPC architecture</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ctrip Modules -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Ctrip — Advertising &amp; Video Modules</h3>
+          <div class="project-meta">
+            <span class="tag tag-yellow">Enterprise</span>
+            <span>Adopted by 10+ internal teams</span>
+          </div>
+          <p>iOS advertising SDK (Banner, Splash, Interstitial) and video player module for China's largest OTA platform with tens of millions DAU. Also contributed to CRN (Ctrip React Native), an open-source cross-platform framework with 1.5k GitHub Stars.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Objective-C</span>
+            <span class="tech-tag">React Native</span>
+            <span class="tech-tag">CocoaPods</span>
+            <span class="tech-tag">Hadoop</span>
+            <span class="tech-tag">Spark</span>
+          </div>
+          <div class="project-links">
+            <a href="ctrip.html" class="primary">View Details</a>
+            <a href="https://github.com/ctripcorp/CRN" target="_blank">CRN GitHub (1.5k ★)</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">10+</div><div class="label">Teams</div></div>
+          <div class="project-stat"><div class="num">1.5k</div><div class="label">CRN Stars</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Banner / Splash / Interstitial ads</li>
+          <li>Video player module</li>
+          <li>CRN bundle splitting</li>
+          <li>Real-time data pipelines</li>
+          <li>Millions DAU</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EasyNews -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>EasyNews — iOS News Reader</h3>
+          <div class="project-meta">
+            <span class="tag tag-blue">Learning Project</span>
+            <span>TDD + Clean Architecture</span>
+          </div>
+          <p>A modular iOS news reader demonstrating TDD principles and clean architecture. Features a local Swift framework, MVVM presentation, protocol-oriented design, Core Data caching, and comprehensive test coverage.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Swift</span>
+            <span class="tech-tag">UIKit</span>
+            <span class="tech-tag">Core Data</span>
+            <span class="tech-tag">TDD</span>
+            <span class="tech-tag">MVVM</span>
+            <span class="tech-tag">XCTest</span>
+          </div>
+          <div class="project-links">
+            <a href="easynews.html" class="primary">View Details</a>
+            <a href="https://github.com/BrookeMa/EasyNews" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Test-Driven Development</li>
+          <li>MVVM + Coordinator</li>
+          <li>Protocol-oriented design</li>
+          <li>Core Data persistence</li>
+          <li>Local Swift framework</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ZhanMeng -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>ZhanMeng — iOS Modular Libraries</h3>
+          <div class="project-meta">
+            <span class="tag tag-yellow">Infrastructure</span>
+            <span>5 CocoaPods libraries</span>
+          </div>
+          <p>Five modular CocoaPods component libraries built for the company's iOS platform — covering networking, database, routing, UI utilities, and common tools. Standardized the codebase and accelerated feature development across all apps.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Objective-C</span>
+            <span class="tech-tag">CocoaPods</span>
+            <span class="tech-tag">AFNetworking</span>
+            <span class="tech-tag">FMDB</span>
+            <span class="tech-tag">UIKit</span>
+          </div>
+          <div class="project-links">
+            <a href="zhanmeng.html" class="primary">View Details</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">5</div><div class="label">Libraries</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Network abstraction layer</li>
+          <li>SQLite database wrapper</li>
+          <li>URL-based routing</li>
+          <li>Reusable UI components</li>
+          <li>Common utility toolkit</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <a href="index.html">Home</a> &nbsp;·&nbsp;
+  <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BrookeMa" target="_blank">GitHub</a> &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/in/brook-ma-45354722b/" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+  <a href="mailto:maye634028187@gmail.com">Email</a>
+  <p style="margin-top:8px;">&copy; 2026 Ye Ma</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.project-showcase').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
