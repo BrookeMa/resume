@@ -83,6 +83,31 @@ body {
   text-shadow: 0 1px 3px rgba(0,0,0,.2);
 }
 
+.global-nav {
+  background: #fff;
+  border-bottom: 1px solid var(--grey-200);
+  z-index: 200;
+}
+.global-nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.global-nav-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 18px; font-weight: 600; color: var(--grey-900);
+  text-decoration: none;
+}
+.global-nav-title:hover { text-decoration: none; }
+.global-nav-links { display: flex; gap: 8px; }
+.global-nav-links a {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 13px; font-weight: 500; color: var(--grey-600);
+  padding: 6px 12px; border-radius: 6px; text-decoration: none;
+  transition: background .15s;
+}
+.global-nav-links a:hover { background: var(--grey-50, #f8f9fa); text-decoration: none; }
+
 .nav {
   background: var(--surface);
   border-bottom: 1px solid var(--grey-200);
@@ -417,6 +442,19 @@ footer a { color: var(--blue); text-decoration: none; }
 </style>
 </head>
 <body>
+
+<div class="global-nav">
+  <div class="global-nav-inner">
+    <a href="index.html" class="global-nav-title">Ye Ma<span style="color:var(--blue)">.</span></a>
+    <div class="global-nav-links">
+      <a href="index.html">Home</a>
+      <a href="resume.html">Resume</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/brook-ma-45354722b/" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</div>
 
 <div class="hero">
   <h1>DarkRomanceBooks.ai</h1>
