@@ -258,11 +258,11 @@ footer {
       <div class="stat-label">TS / TSX Files</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">47</div>
+      <div class="stat-num">46</div>
       <div class="stat-label">API Routes</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">131</div>
+      <div class="stat-num">124</div>
       <div class="stat-label">Test Files</div>
     </div>
     <div class="stat-item">
@@ -329,7 +329,7 @@ footer {
         <tr><td class="label">Database</td><td class="value"><strong>Supabase</strong> (Auth, Realtime, Storage, RLS), <strong>PostgreSQL</strong></td></tr>
         <tr><td class="label">Payments</td><td class="value"><strong>Stripe</strong> Checkout, Webhooks, Customer Portal, Subscriptions</td></tr>
         <tr><td class="label">Monitoring</td><td class="value"><strong>Sentry</strong>, <strong>Vercel Analytics</strong>, Google Analytics</td></tr>
-        <tr><td class="label">Testing</td><td class="value"><strong>Vitest</strong> (131 files), <strong>Playwright</strong> E2E, <strong>Storybook</strong>, Testing Library</td></tr>
+        <tr><td class="label">Testing</td><td class="value"><strong>Vitest</strong> (124 files), <strong>Playwright</strong> E2E, <strong>Storybook</strong>, Testing Library</td></tr>
         <tr><td class="label">Infra</td><td class="value"><strong>Vercel</strong> serverless, CSP headers, rate limiting, bundle analyzer</td></tr>
       </tbody>
     </table>
@@ -378,7 +378,7 @@ footer {
       <li><strong>Image Optimization</strong> — AVIF + WebP, 5 device sizes, quality 75/90, 30-day cache TTL.</li>
       <li><strong>Production Hardening</strong> — Console stripping (keeps error/warn), Sentry debug tree-shake, CSP headers (X-Frame-Options DENY, strict Referrer-Policy).</li>
       <li><strong>Rate Limiting</strong> — 30 req / 60s per chat endpoint; token balance pre-checks; <code>AbortController</code> timeouts (30–120s).</li>
-      <li><strong>131 Test Files</strong> — Game engine, host parsing, template drivers, Stripe flows, avatar logic, auth, multiplayer merge, TTS broadcast. Playwright E2E with trace-on-retry.</li>
+      <li><strong>124 Test Files</strong> — Game engine, host parsing, template drivers, Stripe flows, avatar logic, auth, multiplayer merge, TTS broadcast. Playwright E2E with trace-on-retry.</li>
       <li><strong>Auth</strong> — Supabase JWT + Row-Level Security; <code>getAuthUserFromRequest</code> middleware on every API route.</li>
     </ul>
   </section>
@@ -392,8 +392,8 @@ footer {
       <h2>Key Modules</h2>
     </div>
     <ul class="detail-list">
-      <li><strong>useHostRound.ts</strong> <span class="tag tag-blue">699 lines</span> — Round orchestrator: system prompt → streaming API → directive parsing → speaker queue → retries → pacing → analytics.</li>
-      <li><strong>GameRoomContext.tsx</strong> <span class="tag tag-green">25 useState</span> — Messages, players, phases, channels, boards, sections, votes, timer, mood, game-over. Local-first with debounced Supabase sync.</li>
+      <li><strong>useHostRound.ts</strong> <span class="tag tag-blue">775 lines</span> — Round orchestrator: system prompt → streaming API → directive parsing → speaker queue → retries → pacing → analytics.</li>
+      <li><strong>GameRoomContext.tsx</strong> <span class="tag tag-green">27 useState</span> — Messages, players, phases, channels, boards, sections, votes, timer, mood, game-over. Local-first with debounced Supabase sync.</li>
       <li><strong>gm-system-prompt.ts</strong> <span class="tag tag-yellow">Core</span> — Builds Game Master prompt with directives: ASSIGN_ROLE, NEXT_SPEAKER, ELIMINATE, GAME_OVER, [BOARD], [ACCESS], [SECTION], [MY_NOTES].</li>
       <li><strong>game-template-driver.ts</strong> <span class="tag tag-yellow">Core</span> — Per-template mechanics, pacing, speaker order, phase transitions, progression policies.</li>
       <li><strong>tts-broadcast.ts</strong> <span class="tag tag-red">Real-time</span> — Supabase Broadcast for multiplayer TTS. Owner fetches → broadcasts base64 → guests subscribe. djb2 hash + LRU cache (100 entries).</li>
@@ -408,20 +408,20 @@ footer {
   <section>
     <div class="section-header">
       <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9678;</div>
-      <h2>47 API Routes</h2>
+      <h2>46 API Routes</h2>
     </div>
     <div class="card-grid">
       <div class="card">
-        <h3>Chat &amp; AI <span class="tag tag-blue">8</span></h3>
-        <div class="api-list">/api/chat<br>/api/chat/stream<br>/api/chat/intro<br>/api/chat/player-speak<br>/api/suggest-gm-replies<br>/api/suggest-prompts<br>/api/suggest-quick-replies<br>/api/suggest-sections</div>
+        <h3>Chat &amp; AI <span class="tag tag-blue">7</span></h3>
+        <div class="api-list">/api/chat<br>/api/chat/stream<br>/api/chat/intro<br>/api/chat/player-speak<br>/api/suggest-gm-replies<br>/api/suggest-prompts<br>/api/suggest-sections</div>
       </div>
       <div class="card">
-        <h3>Characters <span class="tag tag-green">9</span></h3>
-        <div class="api-list">/api/characters<br>/api/characters/[id]<br>/api/characters/generate<br>/api/characters/greet<br>/api/characters/pool<br>/api/characters/style-preview<br>/api/generate-players<br>/api/generate-player-traits<br>/api/generate-host</div>
+        <h3>Characters <span class="tag tag-green">10</span></h3>
+        <div class="api-list">/api/characters<br>/api/characters/[id]<br>/api/characters/generate<br>/api/characters/greet<br>/api/characters/pool<br>/api/characters/style-preview<br>/api/generate-players<br>/api/generate-player-traits<br>/api/generate-host<br>/api/generate-human-game-identity</div>
       </div>
       <div class="card">
-        <h3>Games &amp; Multiplayer <span class="tag tag-yellow">11</span></h3>
-        <div class="api-list">/api/games<br>/api/games/[gameId]<br>/api/games/[gameId]/message<br>/api/games/[gameId]/members<br>/api/games/[gameId]/invite<br>/api/games/[gameId]/join<br>/api/games/[gameId]/share<br>/api/games/[gameId]/public<br>/api/games/[gameId]/guest-view<br>/api/join/[inviteCode]<br>/api/share/[token]</div>
+        <h3>Games &amp; Multiplayer <span class="tag tag-yellow">10</span></h3>
+        <div class="api-list">/api/games/[gameId]/message<br>/api/games/[gameId]/members<br>/api/games/[gameId]/members/[memberId]<br>/api/games/[gameId]/invite<br>/api/games/[gameId]/join<br>/api/games/[gameId]/share<br>/api/games/[gameId]/public<br>/api/games/[gameId]/guest-view<br>/api/join/[inviteCode]<br>/api/share/[token]</div>
       </div>
       <div class="card">
         <h3>Payments &amp; User <span class="tag tag-red">11</span></h3>
