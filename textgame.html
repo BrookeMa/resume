@@ -52,9 +52,7 @@ nav {
 .nav-title {
   font-size: 18px; font-weight: 600; color: var(--text);
   display: flex; align-items: center; gap: 8px;
-  text-decoration: none;
 }
-.nav-title:hover { text-decoration: none; }
 .nav-title .dot { color: var(--blue); }
 .nav-links { display: flex; gap: 8px; }
 .nav-links a {
@@ -224,13 +222,14 @@ footer {
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-title">Ye Ma<span class="dot">.</span></a>
+    <div class="nav-title">TextGame<span class="dot">.</span>ai</div>
     <div class="nav-links">
-      <a href="index.html">Home</a>
       <a href="resume.html">Resume</a>
-      <a href="portfolio.html">Portfolio</a>
+      <a href="index.html">Portfolio</a>
+      <a href="ctrip.html">Ctrip</a>
+      <a href="hoho.html">Hoho</a>
+      <a href="zhanmeng.html">ZM Libs</a>
       <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/brook-ma-45354722b/" target="_blank">LinkedIn</a>
     </div>
   </div>
 </nav>
@@ -240,7 +239,7 @@ footer {
   <!-- HERO -->
   <div class="hero">
     <h1>Technical Overview</h1>
-    <p>A full-stack AI game platform co-built in 2 months with a Dubai-based partner. An AI Game Master autonomously hosts social deduction, RPG, and party games for human and AI players.</p>
+    <p>A full-stack AI game platform solo-built in 2 months. An AI Game Master autonomously hosts social deduction, RPG, and party games for human and AI players. 16 templates with a standardised action system, phase-gated combat, and GM-customisable game mechanics.</p>
     <div class="hero-links">
       <a href="https://textgame.ai" target="_blank" class="chip chip-blue">Visit Live Site</a>
       <a href="https://github.com/BrookeMa/TextGame.ai" target="_blank" class="chip">GitHub Repository</a>
@@ -287,11 +286,11 @@ footer {
     <div class="card-grid">
       <div class="card">
         <h3>AI Game Engine</h3>
-        <p>Host output parsed for structured directives — <code>ASSIGN_ROLE</code>, <code>NEXT_SPEAKER</code>, <code>ELIMINATE</code>, <code>GAME_OVER</code>, <code>[BOARD:Player]</code> — driving the entire game state machine. 15 templates + custom games.</p>
+        <p>Host output parsed for structured directives — <code>ASSIGN_ROLE</code>, <code>NEXT_SPEAKER</code>, <code>ELIMINATE</code>, <code>GAME_OVER</code>, <code>[BOARD:Player]</code> — driving the game state machine. 16 templates with 80+ phase/role-gated action buttons. Standardised <code>ActionType</code> taxonomy across 9 categories.</p>
       </div>
       <div class="card">
         <h3>React State</h3>
-        <p>3 Contexts (<code>Auth</code>, <code>Game</code>, <code>GameRoom</code>) with 25 <code>useState</code> calls in the room provider. 11 custom hooks including <code>useHostRound</code> (699 lines) for turn orchestration.</p>
+        <p>3 Contexts (<code>Auth</code>, <code>Game</code>, <code>GameRoom</code>) with 27 <code>useState</code> calls in the room provider. 12 custom hooks including <code>useHostRound</code> (775+ lines) for turn orchestration and <code>useGameActions</code> for phase/role-gated action buttons.</p>
       </div>
       <div class="card">
         <h3>Real-time Multiplayer</h3>
@@ -366,6 +365,94 @@ footer {
 
   <hr class="divider">
 
+  <!-- ACTION SYSTEM -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">⚔</div>
+      <h2>Action System Architecture</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Context-sensitive action buttons replace free-text input with structured game actions. Phase-gated, role-gated, and customisable per game — from the GM chat all the way to in-game Host AI.</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Standardised Action Types</h3>
+        <p>9 <code>ActionType</code> categories (<code>attack</code> <code>defend</code> <code>support</code> <code>investigate</code> <code>move</code> <code>social</code> <code>vote</code> <code>use</code> <code>meta</code>) and 5 <code>TargetType</code> (<code>player</code> <code>enemy</code> <code>location</code> <code>item</code> <code>none</code>). Drive UI colour hints and Host interpretation.</p>
+      </div>
+      <div class="card">
+        <h3>3-Layer Resolution</h3>
+        <p><strong>GameConfig</strong> (GM-defined via <code>&lt;CONFIG_ACTIONS&gt;</code>) → <strong>Template</strong> (<code>quickActions</code> in 16 templates) → <strong>Category defaults</strong>. First non-empty layer wins. 80+ total actions across templates.</p>
+      </div>
+      <div class="card">
+        <h3>Phase &amp; Role Gating</h3>
+        <p><code>getPhaseType</code> recognises 7 phases: <code>combat</code> <code>exploration</code> <code>rest</code> <code>social</code> <code>day</code> <code>night</code> <code>vote</code>. Actions filtered by <code>matchesPhase</code> + <code>matchesRole</code> each render cycle.</p>
+      </div>
+      <div class="card">
+        <h3>Host AI Awareness</h3>
+        <p><code>buildActionsSection</code> injects a <strong>PLAYER ACTION BUTTONS</strong> block into the Host prompt — grouped by phase, showing labels, targets, and role restrictions. Host resolves actions per game rules.</p>
+      </div>
+      <div class="card">
+        <h3>GM Chat Integration</h3>
+        <p>GM outputs <code>&lt;CONFIG_ACTIONS&gt;[…]&lt;/CONFIG_ACTIONS&gt;</code> JSON. Parsed by <code>gm-rules-parser.ts</code>, stored in <code>GameConfig.quickActions</code>, carried into the game room.</p>
+      </div>
+      <div class="card">
+        <h3>Dynamic Scene Switching</h3>
+        <p>Host's <code>PHASE: Combat — The Goblin Den</code> auto-renames the sidebar channel via <code>extractSceneName</code>. Combined with <code>ANNOUNCE</code> + <code>MOOD</code> for immersive scene transitions without multi-room complexity.</p>
+      </div>
+    </div>
+
+    <div class="flow-box" style="margin-top:24px;">
+<span class="b">GM Chat</span>                    <span class="b">Game Config</span>                <span class="b">Game Room</span>
+   │                           │                          │
+   │ &lt;CONFIG_ACTIONS&gt;          │ quickActions[]            │ useGameActions()
+   │ [{label,template,         │ stored in DB              │   ├── configQuickActions? ──▶ <span class="g">priority</span>
+   │   icon,actionType,        │                           │   ├── template.quickActions ──▶ <span class="y">fallback</span>
+   │   phase,role,             │                           │   └── category defaults ──▶ <span class="r">last resort</span>
+   │   needsTarget}]           │                           │
+   ▼                           ▼                           ▼
+<span class="b">gm-rules-parser</span>           <span class="b">host-prompt-builder</span>       <span class="b">chat-input-area</span>
+   │                        buildActionsSection()       Renders buttons
+   │ validate + parse       │                           │
+   └──────▶ GameConfig ────▶│ ## PLAYER ACTION BUTTONS  │ Phase: "combat"
+                             │ **Phase: combat:**        │ Role: "warrior"
+                             │ - ⚔️ Attack → target      │ ──▶ [⚔️ Attack] [🛡️ Defend]
+                             │ - 🛡️ Defend               │     [💥 Shield Bash]
+                             │ - 💥 Shield Bash (warrior) │
+                             ▼                           ▼
+                        <span class="g">Host AI resolves</span>         <span class="g">Player taps → sends message</span></div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- GAME TEMPLATES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">🎮</div>
+      <h2>16 Game Templates</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>Template</th><th>Category</th><th>Actions</th><th>Key Mechanics</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Werewolf</td><td class="value">Deduction</td><td class="value">7</td><td class="value">Night kills, Seer, Doctor, role-gated actions, voting</td></tr>
+        <tr><td class="label">Mafia</td><td class="value">Deduction</td><td class="value">7</td><td class="value">Detective, Doctor, night-phase factions, decision channels</td></tr>
+        <tr><td class="label">Avalon</td><td class="value">Deduction</td><td class="value">–</td><td class="value">Quest teams, approval voting, Merlin/Assassin reveal</td></tr>
+        <tr><td class="label">Undercover</td><td class="value">Deduction</td><td class="value">3</td><td class="value">Secret words, description rounds, elimination votes</td></tr>
+        <tr><td class="label">Spyfall</td><td class="value">Deduction</td><td class="value">6</td><td class="value">Location deduction, spy bluffing, accusation mechanics</td></tr>
+        <tr><td class="label">Codenames</td><td class="value">Deduction</td><td class="value">–</td><td class="value">Word-grid clue giving, team collaboration</td></tr>
+        <tr><td class="label">Detective Mystery</td><td class="value">Deduction</td><td class="value">6</td><td class="value">Evidence collection, alibis, interrogation, accusation</td></tr>
+        <tr><td class="label">Escape Room</td><td class="value">Cooperative</td><td class="value">6</td><td class="value">Puzzle solving, item combining, timed hints</td></tr>
+        <tr><td class="label">⚔️ Dungeon Crawl</td><td class="value">Cooperative</td><td class="value"><strong>19</strong></td><td class="value">4 classes, HP/d20 combat, phase-gated actions, boss fights, loot</td></tr>
+        <tr><td class="label">Storyteller</td><td class="value">Open</td><td class="value">3</td><td class="value">Collaborative narrative, plot twists, genre themes</td></tr>
+        <tr><td class="label">Trivia</td><td class="value">Quiz</td><td class="value">5</td><td class="value">Category selection, steal/wager, speed bonuses</td></tr>
+        <tr><td class="label">20 Questions</td><td class="value">Quiz</td><td class="value">2</td><td class="value">Yes/no deduction, category hints</td></tr>
+        <tr><td class="label">Debate</td><td class="value">Party</td><td class="value">3</td><td class="value">Structured arguments, rebuttals, audience voting</td></tr>
+        <tr><td class="label">Two Truths &amp; a Lie</td><td class="value">Party</td><td class="value">3</td><td class="value">Deception, social reading, voting</td></tr>
+        <tr><td class="label">Tarot Reading</td><td class="value">Open</td><td class="value">4</td><td class="value">Solo, card spreads, reflective guidance</td></tr>
+        <tr><td class="label">Custom</td><td class="value">Open</td><td class="value">GM-defined</td><td class="value">Full GM customisation via <code>&lt;CONFIG_ACTIONS&gt;</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
   <!-- ENGINEERING -->
   <section>
     <div class="section-header">
@@ -395,7 +482,10 @@ footer {
     <ul class="detail-list">
       <li><strong>useHostRound.ts</strong> <span class="tag tag-blue">775 lines</span> — Round orchestrator: system prompt → streaming API → directive parsing → speaker queue → retries → pacing → analytics.</li>
       <li><strong>GameRoomContext.tsx</strong> <span class="tag tag-green">27 useState</span> — Messages, players, phases, channels, boards, sections, votes, timer, mood, game-over. Local-first with debounced Supabase sync.</li>
-      <li><strong>gm-system-prompt.ts</strong> <span class="tag tag-yellow">Core</span> — Builds Game Master prompt with directives: ASSIGN_ROLE, NEXT_SPEAKER, ELIMINATE, GAME_OVER, [BOARD], [ACCESS], [SECTION], [MY_NOTES].</li>
+      <li><strong>gm-system-prompt.ts</strong> <span class="tag tag-yellow">Core</span> — Builds Game Master prompt with directives: ASSIGN_ROLE, NEXT_SPEAKER, ELIMINATE, GAME_OVER, [BOARD], [ACCESS], [SECTION], CONFIG_ACTIONS.</li>
+      <li><strong>host-prompt-builder.ts</strong> <span class="tag tag-yellow">Core</span> — Assembles Host system prompt: identity, mechanics, pacing, speaker control, directives, and <strong>PLAYER ACTION BUTTONS</strong> section with phase-grouped actions.</li>
+      <li><strong>useGameActions.ts</strong> <span class="tag tag-blue">Hook</span> — 3-layer action resolution: GameConfig → template → category defaults. <code>getPhaseType</code> maps 7 phases; filters by phase + role each render.</li>
+      <li><strong>gm-rules-parser.ts</strong> <span class="tag tag-yellow">Core</span> — Parses 9 GM control tags including <code>CONFIG_ACTIONS</code> for custom action buttons. Validates JSON, applies incremental rule edits.</li>
       <li><strong>game-template-driver.ts</strong> <span class="tag tag-yellow">Core</span> — Per-template mechanics, pacing, speaker order, phase transitions, progression policies.</li>
       <li><strong>tts-broadcast.ts</strong> <span class="tag tag-red">Real-time</span> — Supabase Broadcast for multiplayer TTS. Owner fetches → broadcasts base64 → guests subscribe. djb2 hash + LRU cache (100 entries).</li>
       <li><strong>voice.ts</strong> <span class="tag tag-red">Audio</span> — MediaRecorder + AudioContext + AnalyserNode. 60-bar frequency canvas at 60fps via requestAnimationFrame.</li>
