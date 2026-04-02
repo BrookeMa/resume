@@ -448,18 +448,7 @@ footer a { color: var(--blue); text-decoration: none; }
 </head>
 <body>
 
-<div class="global-nav">
-  <div class="global-nav-inner">
-    <a href="index.html" class="global-nav-title">Ye Ma<span style="color:var(--blue)">.</span></a>
-    <div class="global-nav-links">
-      <a href="index.html">Home</a>
-      <a href="resume.html">Resume</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="https://github.com/BrookeMa" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/brook-ma-45354722b/" target="_blank">LinkedIn</a>
-    </div>
-  </div>
-</div>
+<nav id="site-nav"></nav>
 
 <div class="hero">
   <h1>DarkRomanceBooks.ai</h1>
@@ -494,7 +483,6 @@ footer a { color: var(--blue); text-decoration: none; }
     <a href="#security">Security</a>
     <a href="#flywheel">Growth Flywheel</a>
     <span style="border-left:1px solid var(--grey-300);height:16px;margin:0 4px"></span>
-    <a href="resume.html">Resume</a>
     <a href="index.html">Portfolio</a>
     <a href="ctrip.html">Ctrip</a>
     <a href="hoho.html">Hoho</a>
@@ -1343,10 +1331,8 @@ footer a { color: var(--blue); text-decoration: none; }
 
 </div>
 
-<footer>
-  <p>Built with Next.js 16 · React 19 · OpenAI · Vercel — <a href="https://darkromancebooks.ai" target="_blank">darkromancebooks.ai</a></p>
-  <p style="margin-top:8px">Technical architecture document for reference</p>
-</footer>
+<footer id="site-footer"></footer>
 
+<script src="shared-nav.js"></script>
 </body>
 </html>
