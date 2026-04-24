@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ye Ma — Resume | Full-Stack Software Engineer</title>
 <meta name="description" content="Resume of Ye Ma — Full-Stack Software Engineer with experience in AI products, iOS development, carbon neutrality systems, and e-commerce.">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E📄%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Ye Ma — Resume">
 <meta property="og:description" content="Full-Stack Software Engineer with experience in AI products, iOS development, and e-commerce.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brookema.github.io/resume/resume.html">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap');
 
@@ -319,7 +322,8 @@
           <span class="entry-date"><a href="https://textgame.ai" target="_blank">Live Site</a> · <a href="https://brookema.github.io/resume/textgame.html">Details</a></span>
         </div>
         <ul>
-          <li>Co-built a gamified multiplayer platform with 20+ game templates where an AI Game Master hosts social deduction and party games for human + AI players.</li>
+          <li>Co-built with a Dubai-based partner over 13 weeks (1,080 commits, 76K TS/TSX LOC). AI Game Master autonomously hosts 20+ game templates including social deduction, RPG dungeon crawls, and open-world adventures for mixed human + AI parties.</li>
+          <li>Engineered a 6-layer GM validator pipeline (ingredient ledger, encounter ledger, boss phase tracker, NPC continuity, room sync, quest completion) that eliminates the failure modes of prose-only LLM RPGs. Next.js 16 + React 19 + Supabase Realtime + Stripe; 126 test files, Playwright E2E.</li>
         </ul>
       </div>
 
@@ -329,7 +333,8 @@
           <span class="entry-date"><a href="https://noctveil.ai" target="_blank">Live Site</a> · <a href="https://brookema.github.io/resume/noctveil.html">Details</a></span>
         </div>
         <ul>
-          <li>AI-powered interactive fiction platform where players type free-text to drive branching gothic narratives with an AI narrator and voice synthesis.</li>
+          <li>Solo-built AI-powered gothic dark romance platform. MVP shipped in 4 days; iterated to production over 9 weeks (978 commits, 22K TS/TSX LOC, 66 components, 20 DB migrations).</li>
+          <li>Implemented real-time SSE story streaming, voice synthesis (Inworld + Cartesia TTS), server-enforced trial limits, and Stripe round-credit purchases with 25 security tests covering trial-bypass and purchase-overwrite vectors.</li>
         </ul>
       </div>
 
@@ -339,7 +344,8 @@
           <span class="entry-date"><a href="https://darkromancebooks.ai" target="_blank">Live Site</a> · <a href="https://brookema.github.io/resume/DarkRomanceBooks-TechStack.html">Details</a></span>
         </div>
         <ul>
-          <li>AI-powered book discovery platform with 1000+ indexed pages, 550+ books, and a perfect Lighthouse score of 100.</li>
+          <li>Solo-built in 26 days (209 commits). 1000+ indexed pages, 550+ books, perfect Lighthouse (100/100/100/100). Targeted a high-demand, low-competition niche via keyword research (+900% YoY searches).</li>
+          <li>Designed a self-sustaining SEO growth flywheel: every user search saves ~10 books synchronously, triggers <code>revalidatePath</code>, and pings IndexNow + Google sitemap. 5 nightly Vercel Cron jobs enrich content (Open Library + Google Books + Kaggle). 3-layer caching cuts OpenAI spend ~95%.</li>
         </ul>
       </div>
 

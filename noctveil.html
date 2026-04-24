@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Noctveil.ai — Technical Overview</title>
-<meta name="description" content="Technical deep dive into Noctveil.ai — an AI-powered gothic dark romance interactive fiction platform built in 4 days with streaming narration and Stripe payments.">
+<meta name="description" content="Technical deep dive into Noctveil.ai — a solo-built AI-powered gothic dark romance interactive fiction platform. 22K LOC, 66 components, 35 test files. MVP in 4 days, iterated over 9 weeks and 978 commits.">
+<meta name="theme-color" content="#7b1fa2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🕯%3C/text%3E%3C/svg%3E">
 <meta property="og:title" content="Noctveil.ai — Technical Overview">
-<meta property="og:description" content="AI-powered gothic dark romance interactive fiction platform built in 4 days.">
+<meta property="og:description" content="Solo-built AI gothic dark romance interactive fiction. 22K LOC, 978 commits, 9 weeks to production.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brookema.github.io/resume/noctveil.html">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -226,18 +229,23 @@ footer {
   <!-- HERO -->
   <div class="hero">
     <h1>Technical Overview</h1>
-    <p>An AI-powered gothic dark romance interactive fiction platform built in 4 days. Players type free-text to drive branching narratives as an AI narrator generates the story in real time — with voice synthesis, streaming generation, and Stripe-powered purchases.</p>
+    <p>A solo-built, AI-powered gothic dark romance interactive fiction platform. Players type free-text to drive branching narratives as an AI narrator generates the story in real time — with voice synthesis, streaming SSE generation, and Stripe-powered round packs. MVP shipped in 4 days; iterated to production over 9 weeks and 978 commits.</p>
     <div class="hero-links">
       <a href="https://noctveil.ai" target="_blank" class="chip chip-purple">Visit Live Site</a>
       <a href="portfolio.html" class="chip">Back to Portfolio</a>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 20px;padding:16px 0 0;margin-top:16px;border-top:1px solid var(--border);font-size:13px;color:var(--text-secondary);">
+      <span><strong style="color:var(--text);font-weight:500">Role</strong> · Solo full-stack engineer</span>
+      <span><strong style="color:var(--text);font-weight:500">Timeline</strong> · Jan – Mar 2026 · 9 weeks · 978 commits</span>
+      <span><strong style="color:var(--text);font-weight:500">Status</strong> · Live in production</span>
     </div>
   </div>
 
   <!-- STATS -->
   <div class="stats">
     <div class="stat-item">
-      <div class="stat-num">20K</div>
-      <div class="stat-label">Lines of Code</div>
+      <div class="stat-num">22K</div>
+      <div class="stat-label">TS/TSX LOC</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">13</div>
@@ -252,12 +260,12 @@ footer {
       <div class="stat-label">Test Files</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">17</div>
+      <div class="stat-num">20</div>
       <div class="stat-label">DB Migrations</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">4 days</div>
-      <div class="stat-label">Build Time</div>
+      <div class="stat-num">978</div>
+      <div class="stat-label">Commits</div>
     </div>
   </div>
 
@@ -311,7 +319,7 @@ footer {
         <tr><td class="label">Framework</td><td class="value"><strong>Next.js 16</strong> (App Router, RSC), <strong>React 19</strong>, <strong>TypeScript 5</strong>, Turbopack</td></tr>
         <tr><td class="label">UI</td><td class="value"><strong>Radix UI</strong>, <strong>Tailwind CSS 3</strong>, CVA, <strong>Motion</strong>, TipTap, Recharts, Embla Carousel, Geist + Playfair + Cormorant</td></tr>
         <tr><td class="label">AI</td><td class="value"><strong>OpenAI</strong> SDK — streaming narration with configurable model preferences</td></tr>
-        <tr><td class="label">Database</td><td class="value"><strong>Supabase</strong> (Auth, Realtime, Storage, RLS), <strong>PostgreSQL</strong> (native pg pool), 17 SQL migrations</td></tr>
+        <tr><td class="label">Database</td><td class="value"><strong>Supabase</strong> (Auth, Realtime, Storage, RLS), <strong>PostgreSQL</strong> (native pg pool), 20 SQL migrations</td></tr>
         <tr><td class="label">Payments</td><td class="value"><strong>Stripe</strong> Checkout, Webhooks, round credit system</td></tr>
         <tr><td class="label">Content</td><td class="value"><strong>TipTap</strong> rich text, <strong>marked</strong> + gray-matter Markdown, 20 blog posts</td></tr>
         <tr><td class="label">Monitoring</td><td class="value"><strong>Sentry</strong>, <strong>Vercel Analytics</strong>, Google Analytics (optional)</td></tr>
@@ -358,9 +366,9 @@ footer {
       <h2>Engineering Highlights</h2>
     </div>
     <ul class="detail-list">
-      <li><strong>4-Day Build</strong> — Full product from zero to production deployment in 4 days, including AI narration, payments, auth, blog, and testing.</li>
+      <li><strong>Hackathon-Speed MVP</strong> — Full product from zero to production deployment in 4 days (AI narration, payments, auth, blog, testing). Sustained that velocity: 978 commits over the following 9 weeks hardened it into a live, paid product.</li>
       <li><strong>Streaming AI</strong> — Real-time SSE story generation with <code>/api/story/stream</code> and <code>/api/trial/stream</code>, providing instant narrative feedback as users type.</li>
-      <li><strong>Database Architecture</strong> — 17 sequential SQL migrations covering story states, purchases, round credits, welcome bonuses, AI character configurations, and feedback tables.</li>
+      <li><strong>Database Architecture</strong> — 20 sequential SQL migrations covering story states, purchases, round credits, welcome bonuses, AI character configurations, and feedback tables.</li>
       <li><strong>Auth System</strong> — Supabase Auth with cookie-based sessions, Google OAuth, server-side helpers (<code>auth-server.ts</code>, <code>auth-cookie.ts</code>, <code>auth-helpers.ts</code>), and rate limiting.</li>
       <li><strong>Image Optimization</strong> — AVIF + WebP formats, <code>optimizePackageImports</code> for Radix UI tree-shaking, production console stripping.</li>
       <li><strong>Test Coverage</strong> — 25 Vitest unit test files + 10 Playwright E2E specs covering user journeys, trial flows, API endpoints, and infrastructure.</li>
