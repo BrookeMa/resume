@@ -135,7 +135,7 @@
   <!-- HERO -->
   <div class="hero">
     <h1>Technical Overview</h1>
-    <p>A solo-built, AI-powered book discovery platform for the dark romance genre — shipped in 26 days and now running autonomously. Every search creates new indexable pages; a daily cron stack enriches them with AI editorials, ratings, and author profiles. The system is designed as a self-sustaining SEO growth flywheel with zero manual operations.</p>
+    <p>Solo-built AI book discovery platform for dark romance — shipped in 26 days. Every search creates new indexable pages; a daily cron stack enriches them with AI editorials, ratings, and author profiles. The platform operates as a self-sustaining SEO growth flywheel with zero manual intervention.</p>
     <div class="hero-links">
       <a href="https://darkromancebooks.ai" target="_blank" class="chip chip-blue">Visit Live Site</a>
       <a href="https://wok-manual-43937392.figma.site" target="_blank" class="chip">Figma Prototype</a>
@@ -244,7 +244,7 @@
       <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9654;</div>
       <h2>Content Growth Flywheel</h2>
     </div>
-    <p class="section-desc">Every user search generates new indexable pages, which attract more organic traffic, which drives more searches — a compounding loop running without manual intervention. Below is a single request flow; the daily cron stack enriches the same pages in parallel.</p>
+    <p class="section-desc">Every user search generates new indexable pages, attracting organic traffic and driving more searches — a compounding loop with no manual effort. The flow below shows a single request; the daily cron enriches these pages in parallel.</p>
     <div class="flow-box"><span class="b">User Search</span> ──▶ <span class="t">Edge Proxy</span> ──▶ <span class="g">SSR Page</span> ──▶ <span class="y">Cache Layer</span> ──▶ <span class="p">OpenAI</span>
                        (geo cookie)                (unstable_cache →
                                                     SearchResultCache)
@@ -318,12 +318,12 @@
       <li>
         <h3>Persistent 404s on freshly-searched books <span class="tag tag-red">Race condition</span></h3>
         <p class="step"><strong>Problem —</strong> <code>saveSearchBooksToDb</code> ran inside <code>after()</code>, so the response returned before the book row existed. Users got 404 clicking their own search results.</p>
-        <p class="step"><strong>Fix —</strong> Moved save to be synchronous before response. Added a self-healing fallback that reads <code>SearchResultCache</code> and creates the row on-the-fly. Reduced ISR from 24h → 60s to prevent stale 404 caching.</p>
+        <p class="step"><strong>Fix —</strong> Moved save synchronous before response. Added a self-healing fallback reading <code>SearchResultCache</code> and creating rows on-the-fly. Reduced ISR from 24h → 60s to eliminate stale page caching.</p>
         <p class="step"><strong>Result —</strong> +200ms search latency, 404 rate effectively zero.</p>
       </li>
       <li>
         <h3>Google Books quota exhaustion <span class="tag tag-yellow">API limit</span></h3>
-        <p class="step"><strong>Problem —</strong> Each search triggered ~100 cover-image calls, burning through the 1,000/day free quota in minutes during testing.</p>
+        <p class="step"><strong>Problem —</strong> Each search triggered ~100 cover-image calls, exhausting the 1,000/day quota within minutes during testing.</p>
         <p class="step"><strong>Fix —</strong> Built a 3-layer cover cache (memory → Postgres → API), inserted Open Library as the primary source, added a batch endpoint with concurrency limit of 3.</p>
         <p class="step"><strong>Result —</strong> ~100 → ~3 calls per search. Quota stopped being a constraint.</p>
       </li>
@@ -342,7 +342,7 @@
       <li>
         <h3>Connection-pool exhaustion during batch jobs <span class="tag tag-green">Production</span></h3>
         <p class="step"><strong>Problem —</strong> Author cron + description backfill exceeded Supabase's <code>MaxClientsInSessionMode</code>, 500-ing live traffic.</p>
-        <p class="step"><strong>Fix —</strong> Switched batch loops to sequential execution with explicit cleanup, 1–4s API spacing, and <code>connection_limit=3</code> on the Prisma pg adapter to stay under PgBouncer.</p>
+        <p class="step"><strong>Fix —</strong> Switched batch loops to sequential execution, added 1–4s API spacing, set <code>connection_limit=3</code> on Prisma pg adapter to stay under PgBouncer limits.</p>
         <p class="step"><strong>Result —</strong> Stable pool usage during batch ops. Zero production impact since.</p>
       </li>
     </ul>
@@ -403,7 +403,7 @@
       <div class="section-icon" style="background:var(--teal-light);color:var(--teal);">&#128200;</div>
       <h2>Performance &amp; SEO Evidence</h2>
     </div>
-    <p class="section-desc">Third-party audits and keyword research — the market signal that motivated the project and the production numbers that came out the other side. Click any thumbnail to enlarge.</p>
+    <p class="section-desc">Third-party audits and keyword research that motivated the project, plus the production results below. Click any thumbnail to enlarge.</p>
     <div class="evidence-grid">
       <figure>
         <img src="assets/drb-pagespeed.png" alt="DarkRomanceBooks.ai PageSpeed Insights — 98/100/100/100">

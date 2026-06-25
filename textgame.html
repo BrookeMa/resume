@@ -49,7 +49,7 @@
   <!-- HERO -->
   <div class="hero">
     <h1>Technical Overview</h1>
-    <p>A full-stack AI game platform co-built with a Dubai-based partner over 13 weeks. An AI Game Master autonomously hosts social deduction, RPG, and party games for human and AI players. 16 templates with a standardised action system, phase-gated combat, and GM-customisable game mechanics.</p>
+    <p>A full-stack AI multiplayer game platform co-built with a Dubai partner over 13 weeks. The AI Game Master hosts 16 social deduction, RPG, and party game templates — each with standardised actions, phase-gated combat, and GM-customisable mechanics — for human and AI players.</p>
     <div class="hero-links">
       <a href="https://textgame.ai" target="_blank" class="chip chip-blue">Visit Live Site</a>
       <a href="https://twine-rally-11096846.figma.site" target="_blank" class="chip">Figma Prototype</a>
@@ -186,11 +186,11 @@
       <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">⚔</div>
       <h2>Action System Architecture</h2>
     </div>
-    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Context-sensitive action buttons replace free-text input with structured game actions. Phase-gated, role-gated, and customisable per game — from the GM chat all the way to in-game Host AI.</p>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Context-sensitive action buttons replace free-text input with structured game actions, phase-gated and role-gated, customisable per game from GM chat to in-game Host AI.</p>
     <div class="card-grid">
       <div class="card">
         <h3>Standardised Action Types</h3>
-        <p>9 <code>ActionType</code> categories (<code>attack</code> <code>defend</code> <code>support</code> <code>investigate</code> <code>move</code> <code>social</code> <code>vote</code> <code>use</code> <code>meta</code>) and 5 <code>TargetType</code> (<code>player</code> <code>enemy</code> <code>location</code> <code>item</code> <code>none</code>). Drive UI colour hints and Host interpretation.</p>
+        <p>9 <code>ActionType</code> categories (<code>attack</code> <code>defend</code> <code>support</code> <code>investigate</code> <code>move</code> <code>social</code> <code>vote</code> <code>use</code> <code>meta</code>) and 5 <code>TargetType</code> (<code>player</code> <code>enemy</code> <code>location</code> <code>item</code> <code>none</code>) — informing UI colours and Host interpretation.</p>
       </div>
       <div class="card">
         <h3>3-Layer Resolution</h3>
@@ -210,7 +210,7 @@
       </div>
       <div class="card">
         <h3>Dynamic Scene Switching</h3>
-        <p>Host's <code>PHASE: Combat — The Goblin Den</code> auto-renames the sidebar channel via <code>extractSceneName</code>. Combined with <code>ANNOUNCE</code> + <code>MOOD</code> for immersive scene transitions without multi-room complexity.</p>
+        <p>Host's <code>PHASE: Combat — The Goblin Den</code> auto-renames the sidebar channel via <code>extractSceneName</code>. Combined with <code>ANNOUNCE</code> + <code>MOOD</code> directives for immersive scene transitions.</p>
       </div>
     </div>
 

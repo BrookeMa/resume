@@ -54,7 +54,7 @@
   <!-- HERO -->
   <div class="hero">
     <h1>Technical Overview</h1>
-    <p>A multiplayer life-simulation city game for Roblox, built solo in a 20-day sprint. A living coastal cartoon world — flowing traffic, walking pedestrians, animals, and day/night cycles — where players fish, run delivery jobs, shop for cars, and decorate homes in a persistent city economy. The hard part isn't the gameplay; it's getting a world this large to exist on Roblox at all, which drove a custom asset pipeline and a set of save-safe, exploit-resistant server systems.</p>
+    <p>A multiplayer life-sim city for Roblox, built solo in 20 days. Players fish, run delivery jobs, shop for cars, and decorate homes in a persistent economy across a coastal world with traffic, pedestrians, animals, and day/night cycles. The technical challenge: getting a world this large to exist on Roblox at all — which drove a custom asset pipeline and exploit-resistant server systems.</p>
     <div class="hero-links">
       <a href="portfolio.html" class="chip">Back to Portfolio</a>
     </div>
@@ -128,7 +128,7 @@
     <div class="card-grid">
       <div class="card">
         <h3>Client–Server Split</h3>
-        <p>Roblox <code>RemoteEvents</code> / <code>RemoteFunctions</code> across <code>ReplicatedStorage</code> (shared logic), <code>ServerScriptService</code> (systems), and <code>StarterPlayer</code> (client). Server is authoritative on every economic action; the client only renders and predicts.</p>
+        <p>Roblox <code>RemoteEvents</code> / <code>RemoteFunctions</code> across <code>ReplicatedStorage</code> (shared logic), <code>ServerScriptService</code> (systems), and <code>StarterPlayer</code> (client). Server validates all economic actions; client renders and predicts.</p>
       </div>
       <div class="card">
         <h3>Asset Pipeline</h3>
@@ -185,7 +185,7 @@
       <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9654;</div>
       <h2>Asset Pipeline Flow</h2>
     </div>
-    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">A single 94 MB city model can't be imported whole — Roblox caps mesh imports and collapses identical meshes only if they share a <code>MeshId</code>. The pipeline deconstructs the monolith, moderates and uploads each piece, then rebuilds the city from exact world transforms so 1,446 identical road tiles become one draw call instead of 1,446.</p>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">A single 94 MB city model exceeds Roblox mesh-import limits and only collapses identical meshes sharing a <code>MeshId</code>. The pipeline deconstructs the monolith, moderates and uploads each piece, then rebuilds from exact world transforms — so 1,446 identical road tiles collapse to one draw call.</p>
     <div class="flow-box"><span class="b">Cartoon_City.glb</span>  ──▶  <span class="b">build_layout.py</span>  ──▶  <span class="b">layout.json</span>  ──▶  <span class="b">Open Cloud</span>  ──▶  <span class="b">In-World</span>
    11,447 nodes        walk scene graph       681 modules        upload          reconstruct
    94 MB monolith      accumulate world       + asset_map        per piece       by transform
@@ -215,7 +215,7 @@
       </div>
       <div class="card">
         <h3>Pedestrians &amp; Animals</h3>
-        <p>30+ NPCs cycle behavior states — idle, walking, sitting, posing — upgrading from lightweight fallback rigs to full cartoon characters as players approach. Roaming animals and birds round out the ambience.</p>
+        <p>30+ NPCs with distance-based LOD — lightweight fallback rigs far away, full cartoon characters up close. Behavior cycles: idle, walking, sitting, posing. Roaming animals and birds add liveliness.</p>
       </div>
       <div class="card">
         <h3>LOD Scheduler</h3>
