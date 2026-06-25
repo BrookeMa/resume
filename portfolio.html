@@ -188,7 +188,7 @@
   <div class="hero">
     <h1 class="animate-in">Project <span class="accent">Portfolio</span></h1>
     <p class="animate-in delay-1">
-      A collection of products I've built — from AI game platforms and interactive fiction to SEO-optimized e-commerce and native iOS apps.
+      A collection of products I've built — from AI game platforms and a Roblox life-sim city to interactive fiction, SEO-optimized web apps, and native iOS apps.
     </p>
     <div class="hero-links animate-in delay-2">
       <a href="mailto:maye634028187@gmail.com" class="chip chip-blue">Contact Me</a>
@@ -198,8 +198,8 @@
   <!-- STATS -->
   <div class="stats animate-in delay-3">
     <div class="stat-item">
-      <div class="stat-num">8</div>
-      <div class="stat-label">Products Shipped</div>
+      <div class="stat-num">9</div>
+      <div class="stat-label">Products Built</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">3</div>
@@ -391,6 +391,72 @@
         <div>
           <img src="assets/drb-pagespeed.png" alt="DarkRomanceBooks.ai PageSpeed Insights">
           <div class="caption">PageSpeed Insights — 98 Performance, 100 Accessibility, 100 Best Practices, 100 SEO</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- GAMES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple-light);color:var(--purple);">&#9818;</div>
+      <h2>Games</h2>
+    </div>
+
+    <!-- Toonlife -->
+    <div class="project-showcase">
+      <div class="project-header">
+        <div class="project-info">
+          <h3>Toonlife &mdash; Cartoon City (Roblox)</h3>
+          <div class="project-meta">
+            <span class="tag tag-purple">In Development</span>
+            <span>Solo-built · 20-day sprint · 396 commits</span>
+          </div>
+          <p>A multiplayer life-simulation city game for Roblox &mdash; a living coastal cartoon world with flowing traffic, walking pedestrians, animals, and day/night cycles. Players fish, run delivery jobs, shop for cars, and decorate homes in a persistent city economy. Backed by a custom asset pipeline that deconstructs an 11,447-node city model into 681 instanced modules so a world this large streams without hitting Roblox import or draw-call ceilings.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Roblox</span>
+            <span class="tech-tag">Luau</span>
+            <span class="tech-tag">Rojo</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">DataStore</span>
+            <span class="tech-tag">Open Cloud</span>
+            <span class="tech-tag">glTF / GLB</span>
+          </div>
+          <div class="project-links">
+            <a href="toonlife.html" class="primary">Technical Deep Dive</a>
+          </div>
+        </div>
+        <div class="project-stats">
+          <div class="project-stat"><div class="num">396</div><div class="label">Commits</div></div>
+          <div class="project-stat"><div class="num">31K</div><div class="label">Luau LOC</div></div>
+          <div class="project-stat"><div class="num">681</div><div class="label">City Modules</div></div>
+          <div class="project-stat"><div class="num">150</div><div class="label">Traffic AI</div></div>
+        </div>
+      </div>
+      <div class="project-highlights">
+        <ul>
+          <li>Modular asset pipeline (11K-node GLB → 681 instanced pieces)</li>
+          <li>150-car kinematic traffic AI + 30+ NPC pedestrians</li>
+          <li>Skill-based fishing, server-authoritative validation</li>
+          <li>Save-safe DataStore (monotonic merge, idempotent writes)</li>
+          <li>AI content-moderation gate on every asset</li>
+          <li>Streaming world (3000-stud radius)</li>
+        </ul>
+      </div>
+      <div class="screenshots">
+        <div>
+          <img src="assets/image-1782347020426.webp" alt="Toonlife in-game car shop UI">
+          <div class="caption">In-game car shop &mdash; browse vehicles with live stat cards &amp; summon</div>
+        </div>
+        <div>
+          <img src="assets/toonlife-city-overview.webp" alt="Toonlife cartoon city aerial overview">
+          <div class="caption">City world &mdash; coastal peninsula, bridge, amusement park &amp; cruise dock</div>
+        </div>
+        <div>
+          <img src="assets/toonlife-eco-district.webp" alt="Toonlife ecological district aerial view">
+          <div class="caption">Ecological district &mdash; terraced neighborhoods, hospital, observatory</div>
         </div>
       </div>
     </div>

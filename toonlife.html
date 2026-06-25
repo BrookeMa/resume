@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toonlife — Technical Overview</title>
+<meta name="description" content="Technical deep dive into Toonlife — a multiplayer life-simulation city game for Roblox with a custom GLB asset pipeline, kinematic traffic AI, and save-safe DataStore economy. 31K Luau LOC, 396 commits.">
+<meta name="theme-color" content="#1a73e8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🏙️%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Toonlife — Technical Overview">
+<meta property="og:description" content="A multiplayer life-sim city game for Roblox with a custom GLB asset pipeline, 150-car traffic AI, and save-safe DataStore economy.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brookema.github.io/resume/toonlife.html">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="resume.css">
+<style>
+.card code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--blue-light); color: var(--blue);
+  padding: 1px 5px; border-radius: 3px;
+}
+
+.flow-box {
+  background: var(--bg-gray);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px;
+  font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.9; overflow-x: auto; white-space: pre;
+  color: var(--text-secondary);
+}
+.flow-box .b { color: var(--blue);  font-weight: 500; }
+.flow-box .g { color: var(--green); font-weight: 500; }
+.flow-box .r { color: var(--red);   font-weight: 500; }
+.flow-box .y { color: #b06000;      font-weight: 500; }
+
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.shots img {
+  width: 100%; border-radius: 8px; border: 1px solid var(--border);
+}
+.shots .caption { font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Technical Overview</h1>
+    <p>A multiplayer life-simulation city game for Roblox, built solo in a 20-day sprint. A living coastal cartoon world — flowing traffic, walking pedestrians, animals, and day/night cycles — where players fish, run delivery jobs, shop for cars, and decorate homes in a persistent city economy. The hard part isn't the gameplay; it's getting a world this large to exist on Roblox at all, which drove a custom asset pipeline and a set of save-safe, exploit-resistant server systems.</p>
+    <div class="hero-links">
+      <a href="portfolio.html" class="chip">Back to Portfolio</a>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 20px;padding:16px 0 0;margin-top:16px;border-top:1px solid var(--border);font-size:13px;color:var(--text-secondary);">
+      <span><strong style="color:var(--text);font-weight:500">Role</strong> · Solo — game design, engine, asset pipeline, tooling</span>
+      <span><strong style="color:var(--text);font-weight:500">Timeline</strong> · Jun 2026 · 20-day sprint · 396 commits</span>
+      <span><strong style="color:var(--text);font-weight:500">Status</strong> · In development</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">31K</div>
+      <div class="stat-label">Luau LOC</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">9K</div>
+      <div class="stat-label">Python Tooling</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">681</div>
+      <div class="stat-label">City Modules</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">150</div>
+      <div class="stat-label">Traffic NPCs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">11,447</div>
+      <div class="stat-label">Placed Instances</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">396</div>
+      <div class="stat-label">Commits</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SCREENSHOTS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple-light);color:var(--purple);">&#9673;</div>
+      <h2>The World</h2>
+    </div>
+    <div class="shots">
+      <div>
+        <img src="assets/image-1782347020426.webp" alt="Toonlife in-game car shop UI">
+        <div class="caption">In-game car shop — browse vehicles with live stat cards, summon &amp; ownership</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-city-overview.webp" alt="Toonlife cartoon city aerial overview">
+        <div class="caption">Coastal peninsula — downtown towers, bridge, amusement park &amp; cruise dock</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-eco-district.webp" alt="Toonlife ecological district aerial view">
+        <div class="caption">Ecological district — terraced neighborhoods, hospital, police, observatory</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>Architecture</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Client–Server Split</h3>
+        <p>Roblox <code>RemoteEvents</code> / <code>RemoteFunctions</code> across <code>ReplicatedStorage</code> (shared logic), <code>ServerScriptService</code> (systems), and <code>StarterPlayer</code> (client). Server is authoritative on every economic action; the client only renders and predicts.</p>
+      </div>
+      <div class="card">
+        <h3>Asset Pipeline</h3>
+        <p>An 11,447-node pre-assembled <code>Cartoon_City.glb</code> is deconstructed into 681 modular pieces, each uploaded via Roblox Open Cloud and reconstructed in-world by exact transform. Sidesteps the ~200-mesh import ceiling and preserves instancing.</p>
+      </div>
+      <div class="card">
+        <h3>Living City</h3>
+        <p><code>Life.server.luau</code> drives 150 kinematic traffic cars, 30+ pedestrians, animals, and birds through a shared LOD scheduler (<code>Agents.luau</code>) that culls and tiers agents by distance — movement is CFrame-driven, no physics.</p>
+      </div>
+      <div class="card">
+        <h3>Persistence</h3>
+        <p>DataStore-backed wallet, garage, fishing dex, and room designs. Every write is an idempotent <code>UpdateAsync</code> merge — a fast server-hop can never roll back a caught species, a purchased car, or earned cash.</p>
+      </div>
+      <div class="card">
+        <h3>UI System</h3>
+        <p><code>UIKit.luau</code> — a reusable component library: world markers, directional arrows, cash HUD, status cards. Data-driven minimap + full-screen map survive streaming; a settings panel exposes perf modes.</p>
+      </div>
+      <div class="card">
+        <h3>Build &amp; Sync</h3>
+        <p><strong>Rojo</strong> watches <code>src/</code> and live-syncs into Roblox Studio. A Python toolchain (42 scripts) turns raw GLB → <code>layout.json</code> → generated Luau data modules, with atomic writes that survive crashes mid-build.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TECH STACK -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Tech Stack</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>Layer</th><th>Technologies</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Engine</td><td class="value"><strong>Roblox</strong> (3D engine, StreamingEnabled world, leaderstats), cross-platform web / desktop / mobile clients</td></tr>
+        <tr><td class="label">Game Code</td><td class="value"><strong>Luau</strong> (strict-typed) — 111 files, 30,868 lines across server systems, shared modules, and client UI</td></tr>
+        <tr><td class="label">Tooling</td><td class="value"><strong>Python</strong> — 42 scripts, 9,144 lines for asset processing, GLB inspection, manifest generation, animation baking</td></tr>
+        <tr><td class="label">Assets</td><td class="value"><strong>glTF / GLB</strong> import, 679-piece Cartoon City pack, custom coordinate transforms (glTF right-hand ↔ Roblox left-hand)</td></tr>
+        <tr><td class="label">Persistence</td><td class="value"><strong>Roblox DataStore</strong> — wallet, vehicle garage, fishing dex, room designs; autosave + <code>BindToClose</code> flush</td></tr>
+        <tr><td class="label">Networking</td><td class="value"><strong>RemoteEvents / RemoteFunctions</strong>, server-authoritative validation, latency compensation</td></tr>
+        <tr><td class="label">Build</td><td class="value"><strong>Rojo</strong> file-sync, <strong>Roblox Open Cloud</strong> uploader, generated Luau data modules</td></tr>
+        <tr><td class="label">Config</td><td class="value">Luau config modules (<code>CityConfig.luau</code>) for centralized game tuning</td></tr>
+        <tr><td class="label">Port</td><td class="value"><strong>Godot 4</strong> single-player port under <code>/godot/</code> for a future standalone release</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ASSET PIPELINE FLOW -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9654;</div>
+      <h2>Asset Pipeline Flow</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">A single 94 MB city model can't be imported whole — Roblox caps mesh imports and collapses identical meshes only if they share a <code>MeshId</code>. The pipeline deconstructs the monolith, moderates and uploads each piece, then rebuilds the city from exact world transforms so 1,446 identical road tiles become one draw call instead of 1,446.</p>
+    <div class="flow-box"><span class="b">Cartoon_City.glb</span>  ──▶  <span class="b">build_layout.py</span>  ──▶  <span class="b">layout.json</span>  ──▶  <span class="b">Open Cloud</span>  ──▶  <span class="b">In-World</span>
+   11,447 nodes        walk scene graph       681 modules        upload          reconstruct
+   94 MB monolith      accumulate world       + asset_map        per piece       by transform
+                       transforms                                                instanced
+                            │                       │                 │
+                            ▼                       ▼                 ▼
+                  <span class="y">coord convert</span>          <span class="g">run_moderation.py</span>     <span class="g">gen_rojo_sources.py</span>
+                  glTF → Roblox            AI visual audit      681 placed pieces
+                  rotation, not            <span class="r">fail-closed</span>: 10        → Luau data modules
+                  reflection               unsafe assets        → Rojo → Studio
+                  (curves must             excluded; per-hash
+                  not mirror)              stamps block re-upload</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LIVING CITY -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9650;</div>
+      <h2>Living City Systems</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Traffic AI</h3>
+        <p>150 cars follow lanes kinematically with per-vehicle speed profiles, yield to pedestrians and players, and obey light-synced routing. CFrame-driven — no physics solver runs for the fleet.</p>
+      </div>
+      <div class="card">
+        <h3>Pedestrians &amp; Animals</h3>
+        <p>30+ NPCs cycle behavior states — idle, walking, sitting, posing — upgrading from lightweight fallback rigs to full cartoon characters as players approach. Roaming animals and birds round out the ambience.</p>
+      </div>
+      <div class="card">
+        <h3>LOD Scheduler</h3>
+        <p><code>Agents.luau</code> runs one shared scheduler across all agents — far / mid / close tiers with crowd collision avoidance, culling distant agents so a fully populated city holds frame rate.</p>
+      </div>
+      <div class="card">
+        <h3>Day / Night</h3>
+        <p>Dynamic lighting cycles: fresh daytime palette to neon-lit night, synced with traffic-light routing and ambient behavior shifts.</p>
+      </div>
+      <div class="card">
+        <h3>Streaming World</h3>
+        <p><code>StreamingEnabled</code> with a 3000-stud target radius and 256-stud minimum — the entire coastal city loads progressively with no monolithic load screen.</p>
+      </div>
+      <div class="card">
+        <h3>Instancing</h3>
+        <p>Modular pieces sharing a <code>MeshId</code> collapse to a single draw call. Reconstructing from modules rather than importing the monolith is what makes the whole map renderable.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ECONOMY -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9733;</div>
+      <h2>Economy &amp; Progression</h2>
+    </div>
+    <table class="clean-table">
+      <thead><tr><th>System</th><th>DataStore</th><th>Mechanics &amp; Server Guards</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Fishing</td><td class="value"><code>FishDex</code></td><td class="value">Skill-based reel window validated server-side with a ping-aware grace window; zone-based fish pools (reef / deep / open sea); hotspot proximity spawns rarer catches; rarity-colored cards; monotonic max-merge so a server-hop can't lose a species.</td></tr>
+        <tr><td class="label">Delivery Jobs</td><td class="value"><code>Wallet</code></td><td class="value">Distance-scaled payouts, building-based drop-off, min-travel-time guard against teleport exploits.</td></tr>
+        <tr><td class="label">Vehicles</td><td class="value"><code>CityGarage_v1</code></td><td class="value">Persistent garage, free starter cars + purchased upgrades, ownership validated server-side.</td></tr>
+        <tr><td class="label">Wallet</td><td class="value"><code>Wallet</code></td><td class="value">Additive cash ledger with timestamp reconciliation and a "+$N" popup UX; never overwritten by stale state.</td></tr>
+        <tr><td class="label">Room Decoration</td><td class="value"><code>RoomDesigns_v1</code></td><td class="value">~1,200 furniture items with tiered pricing; per-player persistent room layouts (separate ToonRoom Rojo project).</td></tr>
+        <tr><td class="label">Pet Quests</td><td class="value">—</td><td class="value">NPC-driven task chains that feed the wallet and progression loop.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ENGINEERING -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--red-light);color:var(--red);">&#9873;</div>
+      <h2>Performance &amp; Safety</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>Server-authoritative economy</strong> — fishing reels, delivery payouts, and car purchases are all validated server-side. The client never decides a win.</li>
+      <li><strong>Save-loss protection</strong> — idempotent <code>UpdateAsync</code> merges and monotonic max-merge on the fishing dex mean a fast rejoin can't roll back progress; race conditions resolve in the player's favor.</li>
+      <li><strong>Latency compensation</strong> — <code>GetNetworkPing</code> + a reel grace window keep the fishing minigame fair across connection quality.</li>
+      <li><strong>Exploit guards</strong> — min-travel-time requirements block teleport-to-payout; per-asset moderation hash stamps block re-uploading unsafe content under a new filename.</li>
+      <li><strong>Content moderation gate</strong> — an AI visual audit runs on every asset before upload; the pipeline is fail-closed, auto-excluding 10 flagged assets (bars, nightclubs, flagged billboards).</li>
+      <li><strong>Kinematic movement</strong> — 150 cars and 30+ NPCs move by CFrame rather than physics, keeping a fully populated city cheap.</li>
+      <li><strong>Streaming + instancing</strong> — 3000-stud streaming radius and MeshId-shared instancing make a 4.5 GB asset library playable in-browser.</li>
+      <li><strong>Atomic build writes</strong> — the Python pipeline writes layout and manifest files atomically so a crash mid-build never corrupts generated data.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- KEY MODULES -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#128196;</div>
+      <h2>Key Modules</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>build_layout.py</strong> <span class="tag tag-yellow">Pipeline</span> — Walks the glTF scene graph, accumulates world transforms, converts glTF → Roblox coordinates (rotation, not reflection, validated against asymmetric road curves), and emits deterministic <code>layout.json</code> + <code>asset_map.json</code>.</li>
+      <li><strong>gen_rojo_sources.py</strong> <span class="tag tag-yellow">Pipeline</span> — Turns the 681-piece layout into generated Luau data modules consumed by Rojo, reconstructing the city in-world by exact transform.</li>
+      <li><strong>run_moderation.py</strong> <span class="tag tag-red">Safety</span> — AI visual audit per asset with fail-closed exclusion and per-hash pass/fail stamps to prevent re-upload exploits; a character allowlist auto-identifies rigs vs static props by GLB structure.</li>
+      <li><strong>Life.server.luau</strong> <span class="tag tag-blue">Server</span> — Drives the living city: 150-car traffic AI, 30+ pedestrians, animals, birds, and traffic-light routing.</li>
+      <li><strong>Agents.luau</strong> <span class="tag tag-blue">Shared</span> — One scheduler for all agents: far / mid / close LOD tiers, crowd collision avoidance, distance culling.</li>
+      <li><strong>InventoryService</strong> <span class="tag tag-green">Persistence</span> — Idempotent <code>UpdateAsync</code> merge pattern that never overwrites newer data on a DataStore race.</li>
+      <li><strong>UIKit.luau</strong> <span class="tag tag-purple">Client</span> — Reusable UI components: world markers, directional arrows, cash HUD, status cards, data-driven map.</li>
+      <li><strong>CityConfig.luau</strong> <span class="tag tag-yellow">Config</span> — Centralized game-tuning constants for the city, economy, and population systems.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SCOPE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9678;</div>
+      <h2>Content &amp; Scope</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>World</h3>
+        <p>681 modular building pieces · 11,447 placed instances · coastal city, ecological district, amusement park, cruise dock, underwater zones.</p>
+      </div>
+      <div class="card">
+        <h3>Population</h3>
+        <p>300+ cartoon characters · 150 traffic cars · 60 parked cars · 30+ ambient NPCs · 13 major animals plus pets and birds.</p>
+      </div>
+      <div class="card">
+        <h3>Activities</h3>
+        <p>Fishing (50+ species across zones) · delivery jobs · car shopping · pet quests · room decoration (~1,200 furniture items) · skateboarding · food shopping.</p>
+      </div>
+      <div class="card">
+        <h3>Subprojects</h3>
+        <p>ToonRoom decoration · shopping mall interior · fishing-rod asset library · Godot 4 single-player port — each its own Rojo project.</p>
+      </div>
+      <div class="card">
+        <h3>Assets</h3>
+        <p>4.5 GB raw library · 8,094 asset files (GLB, FBX, PNG, textures) · custom GUI icon set in a unified 3D-render style.</p>
+      </div>
+      <div class="card">
+        <h3>Codebase</h3>
+        <p>30,868 lines of Luau across 111 files · 9,144 lines of Python tooling · ~1,513 lines of Luau tests · 396 commits in 20 days.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="shared-nav.js"></script>
+</body>
+</html>
