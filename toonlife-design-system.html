@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toonlife Design System — UI System Overview</title>
+<meta name="description" content="The brand & UI design system for Toonlife — a coastal cartoon city life-sim on Roblox. The in-engine 'UIKit' ported 1:1 to the web: 134 design tokens, 9 React primitives, 7 candy-button families, and click-through mockups for mobile, PC, and console.">
+<meta name="theme-color" content="#42509c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🎨%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Toonlife Design System — UI System Overview">
+<meta property="og:description" content="The game's in-engine UI reverse-engineered from Luau source into a web design system: 134 tokens, 9 React primitives, and click-through mockups across mobile, PC & console.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brookema.github.io/resume/toonlife-design-system.html">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="resume.css">
+<style>
+.card code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--blue-light); color: var(--blue);
+  padding: 1px 5px; border-radius: 3px;
+}
+
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.shots img {
+  width: 100%; border-radius: 8px; border: 1px solid var(--border);
+  cursor: pointer; transition: transform .2s, box-shadow .2s;
+}
+.shots img:hover { transform: scale(1.01); box-shadow: 0 4px 16px rgba(32,33,36,0.12); }
+.shots .caption { font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 6px; }
+.shots .wide { grid-column: 1 / -1; }
+.shots .wide img { max-width: 720px; margin: 0 auto; display: block; }
+
+/* SWATCHES */
+.swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.swatch {
+  width: 92px; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); font-size: 10.5px;
+}
+.swatch .chip { height: 44px; }
+.swatch .meta { padding: 5px 7px; background: #fff; }
+.swatch .meta b { display: block; font-size: 11px; color: var(--text); font-weight: 600; }
+.swatch .meta span { color: var(--text-secondary); font-family: var(--mono); font-size: 10px; }
+
+/* LIGHTBOX */
+.lightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 1000; cursor: zoom-out;
+  align-items: center; justify-content: center;
+}
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 92%; max-height: 92%; border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Design System Overview</h1>
+    <p>The brand &amp; UI design system for <strong>Toonlife</strong> — a sun-drenched coastal cartoon-city life-sim on Roblox. The game's in-engine UI (its Luau <code>UIKit</code>) was reverse-engineered <strong>from source, not screenshots</strong>, and ported 1:1 to the web — so designers can mock screens, marketing, and pitch material that look exactly like the shipped game. One UI language, three platforms: the panels, buttons, and chrome are identical everywhere; only the controls layer changes.</p>
+    <div class="hero-links">
+      <a href="portfolio.html" class="chip">Back to Portfolio</a>
+      <a href="toonlife.html" class="chip chip-blue">The Game — Technical Overview</a>
+      <a href="https://github.com/BrookeMa/toonlife-design-system" target="_blank" class="chip">GitHub</a>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 20px;padding:16px 0 0;margin-top:16px;border-top:1px solid var(--border);font-size:13px;color:var(--text-secondary);">
+      <span><strong style="color:var(--text);font-weight:500">Role</strong> · Solo — design tokens, component library, platform mockups</span>
+      <span><strong style="color:var(--text);font-weight:500">Source of truth</strong> · the game's own Luau <code>UIKit.luau</code></span>
+      <span><strong style="color:var(--text);font-weight:500">Stack</strong> · Design tokens (CSS) · React · Fredoka / Montserrat</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num">134</div><div class="stat-label">Design Tokens</div></div>
+    <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">React Primitives</div></div>
+    <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Button Families</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
+    <div class="stat-item"><div class="stat-num">18</div><div class="stat-label">Specimen Cards</div></div>
+    <div class="stat-item"><div class="stat-num">41</div><div class="stat-label">3D Icons</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- THE SYSTEM -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple-light);color:var(--purple);">&#9673;</div>
+      <h2>The System</h2>
+    </div>
+    <div class="shots">
+      <div class="wide">
+        <img src="assets/toonlife-ds-overview.webp" alt="Toonlife Design System catalog — hero, candy button families, surface palette">
+        <div class="caption">Design-system catalog — brand world, the 7 candy-button families, and the navy surface / accent palette, all generated from the shared tokens</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-ds-buttons.webp" alt="Candy button component — variants, sizes, states, HUD icon buttons">
+        <div class="caption">CandyButton — 7 families, size &amp; state matrix (selected / disabled), plus round HUD IconButtons</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ONE UI, THREE PLATFORMS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9638;</div>
+      <h2>One UI Language, Three Platforms</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">The kits are full-screen, click-through recreations of the live game over real city renders. The chrome — panels, buttons, cash pill, minimap — is identical on every surface; only the <strong>controls layer</strong> swaps: touch joystick + buttons on mobile, keyboard hints on PC, gamepad-glyph prompts on console.</p>
+    <div class="shots">
+      <div>
+        <img src="assets/toonlife-ds-mobile.webp" alt="Mobile UI kit — in-city HUD with walk-by food shop">
+        <div class="caption">Mobile — in-city HUD with touch joystick, cash pill &amp; minimap; a walk-by Food Shop floats over the live world</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-ds-pc.webp" alt="PC UI kit — car showroom with keyboard hints">
+        <div class="caption">PC — 3D-preview Car Showroom with stat bars, equip / drive actions, and keyboard interaction hints</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-ds-console.webp" alt="Console UI kit — settings panel with controller glyph prompts">
+        <div class="caption">Console — perf-mode Settings with gamepad-glyph prompts (Ⓐ Select · Ⓑ Back · Ⓨ Reset) and a focus ring</div>
+      </div>
+      <div>
+        <img src="assets/toonlife-ds-home.webp" alt="Home UI kit — furniture shop and isometric room decorator">
+        <div class="caption">Home — buy furniture, then drag it into an isometric room; flip &amp; arrange to decorate</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- VISUAL FOUNDATIONS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9671;</div>
+      <h2>Visual Foundations</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">The aesthetic is <strong>"Bright City-Builder" / Navy HUD</strong> — the Adopt-Me / mobile-tycoon family. Everything is soft, glossy, and 3D-ish ("soft-toy" feel); nothing is flat, nothing is a sharp rectangle. Every colour, radius, shadow, gradient, and button behaviour is ported 1:1 from the game's <code>UIKit.luau</code>.</p>
+
+    <h3 style="font-size:14px;font-weight:600;margin:0 0 4px;">Surfaces &amp; chrome</h3>
+    <div class="swatch-row" style="margin-bottom:18px;">
+      <div class="swatch"><div class="chip" style="background:#42509c"></div><div class="meta"><b>Panel</b><span>#42509C</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#2e387a"></div><div class="meta"><b>Well</b><span>#2E387A</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#4e5cac"></div><div class="meta"><b>Card</b><span>#4E5CAC</span></div></div>
+      <div class="swatch"><div class="chip" style="background:linear-gradient(#5fc0ec,#2fa0dc)"></div><div class="meta"><b>Sky header</b><span>gradient</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#ffffff;border-bottom:1px solid var(--border)"></div><div class="meta"><b>Frame</b><span>#FFFFFF · 3.5px</span></div></div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:600;margin:0 0 4px;">Accents &amp; currency</h3>
+    <div class="swatch-row" style="margin-bottom:18px;">
+      <div class="swatch"><div class="chip" style="background:#ff7a69"></div><div class="meta"><b>Quest</b><span>#FF7A69</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#ffc64a"></div><div class="meta"><b>Money</b><span>#FFC64A</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#76d6a5"></div><div class="meta"><b>Success</b><span>#76D6A5</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#78baff"></div><div class="meta"><b>Info</b><span>#78BAFF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:linear-gradient(#7fe07a,#3fb01f)"></div><div class="meta"><b>Cash (USD)</b><span>green money</span></div></div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>The candy 3D</h3>
+        <p>No flat surfaces. A glossy cap floats <strong>6px</strong> above a darker <strong>lip</strong>, with a soft blurred contact shadow grounding it. Pressing sinks the cap onto the lip (squash to ~0.96); release springs back with a Back-ease overshoot — the brand's signature bounce.</p>
+      </div>
+      <div class="card">
+        <h3>Type — stickered</h3>
+        <p><strong>Fredoka</strong> (FredokaOne substitute) for titles, buttons &amp; all numbers; <strong>Montserrat</strong> (Gotham substitute) for body. Display text carries a 2px outline in the surface's lip colour — the cartoon "sticker" look.</p>
+      </div>
+      <div class="card">
+        <h3>Radii</h3>
+        <p>Panel <strong>20px</strong> · card / row / tile <strong>14px</strong> · button <strong>13px</strong> · pills &amp; toggles fully round · world billboards 10px. Nothing is square.</p>
+      </div>
+      <div class="card">
+        <h3>Motion</h3>
+        <p>Press 70ms Quad-out squash; release 200ms Back-ease spring. Panels pop in from scale 0.82. Currency <strong>ticks</strong> across to its new value with a quick punch — never a hard snap.</p>
+      </div>
+      <div class="card">
+        <h3>Shadows</h3>
+        <p>Roblox has no <code>box-shadow</code>, so the game offsets a 62%-alpha navy frame downward; that's recreated as a <code>--shadow-panel</code> token. HUD chrome shares one navy bevel with a 4px bottom shadow lip.</p>
+      </div>
+      <div class="card">
+        <h3>Layout</h3>
+        <p>Panels centered on a ~45% dimmed scrim — except walk-by popups, which float over the live world with a transparent backdrop. HUD pinned to corners at a 16px inset. Touch targets never below 44px.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- COMPONENTS -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--yellow-light);color:#b06000;">&#9783;</div>
+      <h2>Component Library</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">Nine React primitives compiled into a runtime bundle, each shipping a <code>.jsx</code> implementation, a <code>.d.ts</code> type contract, and an authoring prompt. Built straight from the tokens, so every consumer renders pixel-identical to the game.</p>
+    <table class="clean-table">
+      <thead><tr><th>Component</th><th>Group</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td class="label">CandyButton</td><td class="value">Buttons</td><td class="value">The chunky 3D button — 7 colour families, cap-over-lip with press squash / spring, selected &amp; disabled states.</td></tr>
+        <tr><td class="label">IconButton</td><td class="value">Buttons</td><td class="value">Round HUD icon button (gear / menu / shop) on the shared navy bevel.</td></tr>
+        <tr><td class="label">Panel</td><td class="value">Surfaces</td><td class="value">Navy panel with a sky-blue header banner and a thick white structural frame.</td></tr>
+        <tr><td class="label">Card</td><td class="value">Surfaces</td><td class="value">Row / tile / recessed-well surface for lists and content blocks.</td></tr>
+        <tr><td class="label">CoinPill</td><td class="value">Surfaces</td><td class="value">Currency readout — glossy green money pill with the 3D cash icon; ticks &amp; punches on change.</td></tr>
+        <tr><td class="label">Badge</td><td class="value">Surfaces</td><td class="value">Shape badge — a coloured circle + one typographic glyph (<code>!</code> / <code>$</code> / <code>?</code>) as a no-asset world marker.</td></tr>
+        <tr><td class="label">CandyToggle</td><td class="value">Forms</td><td class="value">Candy pill switch for settings rows.</td></tr>
+        <tr><td class="label">ShopRow</td><td class="value">Game</td><td class="value">Catalogue row — thumb + name + trait line + buy / owned / locked action.</td></tr>
+        <tr><td class="label">RewardBurst</td><td class="value">Feedback</td><td class="value">Celebratory reward overlay — sunburst, confetti, and a springing prize pop.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TOKENS & ARCHITECTURE -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9636;</div>
+      <h2>Tokens &amp; Architecture</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Token layers</h3>
+        <p><strong>134 tokens</strong> across five files — <code>colors</code>, <code>typography</code>, <code>effects</code> (radii / shadows / gloss / motion), <code>spacing</code>, <code>fonts</code> — all <code>@import</code>ed by a single <code>styles.css</code> entry point.</p>
+      </div>
+      <div class="card">
+        <h3>Semantic aliasing</h3>
+        <p>Raw brand values (<code>--tl-panel</code>) feed semantic aliases (<code>--surface-panel</code>, <code>--text-money</code>, <code>--accent-quest</code>) — consumers reference intent, not hex.</p>
+      </div>
+      <div class="card">
+        <h3>Iconography</h3>
+        <p>One icon language — the <strong>smooth3d</strong> set: 41 glossy 3D-rendered PNGs (currency, rewards, navigation, vehicles, food, pets, system), used at natural colour with a soft drop shadow. No flat / line icons, no emoji.</p>
+      </div>
+      <div class="card">
+        <h3>Reverse-engineered</h3>
+        <p>Every value traces to the read-only game source: <code>UIKit.luau</code> for primitives, the real <code>*UI.client.luau</code> screens for layouts, <code>Icons.luau</code> for the icon table, and <code>CarCatalog</code> / <code>FoodMenu</code> for real product copy in the mocks.</p>
+      </div>
+      <div class="card">
+        <h3>Specimen cards</h3>
+        <p>18 Design-System specimen cards document colours, type, radii, spacing, iconography, the brand world, and each component — a living style guide rendered from the same tokens.</p>
+      </div>
+      <div class="card">
+        <h3>Agent-ready</h3>
+        <p>Ships with a <code>SKILL.md</code> and per-component authoring prompts, so the system works as a Claude Code skill — an agent can build new on-brand screens from the tokens.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CONTENT -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">&#9998;</div>
+      <h2>Content &amp; Voice</h2>
+    </div>
+    <ul class="detail-list">
+      <li><strong>Voice</strong> — second person, breezy, helpful. The shop greets you: <em>"What can we get you?"</em> Confirmations are upbeat and immediate: <em>"Bought Burger!" · "+20 energy"</em>.</li>
+      <li><strong>Ruthless length</strong> — titles are 1–2 words, item descriptions a single trait line (<em>"Nimble cornering"</em>), buttons a verb or a price. A whole settings explainer is one sentence.</li>
+      <li><strong>Currency</strong> — one soft currency, <strong>Cash</strong>, written <code>$</code> + comma-grouped (<code>$1,500</code>) and shown as glossy green money. No gems in play.</li>
+      <li><strong>No emoji in UI copy</strong> — the playful accents are the 3D icons and candy buttons. Shape badges use a single typographic glyph as a no-asset fallback, never an emoji.</li>
+      <li><strong>Casing</strong> — Title or sentence case for titles and buttons; tiny UPPERCASE only for micro-labels and hints.</li>
+    </ul>
+    <p style="font-size:12px;color:var(--text-secondary);margin-top:16px;">Companion to the engineering build — see the <a href="toonlife.html">Toonlife technical overview</a>. Source ported from the game's own Luau UI; all token, component, and mockup code is original. 3D city renders &amp; icon art from the game's asset library (<a href="https://ithappystudios.com/" target="_blank">ITHappy Studios</a>).</p>
+  </section>
+
+</div>
+
+<footer id="site-footer"></footer>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+document.querySelectorAll('.shots img').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('active');
+});
+</script>
+
+<script src="shared-nav.js"></script>
+</body>
+</html>
