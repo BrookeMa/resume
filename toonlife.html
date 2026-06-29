@@ -51,15 +51,9 @@
 /* hero eyebrow */
 .kicker { font-size: 12.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
 
-/* gameplay-clip placeholder (swap for a <video>/GIF) */
-.video-placeholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-  text-align: center; padding: 56px 24px; margin-bottom: 24px;
-  border: 2px dashed var(--border); border-radius: 12px; background: var(--bg-gray);
-}
-.video-placeholder .vp-icon { font-size: 34px; color: var(--blue); line-height: 1; }
-.video-placeholder .vp-text { font-size: 14px; color: var(--text); font-weight: 500; }
-.video-placeholder .vp-sub { font-size: 11px; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase; }
+/* purple accent (used by the first section header + .tag-purple + icon system) */
+:root { --purple: #8b5cf6; --purple-light: #ede9fe; }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
 
 /* furniture model strip */
 .furn-strip {
@@ -68,6 +62,32 @@
   background: var(--bg-gray); border: 1px solid var(--border); border-radius: 12px;
 }
 .furn-strip img { height: 80px; width: auto; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); }
+
+/* custom 3D icon system grid */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 20px 12px; padding: 30px 24px; margin-top: 8px;
+  background: var(--bg-gray); border: 1px solid var(--border); border-radius: 12px;
+}
+.icon-cell { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
+.icon-cell img {
+  width: 64px; height: 64px; object-fit: contain;
+  filter: drop-shadow(0 3px 7px rgba(0,0,0,0.14));
+  transition: transform .2s;
+}
+.icon-cell:hover img { transform: translateY(-3px) scale(1.07); }
+.icon-cell span { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+.icon-cat { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.icon-cat:first-child { margin-top: 0; }
+.icon-cat span { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text-secondary); white-space: nowrap; }
+.icon-cat::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* live telemetry figure */
+.tele { margin: 0 0 24px; }
+.tele img { width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; }
+.tele figcaption { font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 8px; line-height: 1.6; }
+.tele code { font-family: var(--mono); font-size: 11.5px; background: var(--bg-gray); color: var(--text); padding: 1px 5px; border-radius: 3px; }
 
 /* image lightbox */
 .lightbox {
@@ -81,6 +101,8 @@
 @media (max-width: 600px) {
   .flow-box { font-size: 10px; padding: 18px; }
   .furn-strip img { height: 60px; }
+  .icon-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 16px 8px; padding: 22px 14px; }
+  .icon-cell img { width: 50px; height: 50px; }
 }
 </style>
 </head>
@@ -154,6 +176,10 @@
       <div>
         <img src="assets/toonlife-eco-district.webp" loading="lazy" alt="Toonlife ecological district aerial view">
         <div class="caption">Ecological district — terraced neighborhoods, hospital, police, observatory</div>
+      </div>
+      <div class="wide">
+        <img src="assets/toonlife-citymap.jpg" loading="lazy" alt="Toonlife in-game City Map fast-travel UI">
+        <div class="caption">In-game City Map — fast-travel UI with labeled districts (Magic Town, Downtown, Futura City), zone legend &amp; live player marker</div>
       </div>
     </div>
   </section>
@@ -255,18 +281,18 @@
       <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9650;</div>
       <h2>Living City Systems</h2>
     </div>
-    <div class="video-placeholder" id="gameplay-clip">
-      <div class="vp-icon">&#9654;</div>
-      <div class="vp-text">Gameplay clip — traffic flowing, pedestrians &amp; the day/night cycle</div>
-      <div class="vp-sub">Coming soon</div>
+    <div class="shots" style="margin-bottom:20px;">
+      <div class="wide">
+        <img src="assets/toonlife-gameplay.jpg" loading="lazy" alt="Toonlife — live third-person gameplay in the cartoon city with moving traffic">
+        <div class="caption">Live in-engine — third-person play through downtown: moving traffic, signal-lit intersections, the streamed city &amp; HUD, captured in Roblox Studio</div>
+      </div>
     </div>
-    <!-- TONIGHT: replace the .video-placeholder block above with the real capture, e.g.
-      <video src="assets/toonlife-city-loop.mp4" autoplay loop muted playsinline
-             poster="assets/toonlife-city-clean.webp"
-             style="width:100%;border-radius:12px;border:1px solid var(--border);display:block"></video>
-      — or a GIF:
-      <img src="assets/toonlife-traffic.gif" alt="Toonlife traffic and pedestrians"
-           style="width:100%;border-radius:12px;border:1px solid var(--border)"> -->
+    <figure class="tele">
+      <img src="assets/toonlife-telemetry.jpg" loading="lazy" alt="Roblox Studio output console printing live world telemetry">
+      <figcaption>
+        Live server telemetry from the Studio output &mdash; <code>1473 waypoints</code>, <code>170 signalised intersections</code>, <code>158 cars on 1443 drivable road nodes</code>, <code>234 NPC rigs</code>. The counts in the stats above are printed by the running game, not estimated.
+      </figcaption>
+    </figure>
     <div class="card-grid">
       <div class="card">
         <h3>Traffic AI</h3>
@@ -325,6 +351,64 @@
       <img src="assets/toonlife-furniture/washing_machine.png" loading="lazy" alt="Washing machine">
     </div>
     <div style="font-size:12px;color:var(--text-secondary);text-align:center;margin-top:8px;">A slice of the ~1,200-item ToonRoom furniture catalog &mdash; rendered straight from the game's own 3D models</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- INTERFACE & ICON SYSTEM -->
+  <section>
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple-light);color:var(--purple);">&#9672;</div>
+      <h2>Interface &amp; Icon System</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:6px;">
+      One icon language spans all four clients &mdash; web, desktop, mobile, and console. Every glyph is rendered in a single unified 3D style that sits naturally on top of the low-poly world, so the HUD reads the same whether you're tapping a phone or holding a controller. The set isn't decorative: each icon is wired to a live system &mdash; the three currencies, the garage, delivery jobs, the fishing &amp; pet loops, and world navigation &mdash; and ships with pressed-state variants for tactile button feedback.
+    </p>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:18px;">
+      Designed alongside a fuller component library &mdash; buttons, cards, HUD and minimap. <a href="toonlife-design-system.html">See the full Design System &amp; UI Kit &rarr;</a>
+    </p>
+    <div class="icon-grid">
+      <div class="icon-cat"><span>Economy</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/coin.png" loading="lazy" alt="Coins icon"><span>Coins</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/cash.png" loading="lazy" alt="Cash icon"><span>Cash</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/gem.png" loading="lazy" alt="Gems icon"><span>Gems</span></div>
+
+      <div class="icon-cat"><span>Vehicles</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/car.png" loading="lazy" alt="Garage icon"><span>Garage</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/fuel.png" loading="lazy" alt="Fuel icon"><span>Fuel</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/speed.png" loading="lazy" alt="Speed icon"><span>Speed</span></div>
+
+      <div class="icon-cat"><span>Jobs &amp; Activities</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/delivery.png" loading="lazy" alt="Delivery icon"><span>Delivery</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/deliverybag.png" loading="lazy" alt="Job bag icon"><span>Job Bag</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/boat.png" loading="lazy" alt="Boating icon"><span>Boating</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/burger.png" loading="lazy" alt="Food icon"><span>Food</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/play.png" loading="lazy" alt="Play icon"><span>Play</span></div>
+
+      <div class="icon-cat"><span>Progression</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/trophy.png" loading="lazy" alt="Trophy icon"><span>Trophies</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/star.png" loading="lazy" alt="Rewards icon"><span>Rewards</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/heart.png" loading="lazy" alt="Health icon"><span>Health</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/gift.png" loading="lazy" alt="Gifts icon"><span>Gifts</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/key.png" loading="lazy" alt="Unlock icon"><span>Unlock</span></div>
+
+      <div class="icon-cat"><span>Pets &amp; Animals</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/paw.png" loading="lazy" alt="Pets icon"><span>Pets</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/bone.png" loading="lazy" alt="Treats icon"><span>Treats</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/zoo.png" loading="lazy" alt="Animals icon"><span>Animals</span></div>
+
+      <div class="icon-cat"><span>World &amp; UI</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/home.png" loading="lazy" alt="Home icon"><span>Home</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/shop.png" loading="lazy" alt="Shop icon"><span>Shop</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/map.png" loading="lazy" alt="Map icon"><span>Map</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/pin.png" loading="lazy" alt="Waypoint icon"><span>Waypoint</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/backpack.png" loading="lazy" alt="Inventory icon"><span>Inventory</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/friends.png" loading="lazy" alt="Friends icon"><span>Friends</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/music.png" loading="lazy" alt="Music icon"><span>Music</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/bell.png" loading="lazy" alt="Alerts icon"><span>Alerts</span></div>
+      <div class="icon-cell"><img src="assets/toonlife-icons/gear.png" loading="lazy" alt="Settings icon"><span>Settings</span></div>
+    </div>
+    <div style="font-size:12px;color:var(--text-secondary);text-align:center;margin-top:10px;">28 of the game's custom interface icons &mdash; one consistent 3D-render style across every platform</div>
   </section>
 
   <hr class="divider">
