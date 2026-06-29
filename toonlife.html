@@ -41,8 +41,47 @@
 }
 .shots img {
   width: 100%; border-radius: 8px; border: 1px solid var(--border);
+  cursor: pointer; transition: transform .2s, box-shadow .2s;
 }
+.shots img:hover { transform: scale(1.01); box-shadow: 0 4px 16px rgba(32,33,36,0.12); }
 .shots .caption { font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 6px; }
+.shots .wide { grid-column: 1 / -1; }
+.shots .wide img { max-width: 760px; margin: 0 auto; display: block; }
+
+/* hero eyebrow */
+.kicker { font-size: 12.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+
+/* gameplay-clip placeholder (swap for a <video>/GIF) */
+.video-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  text-align: center; padding: 56px 24px; margin-bottom: 24px;
+  border: 2px dashed var(--border); border-radius: 12px; background: var(--bg-gray);
+}
+.video-placeholder .vp-icon { font-size: 34px; color: var(--blue); line-height: 1; }
+.video-placeholder .vp-text { font-size: 14px; color: var(--text); font-weight: 500; }
+.video-placeholder .vp-sub { font-size: 11px; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase; }
+
+/* furniture model strip */
+.furn-strip {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center;
+  gap: 22px; padding: 24px; margin-top: 12px;
+  background: var(--bg-gray); border: 1px solid var(--border); border-radius: 12px;
+}
+.furn-strip img { height: 80px; width: auto; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); }
+
+/* image lightbox */
+.lightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 1000; cursor: zoom-out;
+  align-items: center; justify-content: center;
+}
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 92%; max-height: 92%; border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+
+@media (max-width: 600px) {
+  .flow-box { font-size: 10px; padding: 18px; }
+  .furn-strip img { height: 60px; }
+}
 </style>
 </head>
 <body>
@@ -53,7 +92,8 @@
 
   <!-- HERO -->
   <div class="hero">
-    <h1>Technical Overview</h1>
+    <div class="kicker">Technical Deep Dive</div>
+    <h1>Toonlife &mdash; a multiplayer cartoon city for Roblox</h1>
     <p>A multiplayer life-sim city for Roblox, built solo in 20 days. Players fish, run delivery jobs, shop for cars, and decorate homes in a persistent economy across a coastal world with traffic, pedestrians, animals, and day/night cycles. The technical challenge: getting a world this large to exist on Roblox at all — which drove a custom asset pipeline and exploit-resistant server systems.</p>
     <div class="hero-links">
       <a href="portfolio.html" class="chip">Back to Portfolio</a>
@@ -104,15 +144,15 @@
     </div>
     <div class="shots">
       <div>
-        <img src="assets/image-1782347020426.webp" alt="Toonlife in-game car shop UI">
+        <img src="assets/image-1782347020426.webp" loading="lazy" alt="Toonlife in-game car shop UI">
         <div class="caption">In-game car shop — browse vehicles with live stat cards, summon &amp; ownership</div>
       </div>
       <div>
-        <img src="assets/toonlife-city-overview.webp" alt="Toonlife cartoon city aerial overview">
+        <img src="assets/toonlife-city-clean.webp" loading="lazy" alt="Toonlife cartoon city aerial overview">
         <div class="caption">Coastal peninsula — downtown towers, bridge, amusement park &amp; cruise dock</div>
       </div>
       <div>
-        <img src="assets/toonlife-eco-district.webp" alt="Toonlife ecological district aerial view">
+        <img src="assets/toonlife-eco-district.webp" loading="lazy" alt="Toonlife ecological district aerial view">
         <div class="caption">Ecological district — terraced neighborhoods, hospital, police, observatory</div>
       </div>
     </div>
@@ -176,6 +216,12 @@
         <tr><td class="label">Port</td><td class="value"><strong>Godot 4</strong> single-player port under <code>/godot/</code> for a future standalone release</td></tr>
       </tbody>
     </table>
+    <div class="shots" style="margin-top:20px;">
+      <div class="wide">
+        <img src="assets/toonlife-console-ui.webp" loading="lazy" alt="Toonlife console build — perf-mode settings with controller-glyph prompts over the live city">
+        <div class="caption">One UI language, three platforms — the console build's perf-mode settings (Auto / High / Medium / Low) with controller-glyph prompts, rendered over the live city</div>
+      </div>
+    </div>
   </section>
 
   <hr class="divider">
@@ -209,6 +255,18 @@
       <div class="section-icon" style="background:var(--blue-light);color:var(--blue);">&#9650;</div>
       <h2>Living City Systems</h2>
     </div>
+    <div class="video-placeholder" id="gameplay-clip">
+      <div class="vp-icon">&#9654;</div>
+      <div class="vp-text">Gameplay clip — traffic flowing, pedestrians &amp; the day/night cycle</div>
+      <div class="vp-sub">Coming soon</div>
+    </div>
+    <!-- TONIGHT: replace the .video-placeholder block above with the real capture, e.g.
+      <video src="assets/toonlife-city-loop.mp4" autoplay loop muted playsinline
+             poster="assets/toonlife-city-clean.webp"
+             style="width:100%;border-radius:12px;border:1px solid var(--border);display:block"></video>
+      — or a GIF:
+      <img src="assets/toonlife-traffic.gif" alt="Toonlife traffic and pedestrians"
+           style="width:100%;border-radius:12px;border:1px solid var(--border)"> -->
     <div class="card-grid">
       <div class="card">
         <h3>Traffic AI</h3>
@@ -256,6 +314,17 @@
         <tr><td class="label">Pet Quests</td><td class="value">—</td><td class="value">NPC-driven task chains that feed the wallet and progression loop.</td></tr>
       </tbody>
     </table>
+    <div class="furn-strip">
+      <img src="assets/toonlife-furniture/sofa.png" loading="lazy" alt="Sofa">
+      <img src="assets/toonlife-furniture/bed.png" loading="lazy" alt="Bed">
+      <img src="assets/toonlife-furniture/tv_wall.png" loading="lazy" alt="TV wall">
+      <img src="assets/toonlife-furniture/fridge.png" loading="lazy" alt="Fridge">
+      <img src="assets/toonlife-furniture/kitchen_table.png" loading="lazy" alt="Kitchen table">
+      <img src="assets/toonlife-furniture/lounge_chair.png" loading="lazy" alt="Lounge chair">
+      <img src="assets/toonlife-furniture/dresser.png" loading="lazy" alt="Dresser">
+      <img src="assets/toonlife-furniture/washing_machine.png" loading="lazy" alt="Washing machine">
+    </div>
+    <div style="font-size:12px;color:var(--text-secondary);text-align:center;margin-top:8px;">A slice of the ~1,200-item ToonRoom furniture catalog &mdash; rendered straight from the game's own 3D models</div>
   </section>
 
   <hr class="divider">
@@ -338,6 +407,22 @@
 </div>
 
 <footer id="site-footer"></footer>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+document.querySelectorAll('.shots img').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('active');
+});
+</script>
 
 <script src="shared-nav.js"></script>
 </body>
